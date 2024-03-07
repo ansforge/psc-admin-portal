@@ -1,6 +1,4 @@
-<!doctype html>
 <!--
-
 Copyright (C) 2022-2023 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Portail d'administration sec-psc</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
-</html>
+# PscAdminPortal
+
+Administration portal for sec-psc.
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2.
+
