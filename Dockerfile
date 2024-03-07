@@ -21,6 +21,7 @@ USER ci
 COPY --chown=ci psc-admin-portal /src/portal
 WORKDIR /src/portal
 RUN npm ci
+RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
 RUN ng build
 
 FROM httpd:2.4.58-bookworm
