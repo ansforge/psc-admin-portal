@@ -22,8 +22,8 @@ COPY --chown=ci psc-admin-portal /src/portal
 WORKDIR /src/portal
 RUN npm ci
 RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
-RUN ng build
+RUN ng build --base-href portal/ui
 
 FROM httpd:2.4.58-bookworm
-COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs
+COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
 COPY angular_htaccess /usr/local/apache2/htdocs/.htaccess
