@@ -24,7 +24,7 @@ COPY --chown=ci psc-admin-portal /src/portal
 WORKDIR /src/portal
 RUN npm ci
 RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
-RUN ng build --base-href portal/ui
+RUN ng build --base-href .
 
 FROM debian:${BASE_DISTRO} as oidc_installer
 ARG BASE_DISTRO=bookworm
