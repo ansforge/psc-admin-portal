@@ -46,5 +46,7 @@ RUN if [ $(ldd /usr/local/apache2/modules/mod_auth_openidc.so | grep "not found"
       echo "Missing library for mod_auth_oidc\n $(ldd /usr/local/apache2/modules/mod_auth_openidc.so | grep 'not found')";\
       exit 1;\
     fi
+RUN echo "include conf/sec-psc/app.conf" >> /usr/local/apache2/conf/httpd.conf
+COPY --chown=root server/*.conf /usr/local/apache2/conf/sec-psc/
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
-COPY angular_htaccess /usr/local/apache2/htdocs/.htaccess
+
