@@ -59,5 +59,6 @@ COPY --chown=root server/*.conf /usr/local/apache2/conf/sec-psc/
 #Installing the angular application
 COPY --chown=root psc-admin-portal/src/favicon.ico /usr/local/apache2/htdocs/
 COPY --chown=root server/*.html /usr/local/apache2/htdocs/
+COPY --chown=root server/bailout.js /usr/local/apache2/htdocs/
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
 
