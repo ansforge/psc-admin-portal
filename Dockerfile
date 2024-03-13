@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This first stage will package the portal angular application for use in this server.
 ARG BASE_DISTRO=bookworm
 FROM node:20.11.1-slim as builder
 
@@ -26,6 +27,7 @@ RUN npm ci
 RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
 RUN ng build --base-href .
 
+# This stage will get the OIDC module package, install it to grab its files.
 FROM debian:${BASE_DISTRO} as oidc_installer
 ARG BASE_DISTRO=bookworm
 ARG MOD_OIDC_VERSION=2.4.15.3
@@ -37,8 +39,10 @@ RUN apt update;apt install -y /tmp/${MOD_PACKAGE_NAME};apt-get clean
 
 FROM httpd:2.4.58-$BASE_DISTRO
 
+# This is the stage that builds the actual server image
 ARG BASE_DISTRO=bookworm
 
+# Installing the OIDC module
 COPY --from=oidc_installer /usr/lib/apache2/modules/mod_auth_openidc.so /usr/local/apache2/modules/mod_auth_openidc.so
 COPY --from=oidc_installer /lib/x86_64-linux-gnu/libcjose.so* /lib/x86_64-linux-gnu/
 COPY --from=oidc_installer /lib/x86_64-linux-gnu/libhiredis.so* /lib/x86_64-linux-gnu/
@@ -46,9 +50,13 @@ RUN if [ $(ldd /usr/local/apache2/modules/mod_auth_openidc.so | grep "not found"
       echo "Missing library for mod_auth_oidc\n $(ldd /usr/local/apache2/modules/mod_auth_openidc.so | grep 'not found')";\
       exit 1;\
     fi
+
+# Installing configuration files
 RUN echo "ServerName \${HOSTNAME}" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "include conf/sec-psc/app.conf" >> /usr/local/apache2/conf/httpd.conf
 COPY --chown=root server/*.conf /usr/local/apache2/conf/sec-psc/
+
+#Installing the angular application
 COPY --chown=root psc-admin-portal/src/favicon.ico /usr/local/apache2/htdocs/
 COPY --chown=root server/index.html /usr/local/apache2/htdocs/
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
