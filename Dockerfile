@@ -49,5 +49,7 @@ RUN if [ $(ldd /usr/local/apache2/modules/mod_auth_openidc.so | grep "not found"
 RUN echo "ServerName \${HOSTNAME}" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "include conf/sec-psc/app.conf" >> /usr/local/apache2/conf/httpd.conf
 COPY --chown=root server/*.conf /usr/local/apache2/conf/sec-psc/
+COPY --chown=root psc-admin-portal/src/favicon.ico /usr/local/apache2/htdocs/
+COPY --chown=root server/index.html /usr/local/apache2/htdocs/
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
 
