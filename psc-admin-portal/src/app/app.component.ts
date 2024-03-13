@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 
@@ -25,4 +25,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   dynamicContent: string="This is the way";
+  location: Location;
+  constructor(){
+     this.location = window.location
+  }
 }
