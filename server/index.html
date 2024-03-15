@@ -1,3 +1,4 @@
+<!doctype html>
 <!--
 
 Copyright (C) 2022-2023 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
@@ -14,13 +15,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<h1>Portail d'administration sec-psc</h1>
-<a href="/portal/?logout={{location.protocol+'//'+location.host+'/'}}">Déconnexion</a>
-<div>
-  <label for="dynamicContent">Saisie contenu dynamique: </label>
-  <input name="dynamicContent" type="text" [(ngModel)]="dynamicContent" />
-</div>
-<div>
-  <span>Echo:<input value="{{dynamicContent}}" disabled="true"/></span>
-</div>
-<router-outlet />
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Portail d'administration sec-psc</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <a id="login" href="./portal/ui/">Connexion avec Pro Santé Connect</a>
+  <script src="/login.js"></script>
+</body>
+</html>
+

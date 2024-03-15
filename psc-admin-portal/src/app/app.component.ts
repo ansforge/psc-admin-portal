@@ -25,4 +25,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   dynamicContent: string="This is the way";
+  location: Location;
+  constructor(){
+     this.location = window.location
+  }
 }
