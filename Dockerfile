@@ -14,7 +14,16 @@
 
 # This first stage will package the portal angular application for use in this server.
 ARG BASE_DISTRO=bookworm
+FROM maven:3.9 as checker
+
+COPY . /src
+WORKDIR src
+RUN mv license/check-pom.xml ./pom.xml
+RUN mvn -Dlicense.current.year=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y) license:check
+RUN touch /.sourceCheck
+
 FROM node:20.11.1-slim as builder
+ARG BASE_DISTRO=bookworm
 
 RUN apt update
 RUN apt install -y chromium
@@ -61,4 +70,4 @@ COPY --chown=root psc-admin-portal/src/favicon.ico /usr/local/apache2/htdocs/
 COPY --chown=root server/*.html /usr/local/apache2/htdocs/
 COPY --chown=root server/*.js /usr/local/apache2/htdocs/
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
-
+COPY --chown=root --from=checker /.sourceCheck /
