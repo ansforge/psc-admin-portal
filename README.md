@@ -19,3 +19,12 @@ Administration portal for sec-psc.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2.
 
+## Development
+
+### License header check
+
+The license header check gets performed as part of each container build. If the check fails,
+the container build will fail. If this happens, use the [license/license-format.sh](license/license-format.sh)
+script to draft the header bump commit. **Always** check the result before committing : the tool mostly works,
+but in some corner cases (some partial match with the header with too much difference) it will make invalid change
+that needs to be manually fixed.
