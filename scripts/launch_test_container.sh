@@ -31,6 +31,18 @@ if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
 fi
 
+if [ ! -f scripts/whitelist.conf ]; then
+  cat <<EOF> scripts/whitelist.conf
+# Add whitelist under there. Each line should be as follows : 
+# Require claim SubjectNameID:<idNat>
+EOF
+fi
+
+if [ $(grep -v '#' scripts/whitelist.conf | wc -l) -eq 0 ]; then
+   echo "Empty whitelist in $(pwd)/scripts/whitelist.conf, no access." >&2
+   exit 2
+fi
+
 docker build . -t sec-psc/portal
 
 if [ $? -eq 0 ]; then
@@ -41,6 +53,7 @@ if [ $? -eq 0 ]; then
      -e PSC_HOST=auth.bas.psc.esante.gouv.fr \
      -e CLIENT_ID=${CLIENT_ID} \
      -e CLIENT_SECRET=${CLIENT_SECRET} \
+     -v $(pwd)/scripts/whitelist.conf:/usr/local/apache2/conf/sec-psc/whitelist.conf \
      --name "sec-psc-portal.test" \
      sec-psc/portal
 fi
