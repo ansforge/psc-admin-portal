@@ -47,8 +47,14 @@ limitations under the License.
   <main class="main" role="main" id="main" tabindex="-1">
     <div class="container">
       <h1>Portail d'administration Sec-PSC</h1>
-      <div>
-        <span>Vous n'êtes pas autoriser à vous connecter à cette application.</span>
+      <div class="o-alert o-alert--error" role="alert">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-circle-cross" aria-hidden="true" focusable="false">
+          <use xlink:href="/svg-icons/icon-sprite.svg#circle-cross"></use>
+          </svg>
+        </div>
+        <h2 class="o-alert__title">Error message</h2>
+        <p>Vous n'êtes pas autoriser à vous connecter à cette application.</p>
       </div>
       <div>
         <a class="btn btn--plain btn--primary" id="bailout" href="/portal/?logout=../">Sortir</a>
