@@ -62,5 +62,6 @@ COPY --chown=root server/*.html /usr/local/apache2/htdocs/
 COPY --chown=root server/*.js /usr/local/apache2/htdocs/
 COPY --chown=root server/img /usr/local/apache2/htdocs/img
 COPY --chown=root server/style /usr/local/apache2/htdocs/style
+COPY --chown=root server/svg-icons /usr/local/apache2/htdocs/svg-icons
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
 
