@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.ans.psc</groupId>
+  <artifactId>license-check</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>license-check</name>
+  <!-- sic ... this allows reuse of the prepackaged header resource -->
+  <inceptionYear>2022-${license.current.year}</inceptionYear>
+  <description>Contrôle des licences</description>
+
+  <properties>
+    <java.version>17</java.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>timestamp-property</id>
+            <goals>
+              <goal>timestamp-property</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <name>license.current.year</name>
+              <pattern>yyyy</pattern>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- license  mvn license:format -->
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>4.3</version>
+        <configuration>
+          <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+          <properties>
+            <owner>Agence du Numérique en Santé (ANS)</owner>
+            <email>https://esante.gouv.fr</email>
+            <license.current.year>${license.current.year}</license.current.year>
+          </properties>
+          <defaultUseDefaultExcludes>false</defaultUseDefaultExcludes>
+          <excludes>
+            <exclude>license/ans-all-rights-reserved</exclude>
+            <exclude>LICENSE.txt</exclude>
+            <exclude>node_modules/**</exclude>
+            <exclude>dist/**</exclude>
+            <exclude>.git/**</exclude>
+            <exclude>target/**</exclude>
+            <exclude>**/*.ico</exclude>
+            <exclude>**/*.json</exclude>
+            <exclude>**/.gitkeep</exclude>
+          </excludes>
+          <mapping>
+            <scss>JAVADOC_STYLE</scss>
+            <gitattributes>SCRIPT_STYLE</gitattributes>
+            <java>SLASHSTAR_STYLE</java>
+            <conf>SCRIPT_STYLE</conf>
+            <md>XML_STYLE</md>
+            <gitignore>SCRIPT_STYLE</gitignore>
+          </mapping>
+        </configuration>
+        <executions>
+          <execution>
+            <id>header-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>initialize</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- END license -->
+    </plugins>
+  </build>
+</project>
