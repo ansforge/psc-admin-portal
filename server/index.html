@@ -23,9 +23,165 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="./style/style-ans.css" type="text/css">
+  <link rel="stylesheet" href="./style/print.css" type="text/css" media="print">
 </head>
 <body>
-  <a id="login" href="./portal/ui/">Connexion avec Pro Santé Connect</a>
+  <header class="header header-principal" role="banner">
+    <div class="header-principal__inner">
+      <div class="header-principal-left">
+        <div class="logos">
+          <div class="logo logo--0">
+            <a href="https://solidarites-sante.gouv.fr/">
+              <img src="img/logo-ministere.svg" alt="Ministère de la Santé et de la Prévention" width="107" height="62">
+            </a>
+          </div>
+          <div class="logo logo--1">
+            <a href="index.html">
+              <img src="./img/logo-ANS.svg" alt="Accueil Design System ANS" width="166" height="50">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="main" role="main" id="main" tabindex="-1">
+    <div class="container">
+      <h1>Portail d'administration Sec-PSC</h1>
+      <a id="login" href="./portal/ui/">
+        <img alt="Connexion avec Pro Santé Connect" src="./img/ProSanteConnect_sidentifier_COULEURS.jpg"  style="width: 100%;max-width: 440px"/>
+      </a>
+    </div>
+  </main>
+  <footer class="footer footer-principal" role="contentinfo">
+    <div class="footer__region1">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-3 text-center text-md-left">
+            <div class="logos">
+              <div class="logo logo--0">
+                <a href="https://solidarites-sante.gouv.fr" title="Ministère de la Santé et de la Prévention (nouvelle fenêtre)" target="_blank" rel="nofollow">
+                  <img src="img/logo-ministere.svg" alt="Ministère de la Santé et de la Prévention" width="133" height="77" loading="lazy">
+                </a>
+              </div>
+              <div class="logo logo--1">
+                <a href="https://esante.gouv.fr/" title="Agence du Numérique en Santé (nouvelle fenêtre)" target="_blank" rel="nofollow">
+                  <img src="img/logo-ANS-footer.svg" alt="Agence du Numérique en Santé" width="106" height="74" loading="lazy">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center text-md-left">
+            <p class="footer__title">
+              <strong> Agence du Numérique en Santé</strong>
+              <br> 2-10 Rue d'Oradour-sur-Glane
+              <br> 75015 Paris
+            </p>
+            <div class="m-social">
+              <ul class="m-social__list">
+                <li class="m-social__item">
+                  <a class="m-social__link" href="http://linkedin.com" target="_blank" rel="nofollow">
+                    <div class="m-social__icon">
+                      <svg class="svg-icon svg-linkedin" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#linkedin"></use></svg>
+                    </div>
+                    <span class="sr-only">linkedin</span>
+                  </a>
+                </li>
+                <li class="m-social__item">
+                  <a class="m-social__link" href="http://twitter.com" target="_blank" rel="nofollow">
+                    <div class="m-social__icon">
+                      <svg class="svg-icon svg-twitter" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#twitter"></use></svg>
+                    </div>
+                    <span class="sr-only">twitter</span>
+                  </a>
+                </li>
+                <li class="m-social__item">
+                  <a class="m-social__link" href="http://youtube.com" target="_blank" rel="nofollow">
+                    <div class="m-social__icon">
+                      <svg class="svg-icon svg-youtube" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#youtube"></use></svg>
+                    </div>
+                    <span class="sr-only">youtube</span>
+                  </a>
+                </li>
+                <li class="m-social__item">
+                  <a class="m-social__link" href="#" target="_blank" rel="nofollow">
+                    <div class="m-social__icon">
+                      <svg class="svg-icon svg-rss" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#rss"></use></svg>
+                    </div>
+                    <span class="sr-only">rss</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <ul class="footer-list">
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Carrières</a>
+              </li>
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Espace presse</a>
+              </li>
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Marchés publics</a>
+              </li>
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Inscrivez-vous à la newsletter</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-3">
+            <ul class="footer-list">
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Documentations</a>
+              </li>
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Webinaires</a>
+              </li>
+              <li class="footer-list__item footer-list__item--hasIcon">
+                <a href="#">
+                  <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use></svg>Contactez-nous</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__region2">
+      <div class="container">
+        <div class="footer-contentinfo">
+          <ul class="footer-list footer-list--inline">
+            <li class="footer-list__item">
+              <a href="#" target="_blank">
+                Ministère de la Santé et de la Prévention</a>
+            </li>
+            <li class="footer-list__item">
+              <a href="#" target="_blank">
+                Legifrance.gouv.fr</a>
+            </li>
+            <li class="footer-list__item">
+              <a href="#" target="_blank">
+                Service-public.fr</a>
+            </li>
+            <li class="footer-list__item">
+              <a href="#">
+                Mentions légales</a>
+            </li>
+            <li class="footer-list__item">
+              <a href="#">
+                Déclaration d’accessibilité</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script src="/login.js"></script>
 </body>
 </html>
