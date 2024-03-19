@@ -67,7 +67,8 @@
           <excludes>
             <exclude>license/ans-all-rights-reserved</exclude>
             <exclude>LICENSE.txt</exclude>
-            <exclude>node_modules/**</exclude>
+            <exclude>**/node_modules/**</exclude>
+            <exclude>**/.angular/**</exclude>
             <exclude>dist/**</exclude>
             <exclude>.git/**</exclude>
             <exclude>target/**</exclude>
