@@ -14,7 +14,8 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 
@@ -25,10 +26,22 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  dynamicContent: string="This is the way";
+export class AppComponent implements OnInit{
+  toggleState: string='Unknown';
   location: Location;
-  constructor(){
+  
+  constructor(
+    private http: HttpClient
+  ){
      this.location = window.location
   }
+    ngOnInit(): void {
+      this.http.get<string>(
+        'http://sec-psc.wom.dev.henix.fr/portal/service/toggle/v1/check',
+      {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
+      )
+      .subscribe(
+        (status:string) => this.toggleState=status
+      );
+    }
 }

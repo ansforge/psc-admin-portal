@@ -18,10 +18,6 @@
 <h1>Portail d'administration sec-psc</h1>
 <a href="/portal/?logout={{location.protocol+'//'+location.host+'/'}}">Déconnexion</a>
 <div>
-  <label for="dynamicContent">Saisie contenu dynamique: </label>
-  <input name="dynamicContent" type="text" [(ngModel)]="dynamicContent" />
-</div>
-<div>
-  <span>Echo:<input value="{{dynamicContent}}" disabled="true"/></span>
+  <label>Toggle state : {{toggleState}}</label>
 </div>
 <router-outlet />
