@@ -14,10 +14,11 @@
 /// limitations under the License.
 ///
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,18 @@ export class AppComponent implements OnInit{
       {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
       )
       .subscribe(
-        (status:string) => this.toggleState=status
+      {
+        next: (status:string) => this.toggleState=status,
+        error: (err: HttpErrorResponse) => 
+        {
+          if (err.status===503) {
+            this.toggleState = err.statusText
+            return err.statusText;
+          } else {
+            return throwError(err);
+          }
+        }
+      }
       );
     }
 }
