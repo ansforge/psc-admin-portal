@@ -1,20 +1,31 @@
-# Copyright (C) 2022-2023 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
-# 
+#
+# Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#         http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 # This first stage will package the portal angular application for use in this server.
 ARG BASE_DISTRO=bookworm
+FROM maven:3.9 as checker
+
+COPY . /src
+WORKDIR src
+RUN mv license/check-pom.xml ./pom.xml
+RUN mvn -Dlicense.current.year=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y) license:check
+RUN touch /.sourceCheck
+
 FROM node:20.11.1-slim as builder
+ARG BASE_DISTRO=bookworm
 
 RUN apt update
 RUN apt install -y chromium
@@ -64,4 +75,4 @@ COPY --chown=root psc-admin-portal/src/img /usr/local/apache2/htdocs/img
 COPY --chown=root psc-admin-portal/src/style /usr/local/apache2/htdocs/style
 COPY --chown=root psc-admin-portal/src/svg-icons /usr/local/apache2/htdocs/svg-icons
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
-
+COPY --chown=root --from=checker /.sourceCheck /

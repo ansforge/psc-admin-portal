@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 #
@@ -14,5 +15,18 @@
 # limitations under the License.
 #
 
-# Somewhat hacky way to issue an easily read error if the whitelist is forgotten.
-FAIL_MSSING_WHITELIST_Require_claim_SubjectNameID_lines
+
+# This scripts is used to draft license header bumps when needed. It may become
+# unneccessary or need drastic chage if we decide that this project becomes 
+# a maven module or if we manage to use some angular-native method to perform 
+# the same check'n'format duties.
+init_wd=$(pwd)
+cd $(dirname $0)/..
+if [ -f pom.xml ]; then
+   echo "A module pom was found, please migrate the license configuration in that pom \
+         and remove this script and the license/check-pom.xml file"
+fi
+cp license/check-pom.xml ./
+mvn -f ./check-pom.xml validate license:format
+rm ./check-pom.xml
+cd ${init_wd}
