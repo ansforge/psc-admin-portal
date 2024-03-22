@@ -27,9 +27,13 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/img",
+              "src/svg-icons"
             ],
             "styles": [
+              "src/style/style-ans.css",
+              "src/style/print.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -87,7 +91,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/img",
+              "src/svg-icons"
             ],
             "styles": [
               "src/styles.scss"
