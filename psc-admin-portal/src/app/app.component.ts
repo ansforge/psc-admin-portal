@@ -19,6 +19,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,7 @@ export class AppComponent implements OnInit{
   }
     ngOnInit(): void {
       this.http.get<string>(
-        'http://sec-psc.wom.dev.henix.fr/portal/service/toggle/v1/check',
+        `${environment.API_HOSTNAME}portal/service/toggle/v1/check`,
       {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
       )
       .subscribe(
