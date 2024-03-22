@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
+import { Toggle } from './api/toggle.service';
+import { Status } from './api/status';
 
 @Component({
   selector: 'app-root',
@@ -32,28 +34,14 @@ export class AppComponent implements OnInit{
   toggleState: string='Unknown';
   location: Location;
   
-  constructor(
-    private http: HttpClient
-  ){
+  constructor(private toggle: Toggle){
      this.location = window.location
   }
     ngOnInit(): void {
-      this.http.get<string>(
-        `${environment.API_HOSTNAME}portal/service/toggle/v1/check`,
-      {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
-      )
+      this.toggle.status
       .subscribe(
       {
-        next: (status:string) => this.toggleState=status,
-        error: (err: HttpErrorResponse) => 
-        {
-          if (err.status===503) {
-            this.toggleState = err.statusText
-            return err.statusText;
-          } else {
-            return throwError(err);
-          }
-        }
+        next: (status: Status) => this.toggleState=status.message
       }
       );
     }
