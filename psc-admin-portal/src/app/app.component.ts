@@ -23,6 +23,7 @@ import { environment } from '../environments/environment';
 import { Toggle } from './api/toggle.service';
 import { Status } from './api/status';
 import { PsApi } from './api/psApi.service';
+import { Pscload } from './api/pscload.service';
 
 @Component({
   selector: 'app-root',
@@ -34,11 +35,13 @@ import { PsApi } from './api/psApi.service';
 export class AppComponent implements OnInit{
   psApiState: string='Unknown';
   toggleState: string='Unknown';
+  pscloadState: string='Unknown';
   location: Location;
   
   constructor(
     private toggle: Toggle,
     private psApi: PsApi,
+    private pscload: Pscload
   ){
      this.location = window.location
   }
@@ -53,6 +56,12 @@ export class AppComponent implements OnInit{
         .subscribe(
           {
             next: (status: Status) => this.psApiState=status.message
+          }
+        );
+      this.pscload.status
+        .subscribe(
+          {
+            next: (status: Status) => this.pscloadState=status.message
           }
         );
     }
