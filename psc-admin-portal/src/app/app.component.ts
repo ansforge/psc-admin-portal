@@ -47,11 +47,11 @@ export class AppComponent implements OnInit{
   }
     ngOnInit(): void {
       this.toggle.status
-      .subscribe(
-      {
-        next: (status: Status) => this.toggleState=status.message
-      }
-      );
+        .subscribe(
+          {
+            next: (status: Status) => this.toggleState=status.message
+          }
+        );
       this.psApi.status
         .subscribe(
           {
