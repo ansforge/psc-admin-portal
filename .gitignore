@@ -16,3 +16,6 @@
 
 # Local test configuration
 /scripts/whitelist.conf
+
+# Script pid files
+/scripts/*.pid
