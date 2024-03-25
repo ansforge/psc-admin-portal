@@ -22,6 +22,7 @@ import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Toggle } from './api/toggle.service';
 import { Status } from './api/status';
+import { PsApi } from './api/psApi.service';
 
 @Component({
   selector: 'app-root',
@@ -31,10 +32,14 @@ import { Status } from './api/status';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
+  psApiState: string='Unknown';
   toggleState: string='Unknown';
   location: Location;
   
-  constructor(private toggle: Toggle){
+  constructor(
+    private toggle: Toggle,
+    private psApi: PsApi,
+  ){
      this.location = window.location
   }
     ngOnInit(): void {
@@ -44,5 +49,11 @@ export class AppComponent implements OnInit{
         next: (status: Status) => this.toggleState=status.message
       }
       );
+      this.psApi.status
+        .subscribe(
+          {
+            next: (status: Status) => this.psApiState=status.message
+          }
+        );
     }
 }
