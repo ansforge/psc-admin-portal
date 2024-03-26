@@ -25,6 +25,11 @@ cd $SCRIPT_DIR
 SCRIPT_DIR=$(pwd)
 CODE_BASE_DIR=${SCRIPT_DIR}/../..
 
+for file in ${SCRIPT_DIR}/*.pid; do
+  kill $(cat $file)
+  rm $file
+done
+
 cd ${CODE_BASE_DIR}/psc-ps-api
 mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8080" &
 echo $! > ${SCRIPT_DIR}/api.pid
