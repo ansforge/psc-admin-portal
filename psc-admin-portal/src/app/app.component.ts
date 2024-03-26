@@ -24,6 +24,7 @@ import { Toggle } from './api/toggle.service';
 import { Status } from './api/status';
 import { PsApi } from './api/psApi.service';
 import { Pscload } from './api/pscload.service';
+import { Extract } from './api/extract.service';
 
 @Component({
   selector: 'app-root',
@@ -36,12 +37,14 @@ export class AppComponent implements OnInit{
   psApiState: string='Unknown';
   toggleState: string='Unknown';
   pscloadState: string='Unknown';
+  extractState: string='Unknown';
   location: Location;
   
   constructor(
     private toggle: Toggle,
     private psApi: PsApi,
-    private pscload: Pscload
+    private pscload: Pscload,
+    private extract: Extract
   ){
      this.location = window.location
   }
@@ -62,6 +65,12 @@ export class AppComponent implements OnInit{
         .subscribe(
           {
             next: (status: Status) => this.pscloadState=status.message
+          }
+        );
+      this.extract.status
+        .subscribe(
+          {
+            next: (status: Status) => this.extractState=status.message
           }
         );
     }

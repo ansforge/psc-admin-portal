@@ -37,4 +37,8 @@ cd ${CODE_BASE_DIR}/psc-rass-loader/pscload
 mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082" &
 echo $! > ${SCRIPT_DIR}/psload.pid
 
+cd ${CODE_BASE_DIR}/psc-extract
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8083" &
+echo $! > ${SCRIPT_DIR}/extract.pid
+
 cd ${OLD_PWD}
