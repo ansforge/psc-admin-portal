@@ -26,6 +26,10 @@ if [ -z ${HOST_ADDRESS} ]; then
 fi
 echo "Running service reverse-proxy on the ${HOST_ADDRESS} interface set up HOST_ADRESS to override."
 
+if [ ! -f scripts/service-addresses.conf ]; then
+  cp scripts/service-addresses.conf.in scripts/service-addresses.conf
+fi
+
 docker build . -f devProxy.Dockerfile -t sec-psc/devproxy
 
 if [ $? -eq 0 ]; then

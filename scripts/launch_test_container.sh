@@ -33,6 +33,10 @@ if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
 fi
 
+if [ ! -f scripts/service-addresses.conf ]; then
+  cp scripts/service-addresses.conf.in scripts/service-addresses.conf
+fi
+
 if [ ! -f scripts/whitelist.conf ]; then
   cat <<EOF> scripts/whitelist.conf
 # Add whitelist under there. Each line should be as follows : 

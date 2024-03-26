@@ -43,7 +43,10 @@ that needs to be manually fixed.
 
 To be able to run the angular portal in development mode, you need a reverse proxy for service calls.
 This proxy can be launched by running the [`scripts/launch_dev_proxy.sh`](scripts/launch_dev_proxy.sh) script.
+The mapping to backend processes IP and PORT in defined in the `scripts/service-addresses.conf` file. This file is not committed, but generated from the `scripts/service-addresses.conf` file if it does not exist.
+Default values are OK if you run backends alongside the proxy container using the script (see [Running backend processes](#runningBackendProcesses)). If this is not your configuration, adjust the IP or PORT variables as you need.
 
+<a name="runningBackendProcesses"></a>
 #### Running backend processes
 
 Launch the [`scripts/launch_dev_backends.sh`](scripts/launch_dev_backends.sh) script.
