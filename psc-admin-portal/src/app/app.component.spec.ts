@@ -37,6 +37,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain("Portail d'administration sec-psc");
+    expect(compiled.querySelector('h1')?.textContent).toContain("Portail d'administration Sec-PSC");
   });
 });
