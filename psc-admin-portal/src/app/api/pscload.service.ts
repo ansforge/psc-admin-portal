@@ -15,7 +15,7 @@
 ///
 
 import { Observable, of, throwError } from "rxjs";
-import { Status } from "./status";
+import { Status, errorResponseToStatus } from "./status";
 import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
@@ -34,14 +34,7 @@ export class Pscload {
         (message: string) => new Status(true,message)
       ),
       catchError(
-        (err: HttpErrorResponse) => 
-        {
-          if (err.status===0 || err.status===null || err.status===undefined) {
-            return of(new Status(false, `Backend unreachable: ${err.statusText}`))
-          } else {
-            return of(new Status(false, err.statusText))
-          }
-        }
+        (err: HttpErrorResponse) => errorResponseToStatus(err)
       )
     );
   }

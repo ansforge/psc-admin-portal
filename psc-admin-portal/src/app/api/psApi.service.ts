@@ -15,7 +15,7 @@
 ///
 
 import { Observable, of, throwError } from "rxjs";
-import { Status } from "./status";
+import { Status, errorResponseToStatus as errorResponseToStatus } from "./status";
 import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
@@ -26,22 +26,14 @@ export class PsApi {
   constructor(private http: HttpClient){}
   
   get status(): Observable<Status> {
-    return this.http.get<string>(
-        `${environment.API_HOSTNAME}portal/service/ps-api/v1/check`,
-      {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
+    return this.http.get<any>(
+        `${environment.API_HOSTNAME}portal/service/ps-api/`
     ).pipe(
       map(
-        (message: string) => new Status(true,message)
+        (message: any) => new Status(true,'Ps-Api is running')
       ),
       catchError(
-        (err: HttpErrorResponse) => 
-        {
-          if (err.status===0 || err.status===null || err.status===undefined) {
-            return of(new Status(false, `Backend unreachable: ${err.statusText}`))
-          } else {
-            return of(new Status(false, err.statusText))
-          }
-        }
+        (err: HttpErrorResponse) => errorResponseToStatus(err)
       )
     );
   }

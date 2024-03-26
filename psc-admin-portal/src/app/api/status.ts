@@ -14,6 +14,9 @@
 /// limitations under the License.
 ///
 
+import { HttpErrorResponse } from "@angular/common/http";
+import { Observable, of } from "rxjs";
+
 export class Status {
   constructor(private isAvailable: boolean, private statusMessage: string){}
   
@@ -22,6 +25,17 @@ export class Status {
   }
   
   get message() {
-    return this.statusMessage;
+    return (this.isAvailable?'OK':'KO')+' : '+this.statusMessage;
+  }
+}
+
+export function errorResponseToStatus(err: HttpErrorResponse): Observable<Status> {
+  if (err.status === 0 || err.status === null || err.status === undefined) {
+    return of(new Status(false, `Backend unreachable: ${err.statusText}`))
+  } else if (err.status === 404 || err.status===406) {
+    // For some reason, we were faced with OK as a 404 status text...
+    return of(new Status(false, 'Target not found ('+err.status+')'))
+  } else {
+    return of(new Status(false, err.statusText))
   }
 }
