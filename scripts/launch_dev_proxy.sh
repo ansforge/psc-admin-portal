@@ -33,5 +33,6 @@ if [ $? -eq 0 ]; then
      --publish ${HOST_ADDRESS}:80:80 \
      --rm \
      --name "sec-psc-portal.test" \
+     -v $(pwd)/scripts/service-addresses.conf:/usr/local/apache2/conf/sec-psc/service-addresses.conf \
      sec-psc/devproxy
 fi

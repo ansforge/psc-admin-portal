@@ -56,6 +56,7 @@ if [ $? -eq 0 ]; then
      -e CLIENT_ID=${CLIENT_ID} \
      -e CLIENT_SECRET=${CLIENT_SECRET} \
      -v $(pwd)/scripts/whitelist.conf:/usr/local/apache2/conf/sec-psc/whitelist.conf \
+     -v $(pwd)/scripts/service-addresses.conf:/usr/local/apache2/conf/sec-psc/service-addresses.conf \
      --name "sec-psc-portal.test" \
      sec-psc/portal
 fi
