@@ -51,4 +51,4 @@ Default values are OK if you run backends alongside the proxy container using th
 
 Launch the [`scripts/launch_dev_backends.sh`](scripts/launch_dev_backends.sh) script.
 
-To stop the backend, launch the [`scripts/launch_dev_backends.sh`](scripts/stop_dev_backends.sh) script.
+To stop the backend, launch the [`scripts/stop_dev_backends.sh`](scripts/stop_dev_backends.sh) script.
