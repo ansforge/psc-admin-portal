@@ -19,24 +19,10 @@
 # run from IDE with the necessary revers-proxy configuration to enable service call by
 # the angular front indevelopment mode.
 
-. $(dirname $0)/bakend_setup.sh
-
-${SCRIPT_DIR}/stop_dev_backends.sh
-
-cd ${CODE_BASE_DIR}/psc-ps-api
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8080" &
-echo $! > ${SCRIPT_DIR}/api.pid
-
-cd ${CODE_BASE_DIR}/psc-toggle-ids/psc-toggle-manager
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8081" &
-echo $! > ${SCRIPT_DIR}/toggle.pid
-
-cd ${CODE_BASE_DIR}/psc-rass-loader/pscload
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082" &
-echo $! > ${SCRIPT_DIR}/psload.pid
-
-cd ${CODE_BASE_DIR}/psc-extract
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8083" &
-echo $! > ${SCRIPT_DIR}/extract.pid
-
-cd ${OLD_PWD}
+if [ -z ${OLD_PWD} ]; then
+  OLD_PWD=$(pwd)
+  SCRIPT_DIR=$(dirname $0)
+  cd $SCRIPT_DIR
+  SCRIPT_DIR=$(pwd)
+  CODE_BASE_DIR=${SCRIPT_DIR}/../..
+fi
