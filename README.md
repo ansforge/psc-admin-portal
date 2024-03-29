@@ -26,7 +26,29 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ### License header check
 
 The license header check gets performed as part of each container build. If the check fails,
-the container build will fail. If this happens, use the [license/license-format.sh](license/license-format.sh)
+the container build will fail. If this happens, use the [`license/license-format.sh`](license/license-format.sh)
 script to draft the header bump commit. **Always** check the result before committing : the tool mostly works,
 but in some corner cases (some partial match with the header with too much difference) it will make invalid change
 that needs to be manually fixed.
+
+### Running the angular application in development mode
+
+#### Prerequisits
+
+1. You need bash and docker, directly or in a linux virtual machine like WSL or VirtualBox.
+1. You need to map the `sec-psc.wom.dev.henix.fr` domain name to the interface the proxy will be listening to. The launch script defaults to `127.0.0.2`, but if you need this proxy to listen to a specific interface, set the `HOST_ADDRESS` shell variable before running.
+1. You need all **sec-psc** git repositories checked-out in the same directory. For this to work, do **not** working copies need to be checked-out under the default directory name created by git clone.
+
+#### Running the proxy
+
+To be able to run the angular portal in development mode, you need a reverse proxy for service calls.
+This proxy can be launched by running the [`scripts/launch_dev_proxy.sh`](scripts/launch_dev_proxy.sh) script.
+The mapping to backend processes IP and PORT in defined in the `scripts/service-addresses.conf` file. This file is not committed, but generated from the `scripts/service-addresses.conf` file if it does not exist.
+Default values are OK if you run backends alongside the proxy container using the script (see [Running backend processes](#runningBackendProcesses)). If this is not your configuration, adjust the IP or PORT variables as you need.
+
+<a name="runningBackendProcesses"></a>
+#### Running backend processes
+
+Launch the [`scripts/launch_dev_backends.sh`](scripts/launch_dev_backends.sh) script.
+
+To stop the backend, launch the [`scripts/stop_dev_backends.sh`](scripts/stop_dev_backends.sh) script.

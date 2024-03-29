@@ -36,15 +36,20 @@
 <main class="main" role="main" id="main" tabindex="-1">
   <div class="container">
     <h1>Portail d'administration Sec-PSC</h1>
-    <div>
-      <label for="dynamicContent">Saisie contenu dynamique: </label>
-      <input name="dynamicContent" type="text" [(ngModel)]="dynamicContent" />
-    </div>
-    <div>
-      <span>Echo:<input value="{{dynamicContent}}" disabled="true"/></span>
-    </div>
-    <router-outlet />
-    <a class="btn btn--ghost btn--default" href="/portal/?logout={{location.protocol+'//'+location.host+'/'}}">Déconnexion</a>
+  <div>
+  <label>PS-Api state : {{psApiState}}</label>
+</div>
+<div>
+  <label>Toggle state : {{toggleState}}</label>
+</div>
+<div>
+  <label>Pscload state : {{pscloadState}}</label>
+</div>
+<div>
+  <label>Extract state : {{extractState}}</label>
+</div>
+<a class="btn btn--ghost btn--default" href="/portal/?logout={{location.protocol+'//'+location.host+'/'}}">Déconnexion</a>
+<router-outlet />
   </div>
 </main>
 <footer class="footer footer-principal" role="contentinfo">

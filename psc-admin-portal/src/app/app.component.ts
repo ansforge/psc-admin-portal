@@ -14,9 +14,17 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+import { throwError } from 'rxjs';
+import { environment } from '../environments/environment';
+import { Toggle } from './api/toggle.service';
+import { Status } from './api/status';
+import { PsApi } from './api/psApi.service';
+import { Pscload } from './api/pscload.service';
+import { Extract } from './api/extract.service';
 
 @Component({
   selector: 'app-root',
@@ -25,10 +33,45 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  dynamicContent: string="This is the way";
+export class AppComponent implements OnInit{
+  psApiState: string='Unknown';
+  toggleState: string='Unknown';
+  pscloadState: string='Unknown';
+  extractState: string='Unknown';
   location: Location;
-  constructor(){
+  
+  constructor(
+    private toggle: Toggle,
+    private psApi: PsApi,
+    private pscload: Pscload,
+    private extract: Extract
+  ){
      this.location = window.location
   }
+    ngOnInit(): void {
+      this.toggle.status
+        .subscribe(
+          {
+            next: (status: Status) => this.toggleState=status.message
+          }
+        );
+      this.psApi.status
+        .subscribe(
+          {
+            next: (status: Status) => this.psApiState=status.message
+          }
+        );
+      this.pscload.status
+        .subscribe(
+          {
+            next: (status: Status) => this.pscloadState=status.message
+          }
+        );
+      this.extract.status
+        .subscribe(
+          {
+            next: (status: Status) => this.extractState=status.message
+          }
+        );
+    }
 }

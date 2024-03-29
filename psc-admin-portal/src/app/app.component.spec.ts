@@ -15,13 +15,16 @@
 ///
 
 import { TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule],
     }).compileComponents();
+    TestBed.inject(HttpClient);
   });
 
   it('should create the app', () => {

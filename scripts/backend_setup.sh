@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 #
@@ -14,21 +15,14 @@
 # limitations under the License.
 #
 
-LoadModule rewrite_module modules/mod_rewrite.so
+# This script enables tests from IDE configuration (angular and necessary services
+# run from IDE with the necessary revers-proxy configuration to enable service call by
+# the angular front indevelopment mode.
 
-<Directory "/usr/local/apache2/htdocs/portal/ui">
-LogLevel Debug rewrite:trace3
-RewriteEngine On
-# If an existing asset or directory is requested go to it as it is
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
-RewriteRule ^ - [L]
-
-# If the requested resource doesn't exist, use index.html
-RewriteRule ^ /portal/ui/index.html
-</Directory>
-
-include conf/sec-psc/oidc.conf
-ErrorDocument 401 /noHabilitation.html
-
-include conf/sec-psc/service-proxy.conf
+if [ -z ${OLD_PWD} ]; then
+  OLD_PWD=$(pwd)
+  SCRIPT_DIR=$(dirname $0)
+  cd $SCRIPT_DIR
+  SCRIPT_DIR=$(pwd)
+  CODE_BASE_DIR=${SCRIPT_DIR}/../..
+fi
