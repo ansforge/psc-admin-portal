@@ -49,7 +49,7 @@ if [ $(grep -v '#' scripts/whitelist.conf | wc -l) -eq 0 ]; then
    exit 2
 fi
 
-docker build . -t sec-psc/portal
+docker buildx build . -t sec-psc/portal
 
 if [ $? -eq 0 ]; then
   sudo docker run \
