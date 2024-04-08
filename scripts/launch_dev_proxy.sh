@@ -30,7 +30,7 @@ if [ ! -f scripts/service-addresses.conf ]; then
   cp scripts/service-addresses.conf.in scripts/service-addresses.conf
 fi
 
-docker build . -f devProxy.Dockerfile -t sec-psc/devproxy
+docker buildx build . -f devProxy.Dockerfile -t sec-psc/devproxy
 
 if [ $? -eq 0 ]; then
   sudo docker run \
