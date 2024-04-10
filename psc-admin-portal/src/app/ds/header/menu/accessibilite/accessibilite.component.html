@@ -1,0 +1,43 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<li class="nav-right-item collapse-wrapper common-nav-item">
+  <button id="buttonAccess" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess" aria-expanded="false">
+    <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#access"></use></svg>
+    <span class="title-responsive">Accessibilité</span>
+  </button>
+  <div class="nav-collapse nav-collapse--right collapse" id="collapseAccess" style="">
+    <section aria-labelledby="widget-access-title">
+      <h2 class="o-widget-access__intro" id="widget-access-title">Options d'accessibilité</h2>
+      <div class="o-widget-access">
+        <div class="form-group form-group-custom-control">
+          <fieldset id="contrast-id">
+            <legend>Contrastes :</legend>
+              <div class="o-widget-access__option">
+                <input id="default-c" value="default-c" name="contrast" checked="checked" type="radio" class="sr-only">
+                  <label class="o-widget-access__label btn btn--ghost btn--primary btn-sm" for="default-c"><span class="sr-only">Contrastes</span> Standards</label>
+              </div>
+              <div class="o-widget-access__option">
+                  <input id="high-c" value="high-c" name="contrast" type="radio" class="sr-only">
+                  <label class="o-widget-access__label btn btn--ghost btn--primary btn-sm" for="high-c"><span class="sr-only">Contrastes</span> Renforcés</label>
+              </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+  </div>
+</li>
