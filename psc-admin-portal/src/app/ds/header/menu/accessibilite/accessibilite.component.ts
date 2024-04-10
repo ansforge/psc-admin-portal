@@ -24,5 +24,8 @@ import { Component } from '@angular/core';
   styleUrl: './accessibilite.component.scss'
 })
 export class AccessibiliteComponent {
-
+  expanded: boolean = false;
+  onToggle() {
+    this.expanded = !this.expanded;
+  }
 }

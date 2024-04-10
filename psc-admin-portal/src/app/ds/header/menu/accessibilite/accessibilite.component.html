@@ -16,11 +16,11 @@
 
 -->
 <li class="nav-right-item collapse-wrapper common-nav-item">
-  <button id="buttonAccess" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess" aria-expanded="false">
+  <button (click)="onToggle()" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess" [attr.aria-expanded]="expanded">
     <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#access"></use></svg>
     <span class="title-responsive">Accessibilité</span>
   </button>
-  <div class="nav-collapse nav-collapse--right collapse" id="collapseAccess" style="">
+  <div class="nav-collapse nav-collapse--right collapse" [class.show]="expanded" id="collapseAccess" style="">
     <section aria-labelledby="widget-access-title">
       <h2 class="o-widget-access__intro" id="widget-access-title">Options d'accessibilité</h2>
       <div class="o-widget-access">
