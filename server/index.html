@@ -25,9 +25,10 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="./style/style-ans.css" type="text/css">
   <link rel="stylesheet" href="./style/print.css" type="text/css" media="print">
+  <link rel="stylesheet" href="./style/sec-psc.css" type="text/css">
 </head>
 <body>
-  <header class="header header-principal" role="banner">
+  <header class="header header-principal sec-psc" role="banner">
     <div class="header-principal__inner">
       <div class="header-principal-left">
         <div class="logos">
@@ -42,6 +43,36 @@
             </a>
           </div>
         </div>
+      </div>
+      <div class="header-principal-right">
+        <ul class="nav-right header-principal__nav">
+          <li class="nav-right-item collapse-wrapper common-nav-item">
+            <button type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess" aria-expanded="false">
+              <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#access"></use></svg>
+              <span class="title-responsive">Accessibilité</span>
+            </button>
+            <div class="nav-collapse nav-collapse--right collapse" id="collapseAccess" style="">
+              <section aria-labelledby="widget-access-title">
+                <h2 class="o-widget-access__intro" id="widget-access-title">Options d'accessibilité</h2>
+                <div class="o-widget-access">
+                  <div class="form-group form-group-custom-control">
+                    <fieldset id="contrast-id">
+                      <legend>Contrastes :</legend>
+                        <div class="o-widget-access__option">
+                          <input id="default-c" value="default-c" name="contrast" checked="checked" type="radio" class="sr-only">
+                            <label class="o-widget-access__label btn btn--ghost btn--primary btn-sm" for="default-c"><span class="sr-only">Contrastes</span> Standards</label>
+                        </div>
+                        <div class="o-widget-access__option">
+                            <input id="high-c" value="high-c" name="contrast" type="radio" class="sr-only">
+                            <label class="o-widget-access__label btn btn--ghost btn--primary btn-sm" for="high-c"><span class="sr-only">Contrastes</span> Renforcés</label>
+                        </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </header>
