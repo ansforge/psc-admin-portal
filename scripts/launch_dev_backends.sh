@@ -23,8 +23,13 @@
 
 ${SCRIPT_DIR}/stop_dev_backends.sh
 
+if [ -z ${HOST_ADDRESS} ]; then
+  HOST_ADDRESS=127.0.0.2
+fi
+echo "Reaching to interface ${HOST_ADDRESS} for mongodb. Set HOST_ADDRESS to override."
+
 cd ${CODE_BASE_DIR}/psc-ps-api
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8080" &
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8080 -Dspring.data.mongodb.host=${HOST_ADDRESS}" &
 echo $! > ${SCRIPT_DIR}/api.pid
 
 cd ${CODE_BASE_DIR}/psc-toggle-ids/psc-toggle-manager
