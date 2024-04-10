@@ -15,8 +15,10 @@
     limitations under the License.
 
 -->
-<ul class="nav-right header-principal__nav">
-    <app-accessibilite></app-accessibilite>
-    <app-notification></app-notification>
-    <app-user></app-user>
-</ul>
+<li class="nav-right-item collapse-wrapper common-nav-item">
+  <button type="button" class="btn btn--icon-only btn-icon--header">
+    <svg class="svg-icon svg-mail" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#notification"></use></svg>
+    <span *ngIf="hasNotifications" class="mail-counter"></span>
+    <span class="title-responsive">Notifications</span>
+  </button>
+</li>

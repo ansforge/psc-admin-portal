@@ -14,18 +14,26 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { AccessibiliteComponent } from "./accessibilite/accessibilite.component";
-import { UserComponent } from "./user/user.component";
-import { NotificationComponent } from "./notification/notification.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [ AccessibiliteComponent, UserComponent, NotificationComponent ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
-})
-export class MenuComponent {
+import { NotificationComponent } from './notification.component';
 
-}
+describe('NotificationComponent', () => {
+  let component: NotificationComponent;
+  let fixture: ComponentFixture<NotificationComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [NotificationComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(NotificationComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

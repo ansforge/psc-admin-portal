@@ -14,18 +14,16 @@
 /// limitations under the License.
 ///
 
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AccessibiliteComponent } from "./accessibilite/accessibilite.component";
-import { UserComponent } from "./user/user.component";
-import { NotificationComponent } from "./notification/notification.component";
 
 @Component({
-  selector: 'app-menu',
+  selector: 'app-notification',
   standalone: true,
-  imports: [ AccessibiliteComponent, UserComponent, NotificationComponent ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+  imports: [ CommonModule ],
+  templateUrl: './notification.component.html',
+  styleUrl: './notification.component.scss'
 })
-export class MenuComponent {
-
+export class NotificationComponent {
+  hasNotifications: boolean = true;
 }
