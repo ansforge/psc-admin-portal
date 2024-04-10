@@ -36,8 +36,8 @@ if [ $? -eq 0 ]; then
   if [ $(docker ps -a | grep "sec-psc-mongo" | wc -l) -eq 0 ]; then
     sudo docker run \
       --publish ${HOST_ADDRESS}:27017:27017 \
-      --name "sec-psc-mongo"
-      mongo:latests
+      --name "sec-psc-mongo" \
+      mongo:latest
   else
     sudo docker start sec-psc-mongo
   fi
