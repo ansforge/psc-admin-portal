@@ -16,8 +16,17 @@
 
 -->
 <li class="nav-right-item collapse-wrapper common-nav-item">
-  <button type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess" aria-expanded="false">
+  <button (click)="onToggle()" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess"  [attr.aria-expanded]="expanded">
     <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#user"></use></svg>
     <span class="title-responsive">Accessibilité</span>
   </button>
+  <div class="nav-collapse nav-collapse--right collapse" [class.show]="expanded" id="collapseUser" style="">
+    <div class="m-user">
+      <div class="m-user__icon">
+        <svg class="svg-icon svg-user" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#user"></use></svg>
+      </div>
+      <p class="m-user__name">Connected user</p>
+      <a href="#" class="btn btn--ghost btn--default btn-xs">Déconnexion</a>
+    </div>
+  </div>
 </li>
