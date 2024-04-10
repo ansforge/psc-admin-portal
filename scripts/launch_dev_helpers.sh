@@ -24,7 +24,7 @@ cd $(dirname $0)/..
 if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
 fi
-echo "Running service reverse-proxy on the ${HOST_ADDRESS} interface set up HOST_ADRESS to override."
+echo "Running service reverse-proxy and mongodb on the ${HOST_ADDRESS} interface set up HOST_ADRESS to override."
 
 if [ ! -f scripts/service-addresses.conf ]; then
   cp scripts/service-addresses.conf.in scripts/service-addresses.conf
