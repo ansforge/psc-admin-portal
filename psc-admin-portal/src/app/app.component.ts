@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
+import { HeaderComponent } from './ds/header/header.component';
 import { Toggle } from './api/toggle.service';
 import { Status } from './api/status';
 import { PsApi } from './api/psApi.service';
@@ -29,7 +30,7 @@ import { Extract } from './api/extract.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
