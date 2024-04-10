@@ -15,16 +15,14 @@
 ///
 
 import { Component } from '@angular/core';
-import { AccessibiliteComponent } from "./accessibilite/accessibilite.component";
-import { UserComponent } from "./user/user.component";
 
 @Component({
-  selector: 'app-menu',
+  selector: 'app-user',
   standalone: true,
-  imports: [ AccessibiliteComponent, UserComponent ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+  imports: [],
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.scss'
 })
-export class MenuComponent {
+export class UserComponent {
 
 }

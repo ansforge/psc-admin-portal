@@ -14,17 +14,26 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { AccessibiliteComponent } from "./accessibilite/accessibilite.component";
-import { UserComponent } from "./user/user.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [ AccessibiliteComponent, UserComponent ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
-})
-export class MenuComponent {
+import { UserComponent } from './user.component';
 
-}
+describe('UserComponent', () => {
+  let component: UserComponent;
+  let fixture: ComponentFixture<UserComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UserComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(UserComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
