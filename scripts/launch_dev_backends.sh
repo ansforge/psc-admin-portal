@@ -19,7 +19,7 @@
 # run from IDE with the necessary revers-proxy configuration to enable service call by
 # the angular front indevelopment mode.
 
-. $(dirname $0)/bakend_setup.sh
+. $(dirname $0)/backend_setup.sh
 
 ${SCRIPT_DIR}/stop_dev_backends.sh
 
