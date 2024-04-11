@@ -15,6 +15,8 @@
 ///
 
 import { Component } from '@angular/core';
+import { DsPopup } from '../../../ds-popup.component';
+import { DsService } from '../../../ds.service';
 
 @Component({
   selector: 'app-accessibilite',
@@ -23,9 +25,8 @@ import { Component } from '@angular/core';
   templateUrl: './accessibilite.component.html',
   styleUrl: './accessibilite.component.scss'
 })
-export class AccessibiliteComponent {
-  expanded: boolean = false;
-  onToggle() {
-    this.expanded = !this.expanded;
+export class AccessibiliteComponent extends DsPopup {
+  constructor(ds: DsService){
+    super(ds);
   }
 }
