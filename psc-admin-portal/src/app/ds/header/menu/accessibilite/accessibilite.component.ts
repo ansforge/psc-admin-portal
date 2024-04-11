@@ -25,8 +25,4 @@ import { DsService } from '../../../ds.service';
   templateUrl: './accessibilite.component.html',
   styleUrl: './accessibilite.component.scss'
 })
-export class AccessibiliteComponent extends DsPopup {
-  constructor(ds: DsService){
-    super(ds);
-  }
-}
+export class AccessibiliteComponent extends DsPopup {}
