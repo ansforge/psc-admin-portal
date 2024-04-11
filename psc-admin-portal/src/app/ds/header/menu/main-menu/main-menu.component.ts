@@ -24,5 +24,9 @@ import { Component } from '@angular/core';
   styleUrl: './main-menu.component.scss'
 })
 export class MainMenuComponent {
-
+  expanded: boolean = false;
+  
+  onToggle() {
+    this.expanded = ! this.expanded;
+  }
 }

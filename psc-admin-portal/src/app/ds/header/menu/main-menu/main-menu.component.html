@@ -19,15 +19,15 @@
 <div class="header-principal__nav collapse navbar-collapse show" id="menuPrincipal">
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
-      <li class="nav-item is-active common-nav-item">
+      <li class="nav-item common-nav-item">
         <a class="nav-link" href="#">Acceuil</a>
       </li>
       <li class="nav-item common-nav-item">
-        <button class="nav-link" type="button" data-toggle="collapse" 
+        <button (click)="onToggle()" class="nav-link" type="button" data-toggle="collapse" 
                 data-target="#nav1simple-nav-collapse-submenu--2" 
                 aria-controls="nav1simple-nav-collapse-submenu--2" 
-                aria-expanded="false">Menu</button>
-        <div class="collapse nav-collapse" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
+                [attr.aria-expanded]="expanded">Menu</button>
+        <div class="collapse nav-collapse" [class.show]="expanded" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
           <div class="nav-collapse-inner">
             <ul class="navbar-nav nav-lvl--2">
               <li class="nav-item is-active common-nav-item">
