@@ -15,6 +15,7 @@
 ///
 
 import { Component } from '@angular/core';
+import { DsPopup } from '../../../ds-popup.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -23,10 +24,4 @@ import { Component } from '@angular/core';
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
-export class MainMenuComponent {
-  expanded: boolean = false;
-  
-  onToggle() {
-    this.expanded = ! this.expanded;
-  }
-}
+export class MainMenuComponent extends DsPopup{}
