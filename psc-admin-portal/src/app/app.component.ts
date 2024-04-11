@@ -26,6 +26,7 @@ import { Status } from './api/status';
 import { PsApi } from './api/psApi.service';
 import { Pscload } from './api/pscload.service';
 import { Extract } from './api/extract.service';
+import { DsService } from './ds/ds.service';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit{
   location: Location;
   
   constructor(
+    private dsService: DsService,
     private toggle: Toggle,
     private psApi: PsApi,
     private pscload: Pscload,
@@ -74,5 +76,9 @@ export class AppComponent implements OnInit{
             next: (status: Status) => this.extractState=status.message
           }
         );
+    }
+    
+    clicked(event: any) {
+      this.dsService.hideAllPopups(event);
     }
 }
