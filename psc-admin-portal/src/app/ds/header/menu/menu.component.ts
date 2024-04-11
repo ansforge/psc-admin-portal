@@ -18,11 +18,12 @@ import { Component } from '@angular/core';
 import { AccessibiliteComponent } from "./accessibilite/accessibilite.component";
 import { UserComponent } from "./user/user.component";
 import { NotificationComponent } from "./notification/notification.component";
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [ AccessibiliteComponent, UserComponent, NotificationComponent ],
+  imports: [ AccessibiliteComponent, UserComponent, NotificationComponent, MainMenuComponent ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
