@@ -15,6 +15,7 @@
 ///
 
 import { Component } from '@angular/core';
+import { DsPopup } from '../../../ds-popup.component';
 
 @Component({
   selector: 'app-user',
@@ -23,9 +24,4 @@ import { Component } from '@angular/core';
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent {
-  expanded: boolean = false;
-  onToggle() {
-    this.expanded = !this.expanded;
-  }
-}
+export class UserComponent extends DsPopup {}

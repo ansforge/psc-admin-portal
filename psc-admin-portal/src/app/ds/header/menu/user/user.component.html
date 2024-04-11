@@ -16,7 +16,7 @@
 
 -->
 <li class="nav-right-item collapse-wrapper common-nav-item">
-  <button (click)="onToggle()" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess"  [attr.aria-expanded]="expanded">
+  <button (click)="onToggle($event)" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess"  [attr.aria-expanded]="expanded">
     <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#user"></use></svg>
     <span class="title-responsive">Accessibilité</span>
   </button>
