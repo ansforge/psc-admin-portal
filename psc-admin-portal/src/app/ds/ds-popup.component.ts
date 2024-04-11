@@ -32,7 +32,10 @@ export class DsPopup implements OnInit, OnDestroy{
   ){}
   
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
   
   ngOnInit(): void {
