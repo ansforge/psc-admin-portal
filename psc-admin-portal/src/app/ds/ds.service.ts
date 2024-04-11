@@ -33,3 +33,4 @@ import { Subject } from 'rxjs';
      this.hideChannel.next(event);
    }
  }
+ 
