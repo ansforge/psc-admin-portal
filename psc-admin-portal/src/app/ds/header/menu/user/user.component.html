@@ -1,0 +1,32 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<li class="nav-right-item collapse-wrapper common-nav-item">
+  <button (click)="onToggle($event)" type="button" class="btn btn--icon-only btn-icon--header" aria-label="Accessibilité" data-toggle="collapse" data-target="#collapseAccess" aria-controls="collapseAccess"  [attr.aria-expanded]="expanded">
+    <svg class="svg-icon svg-access" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#user"></use></svg>
+    <span class="title-responsive">Accessibilité</span>
+  </button>
+  <div class="nav-collapse nav-collapse--right collapse" [class.show]="expanded" id="collapseUser" style="">
+    <div class="m-user">
+      <div class="m-user__icon">
+        <svg class="svg-icon svg-user" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#user"></use></svg>
+      </div>
+      <p class="m-user__name">Connected user</p>
+      <a href="#" class="btn btn--ghost btn--default btn-xs">Déconnexion</a>
+    </div>
+  </div>
+</li>

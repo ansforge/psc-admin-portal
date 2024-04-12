@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-section>.o-widget-access {
-  min-width: 33.5rem;
-}
-
-.nav-link {
-  cursor: pointer;
+button>span.mail-counter {
+  // Cheating a bit there, but we need to be specific and make this round.
+  border-top-right-radius: .75rem;
 }

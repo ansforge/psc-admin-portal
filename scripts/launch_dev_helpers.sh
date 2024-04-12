@@ -35,6 +35,7 @@ sudo docker buildx build . -f devProxy.Dockerfile -t sec-psc/devproxy
 if [ $? -eq 0 ]; then
   if [ $(docker ps -a | grep "sec-psc-mongo" | wc -l) -eq 0 ]; then
     sudo docker run \
+      --detach \
       --publish ${HOST_ADDRESS}:27017:27017 \
       --name "sec-psc-mongo" \
       mongo:latest

@@ -20,16 +20,18 @@ import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
+import { HeaderComponent } from './ds/header/header.component';
 import { Toggle } from './api/toggle.service';
 import { Status } from './api/status';
 import { PsApi } from './api/psApi.service';
 import { Pscload } from './api/pscload.service';
 import { Extract } from './api/extract.service';
+import { DsService } from './ds/ds.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -41,6 +43,7 @@ export class AppComponent implements OnInit{
   location: Location;
   
   constructor(
+    private dsService: DsService,
     private toggle: Toggle,
     private psApi: PsApi,
     private pscload: Pscload,
@@ -73,5 +76,9 @@ export class AppComponent implements OnInit{
             next: (status: Status) => this.extractState=status.message
           }
         );
+    }
+    
+    clicked(event: any) {
+      this.dsService.hideAllPopups(event);
     }
 }

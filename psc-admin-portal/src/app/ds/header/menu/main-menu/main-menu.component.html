@@ -1,0 +1,51 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<div class="header-principal__nav collapse navbar-collapse show" id="menuPrincipal">
+  <nav role="navigation" aria-label="Menu principal">
+    <ul class="navbar-nav nav-lvl--1">
+      <li class="nav-item common-nav-item">
+        <a class="nav-link" href="#">Accueil</a>
+      </li>
+      <li class="nav-item common-nav-item">
+        <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse" 
+                data-target="#nav1simple-nav-collapse-submenu--2" 
+                aria-controls="nav1simple-nav-collapse-submenu--2" 
+                [attr.aria-expanded]="expanded">Menu</button>
+        <div class="collapse nav-collapse" [class.show]="expanded" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
+          <div class="nav-collapse-inner">
+            <ul class="navbar-nav nav-lvl--2">
+              <li class="nav-item is-active common-nav-item">
+                <a class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
+              </li>
+              <li class="nav-item common-nav-item">
+                <a class="nav-link">Files d'attente</a>
+              </li>
+              <li class="nav-item common-nav-item">
+                <a class="nav-link">Interrogation PS</a>
+              </li>
+              <li class="nav-item common-nav-item">
+                <a class="nav-link">Rapport d'exécution</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</div>
