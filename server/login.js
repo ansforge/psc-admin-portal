@@ -15,3 +15,16 @@
  */
 var loginLink=document.getElementById("login");
 loginLink.href=loginLink.href+'?ts='+new Date().getTime()
+
+var accessibilityButton=document.getElementById("buttonAccess");
+var accessibilityForm=document.getElementById("collapseAccess");
+
+accessibilityButton.onclick=function(){
+  if (accessibilityButton.getAttribute("aria-expanded") === "false") {
+    accessibilityButton.setAttribute("aria-expanded","true");
+    accessibilityForm.classList.add("show");
+  } else {
+    accessibilityButton.setAttribute("aria-expanded","false");
+    accessibilityForm.classList.remove("show");
+  }
+}
