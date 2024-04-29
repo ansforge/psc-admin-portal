@@ -39,6 +39,45 @@ that needs to be manually fixed.
 1. You need to map the `sec-psc.wom.dev.henix.fr` domain name to the interface the proxy will be listening to. The launch script defaults to `127.0.0.2`, but if you need this proxy to listen to a specific interface, set the `HOST_ADDRESS` shell variable before running.
 1. You need all **sec-psc** git repositories checked-out in the same directory. For this to work, do **not** working copies need to be checked-out under the default directory name created by git clone.
 
+#### Troubleshooting WSL for use with docker
+
+1. Docker containers won't run in WSL
+
+   1.  First of all, please check that you have WSL2 active (WSL1 does not allow docker to work properly)
+   2.  If you do run WSL2, check the docker daemon status with :
+
+       ```bash
+       sudo service docker status
+       ```
+
+       If the answer is not docker is running, the start it :
+
+       ```bash
+       sudo service docker start
+       ```
+
+1. Docker containers don't have network access
+
+   This migh result from docker's private subnet in the 172.17.xx.xx colliding with the WSL2 VM's random IP adress if this address is in the 172.17.xx.xx range. To ensure this won't happen, you need to tweak docker's daemon configuration to change its private subnet IP range. If your WSL2 VM runs a debian or dervied distro, follow these steps :
+
+   1. Open the `/etc/default/docker` as admin
+
+      ```bash
+      sudo nano /etc/default/docker
+      ```
+
+   2. Change the DOCKER_OPT line 
+
+      ```
+      #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+      ```
+
+      to
+
+      ```
+      DOCKER_OPTS="----bip 198.168.50.1/24"
+      ```
+
 #### Running helper processes
 
 Two helper processes may be run as docker containers :
