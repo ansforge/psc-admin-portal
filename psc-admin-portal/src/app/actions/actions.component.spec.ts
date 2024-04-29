@@ -14,12 +14,26 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ActionsComponent } from './actions/actions.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ActionsComponent } from './actions.component';
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent}
-];
+describe('ActionsComponent', () => {
+  let component: ActionsComponent;
+  let fixture: ComponentFixture<ActionsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ActionsComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(ActionsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

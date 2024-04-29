@@ -14,12 +14,15 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ActionsComponent } from './actions/actions.component';
+import { Component } from '@angular/core';
 
+@Component({
+  selector: 'app-actions',
+  standalone: true,
+  imports: [],
+  templateUrl: './actions.component.html',
+  styleUrl: './actions.component.scss'
+})
+export class ActionsComponent {
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent}
-];
+}
