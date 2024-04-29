@@ -19,11 +19,13 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { ActionsComponent } from './actions/actions.component';
 import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
+import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
 
 
 export const routes: Routes = [
 {path:'',component:AccueilComponent},
 {path:'actions',component:ActionsComponent},
 {path:'filesAttente',component:FilesAttenteComponent},
-{path:'interrogationPs',component:InterrogationPsComponent}
+{path:'interrogationPs',component:InterrogationPsComponent},
+{path:'rapportExecution',component:RapportExecutionComponent}
 ];
