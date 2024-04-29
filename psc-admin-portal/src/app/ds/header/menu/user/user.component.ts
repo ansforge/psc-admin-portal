@@ -16,6 +16,7 @@
 
 import { Component } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
+import { DsService } from '../../../ds.service';
 
 @Component({
   selector: 'app-user',
@@ -24,4 +25,11 @@ import { DsPopup } from '../../../ds-popup.component';
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent extends DsPopup {}
+export class UserComponent extends DsPopup {
+  location: Location
+  
+  constructor(private _ds: DsService){
+    super(_ds);
+    this.location = window.location;
+  }
+}
