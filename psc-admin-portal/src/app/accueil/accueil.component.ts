@@ -14,10 +14,15 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
+import { Component } from '@angular/core';
 
+@Component({
+  selector: 'app-accueil',
+  standalone: true,
+  imports: [],
+  templateUrl: './accueil.component.html',
+  styleUrl: './accueil.component.scss'
+})
+export class AccueilComponent {
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent}
-];
+}
