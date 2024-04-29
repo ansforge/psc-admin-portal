@@ -14,16 +14,26 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ActionsComponent } from './actions/actions.component';
-import { FilesAttenteComponent } from './files-attente/files-attente.component';
-import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { InterrogationPsComponent } from './interrogation-ps.component';
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent},
-{path:'filesAttente',component:FilesAttenteComponent},
-{path:'interrogationPs',component:InterrogationPsComponent}
-];
+describe('InterrogationPsComponent', () => {
+  let component: InterrogationPsComponent;
+  let fixture: ComponentFixture<InterrogationPsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [InterrogationPsComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(InterrogationPsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

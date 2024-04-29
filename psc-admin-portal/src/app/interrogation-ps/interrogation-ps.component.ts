@@ -14,16 +14,15 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ActionsComponent } from './actions/actions.component';
-import { FilesAttenteComponent } from './files-attente/files-attente.component';
-import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
+import { Component } from '@angular/core';
 
+@Component({
+  selector: 'app-interrogation-ps',
+  standalone: true,
+  imports: [],
+  templateUrl: './interrogation-ps.component.html',
+  styleUrl: './interrogation-ps.component.scss'
+})
+export class InterrogationPsComponent {
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent},
-{path:'filesAttente',component:FilesAttenteComponent},
-{path:'interrogationPs',component:InterrogationPsComponent}
-];
+}
