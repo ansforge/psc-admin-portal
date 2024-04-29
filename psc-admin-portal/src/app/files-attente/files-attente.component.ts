@@ -14,14 +14,15 @@
 /// limitations under the License.
 ///
 
-import { Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ActionsComponent } from './actions/actions.component';
-import { FilesAttenteComponent } from './files-attente/files-attente.component';
+import { Component } from '@angular/core';
 
+@Component({
+  selector: 'app-files-attente',
+  standalone: true,
+  imports: [],
+  templateUrl: './files-attente.component.html',
+  styleUrl: './files-attente.component.scss'
+})
+export class FilesAttenteComponent {
 
-export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent},
-{path:'filesAttente',component:FilesAttenteComponent}
-];
+}
