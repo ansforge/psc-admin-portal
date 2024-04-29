@@ -20,6 +20,7 @@ import { ActionsComponent } from './actions/actions.component';
 import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
 import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
+import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
 
 
 export const routes: Routes = [
@@ -27,5 +28,6 @@ export const routes: Routes = [
 {path:'actions',component:ActionsComponent},
 {path:'filesAttente',component:FilesAttenteComponent},
 {path:'interrogationPs',component:InterrogationPsComponent},
-{path:'rapportExecution',component:RapportExecutionComponent}
+{path:'rapportExecution',component:RapportExecutionComponent},
+{path:'etatComposants',component:EtatComposantsComponent}
 ];
