@@ -30,19 +30,19 @@
         <div class="collapse nav-collapse" [class.show]="expanded" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
           <div class="nav-collapse-inner">
             <ul class="navbar-nav nav-lvl--2">
-              <li class="nav-item is-active common-nav-item">
+              <li class="nav-item is-active common-nav-item" (click)="onMenuClick(Actions)">
                 <a class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
               </li>
-              <li class="nav-item common-nav-item">
+              <li class="nav-item common-nav-item"  (click)="onMenuClick(FilesAttente)">
                 <a class="nav-link">Files d'attente</a>
               </li>
-              <li class="nav-item common-nav-item">
+              <li class="nav-item common-nav-item"  (click)="onMenuClick(InterrogationPs)">
                 <a class="nav-link">Interrogation PS</a>
               </li>
-              <li class="nav-item common-nav-item">
+              <li class="nav-item common-nav-item"  (click)="onMenuClick(RapportExecution)">
                 <a class="nav-link">Rapport d'exécution</a>
               </li>
-              <li class="nav-item common-nav-item">
+              <li class="nav-item common-nav-item"  (click)="onMenuClick(EtatComposants)">
                 <a class="nav-link">État des composants</a>
               </li>
             </ul>

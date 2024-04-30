@@ -16,6 +16,9 @@
 
 import { Component } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
+import { MenuHelper, MenuOption } from './menu-options';
+import { DsService } from '../../../ds.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
@@ -24,4 +27,22 @@ import { DsPopup } from '../../../ds-popup.component';
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
-export class MainMenuComponent extends DsPopup{}
+export class MainMenuComponent extends DsPopup{
+  Accueil           = MenuOption.Accueil
+  Actions           = MenuOption.Actions  
+  FilesAttente      = MenuOption.FilesAttente
+  InterrogationPs   = MenuOption.InterrogationPs
+  RapportExecution  = MenuOption.RapportExecution
+  EtatComposants    = MenuOption.EtatComposants
+  
+  constructor(
+      private _ds: DsService,
+      private router: Router
+    ){
+    super(_ds);
+  }
+  
+  onMenuClick(option: MenuOption): void{
+    this.router.navigateByUrl(option);
+  }
+}

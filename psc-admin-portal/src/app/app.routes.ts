@@ -21,13 +21,14 @@ import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
 import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
 import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
+import { MenuOption } from './ds/header/menu/main-menu/menu-options';
 
 
 export const routes: Routes = [
-{path:'',component:AccueilComponent},
-{path:'actions',component:ActionsComponent},
-{path:'filesAttente',component:FilesAttenteComponent},
-{path:'interrogationPs',component:InterrogationPsComponent},
-{path:'rapportExecution',component:RapportExecutionComponent},
-{path:'etatComposants',component:EtatComposantsComponent}
+{path:MenuOption.Accueil,component:AccueilComponent},
+{path:MenuOption.Actions,component:ActionsComponent},
+{path:MenuOption.FilesAttente,component:FilesAttenteComponent},
+{path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
+{path:MenuOption.RapportExecution,component:RapportExecutionComponent},
+{path:MenuOption.EtatComposants,component:EtatComposantsComponent}
 ];
