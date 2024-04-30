@@ -18,11 +18,23 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, HttpClientTestingModule],
+      providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          url: of([
+            [{path: ''}]
+          ])
+        }
+      }
+      ]
     }).compileComponents();
     TestBed.inject(HttpClient);
   });

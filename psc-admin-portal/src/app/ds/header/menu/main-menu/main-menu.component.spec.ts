@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainMenuComponent } from './main-menu.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
@@ -24,7 +26,17 @@ describe('MainMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainMenuComponent]
+      imports: [MainMenuComponent],
+      providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          url: of([
+            [{path: ''}]
+          ])
+        }
+      }
+      ]
     })
     .compileComponents();
     

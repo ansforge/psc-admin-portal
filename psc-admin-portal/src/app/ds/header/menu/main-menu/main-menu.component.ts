@@ -16,14 +16,15 @@
 
 import { Component } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
-import { MenuHelper, MenuOption } from './menu-options';
 import { DsService } from '../../../ds.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, UrlSegment } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MenuHelper, MenuOption } from './menu-options';
 
 @Component({
   selector: 'app-main-menu',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,RouterModule],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
@@ -35,14 +36,27 @@ export class MainMenuComponent extends DsPopup{
   RapportExecution  = MenuOption.RapportExecution
   EtatComposants    = MenuOption.EtatComposants
   
+  currentOption: MenuOption|null=null;
+  
   constructor(
       private _ds: DsService,
-      private router: Router
+      private router: Router,
+      private activeRoute: ActivatedRoute
     ){
     super(_ds);
+    activeRoute.url.subscribe(
+      (url: UrlSegment[]) => {
+        this.currentOption=MenuHelper.valueOf(url[0].path);
+      }
+    );
+  }
+  
+  current(option: MenuOption): boolean {
+    return option===this.currentOption;
   }
   
   onMenuClick(option: MenuOption): void{
     this.router.navigateByUrl(option);
+    this.currentOption=option;
   }
 }

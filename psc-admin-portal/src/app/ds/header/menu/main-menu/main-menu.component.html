@@ -20,7 +20,12 @@
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
       <li class="nav-item common-nav-item">
-        <a class="nav-link" href="#">Accueil</a>
+        <a *ngIf="current(Accueil)" class="nav-link">Accueil</a>
+        <a *ngIf="current(Actions)" class="nav-link">Actions</a>
+        <a *ngIf="current(FilesAttente)" class="nav-link">Files d'attente</a>
+        <a *ngIf="current(InterrogationPs)" class="nav-link">Interrogation PS</a>
+        <a *ngIf="current(RapportExecution)" class="nav-link">Rapport d'exécution</a>
+        <a *ngIf="current(EtatComposants)" class="nav-link">État des composants</a>
       </li>
       <li class="nav-item common-nav-item">
         <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse" 
