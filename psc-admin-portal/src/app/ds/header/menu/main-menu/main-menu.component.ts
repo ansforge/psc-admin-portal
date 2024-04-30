@@ -19,7 +19,7 @@ import { DsPopup } from '../../../ds-popup.component';
 import { DsService } from '../../../ds.service';
 import { ActivatedRoute, Router, RouterModule, UrlSegment } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MenuHelper, MenuOption } from './menu-options';
+import { MenuHelper, MenuOption } from './menu-options.model';
 
 @Component({
   selector: 'app-main-menu',

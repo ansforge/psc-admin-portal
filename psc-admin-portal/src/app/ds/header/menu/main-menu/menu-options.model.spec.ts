@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { MenuHelper, MenuOption } from "./menu-options";
+import { MenuHelper, MenuOption } from "./menu-options.model";
 
 describe('MenuOptionsModel',() => {
   it('should recognize Accueil', () => {

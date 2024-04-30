@@ -21,7 +21,7 @@ import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
 import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
 import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
-import { MenuOption } from './ds/header/menu/main-menu/menu-options';
+import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
 
 
 export const routes: Routes = [
