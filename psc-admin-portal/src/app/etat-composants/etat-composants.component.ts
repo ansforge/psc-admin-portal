@@ -14,7 +14,12 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Toggle } from '../api/toggle.service';
+import { PsApi } from '../api/psApi.service';
+import { Pscload } from '../api/pscload.service';
+import { Extract } from '../api/extract.service';
+import { Status } from '../api/status';
 
 @Component({
   selector: 'app-etat-composants',
@@ -23,6 +28,42 @@ import { Component } from '@angular/core';
   templateUrl: './etat-composants.component.html',
   styleUrl: './etat-composants.component.scss'
 })
-export class EtatComposantsComponent {
-
+export class EtatComposantsComponent implements OnInit{
+  psApiState: string='Unknown';
+  toggleState: string='Unknown';
+  pscloadState: string='Unknown';
+  extractState: string='Unknown';
+  
+  constructor(
+    private toggle: Toggle,
+    private psApi: PsApi,
+    private pscload: Pscload,
+    private extract: Extract
+  ){}
+  ngOnInit(): void {
+    this.toggle.status
+      .subscribe(
+        {
+          next: (status: Status) => this.toggleState=status.message
+        }
+      );
+    this.psApi.status
+      .subscribe(
+        {
+          next: (status: Status) => this.psApiState=status.message
+        }
+      );
+    this.pscload.status
+      .subscribe(
+        {
+          next: (status: Status) => this.pscloadState=status.message
+        }
+      );
+    this.extract.status
+      .subscribe(
+        {
+          next: (status: Status) => this.extractState=status.message
+        }
+      );
+  }
 }
