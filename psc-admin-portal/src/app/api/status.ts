@@ -18,6 +18,9 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 
 export class Status {
+  
+  static readonly unknown: Status = new Status(false,'Unknown');
+  
   constructor(private isAvailable: boolean, private statusMessage: string){}
   
   get available(){

@@ -29,10 +29,10 @@ import { Status } from '../api/status';
   styleUrl: './etat-composants.component.scss'
 })
 export class EtatComposantsComponent implements OnInit{
-  psApiState: string='Unknown';
-  toggleState: string='Unknown';
-  pscloadState: string='Unknown';
-  extractState: string='Unknown';
+  psApiState: Status=Status.unknown;
+  toggleState: Status=Status.unknown;
+  pscloadState: Status=Status.unknown;
+  extractState: Status=Status.unknown;
   
   constructor(
     private toggle: Toggle,
@@ -44,25 +44,25 @@ export class EtatComposantsComponent implements OnInit{
     this.toggle.status
       .subscribe(
         {
-          next: (status: Status) => this.toggleState=status.message
+          next: (status: Status) => this.toggleState=status
         }
       );
     this.psApi.status
       .subscribe(
         {
-          next: (status: Status) => this.psApiState=status.message
+          next: (status: Status) => this.psApiState=status
         }
       );
     this.pscload.status
       .subscribe(
         {
-          next: (status: Status) => this.pscloadState=status.message
+          next: (status: Status) => this.pscloadState=status
         }
       );
     this.extract.status
       .subscribe(
         {
-          next: (status: Status) => this.extractState=status.message
+          next: (status: Status) => this.extractState=status
         }
       );
   }
