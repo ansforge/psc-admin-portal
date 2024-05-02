@@ -22,7 +22,12 @@
       <li class="nav-item common-nav-item">
         <a [routerLink]="[Accueil]" 
            routerLinkActive="visible" 
-           [routerLinkActiveOptions]="{exact:true}"
+           [routerLinkActiveOptions]="{
+             paths: 'exact',
+             queryParams: 'ignored',
+             matrixParams: 'ignored',
+             fragment: 'ignored'
+             }"
            class="nav-link collapsible">Accueil</a>
         <a [routerLink]="[Actions]"
            routerLinkActive="visible" 
