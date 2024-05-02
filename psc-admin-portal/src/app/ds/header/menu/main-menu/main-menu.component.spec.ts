@@ -31,9 +31,9 @@ describe('MainMenuComponent', () => {
       {
         provide: ActivatedRoute,
         useValue: {
-          url: of([
+          url: of(
             [{path: ''}]
-          ])
+          )
         }
       }
       ]
