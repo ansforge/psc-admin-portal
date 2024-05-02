@@ -25,7 +25,7 @@ import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
 
 
 export const routes: Routes = [
-{path:MenuOption.Accueil,component:AccueilComponent},
+{path:MenuOption.Accueil,component:AccueilComponent,pathMatch:'full'},
 {path:MenuOption.Actions,component:ActionsComponent},
 {path:MenuOption.FilesAttente,component:FilesAttenteComponent},
 {path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
