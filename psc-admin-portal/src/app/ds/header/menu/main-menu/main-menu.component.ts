@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
 import { DsService } from '../../../ds.service';
 import { ActivatedRoute, Router, RouterModule, UrlSegment } from '@angular/router';
@@ -28,7 +28,7 @@ import { MenuHelper, MenuOption } from './menu-options.model';
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
-export class MainMenuComponent extends DsPopup{
+export class MainMenuComponent extends DsPopup implements OnInit {
   Accueil           = MenuOption.Accueil
   Actions           = MenuOption.Actions  
   FilesAttente      = MenuOption.FilesAttente
@@ -44,8 +44,13 @@ export class MainMenuComponent extends DsPopup{
       private activeRoute: ActivatedRoute
     ){
     super(_ds);
-    activeRoute.url.subscribe(
-      (url: UrlSegment[]) => {
+  }
+  
+  
+  override ngOnInit(): void{
+    super.ngOnInit();
+    this.activeRoute.url.subscribe(
+      (url: UrlSegment[]) => {  
         this.currentOption=MenuHelper.valueOf(url[0].path);
       }
     );
