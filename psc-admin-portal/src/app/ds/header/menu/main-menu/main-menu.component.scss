@@ -21,3 +21,13 @@ ul.nav-lvl--2 > li.nav-item > a.nav-link {
   color: white;
   font-weight: bold;
 }
+
+ul.nav-lvl--1 > li > a.collapsible {
+  visibility: hidden;
+  display: none;
+}
+
+ul.nav-lvl--1 > li > a.collapsible.visible {
+  visibility: visible;
+  display: flex;
+}

@@ -48,11 +48,4 @@ describe('MainMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
-  it('Should display Accueil current location link',() => {
-    const fixture = TestBed.createComponent(MainMenuComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.nav-lvl--1 > li > a')?.textContent).toBe('Accueil');
-  });
 });

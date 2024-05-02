@@ -20,12 +20,25 @@
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
       <li class="nav-item common-nav-item">
-        <a *ngIf="current(Accueil)" class="nav-link">Accueil</a>
-        <a *ngIf="current(Actions)" class="nav-link">Actions</a>
-        <a *ngIf="current(FilesAttente)" class="nav-link">Files d'attente</a>
-        <a *ngIf="current(InterrogationPs)" class="nav-link">Interrogation PS</a>
-        <a *ngIf="current(RapportExecution)" class="nav-link">Rapport d'exécution</a>
-        <a *ngIf="current(EtatComposants)" class="nav-link">État des composants</a>
+        <a [routerLink]="[Accueil]" 
+           routerLinkActive="visible" 
+           [routerLinkActiveOptions]="{exact:true}"
+           class="nav-link collapsible">Accueil</a>
+        <a [routerLink]="[Actions]"
+           routerLinkActive="visible" 
+           class="nav-link collapsible">Actions</a>
+        <a [routerLink]="[FilesAttente]" 
+           routerLinkActive="visible" 
+           class="nav-link collapsible">Files d'attente</a>
+        <a [routerLink]="[InterrogationPs]" 
+           routerLinkActive="visible"
+           class="nav-link collapsible">Interrogation PS</a>
+        <a [routerLink]="[RapportExecution]" 
+           routerLinkActive="visible"
+           class="nav-link collapsible">Rapport d'exécution</a>
+        <a [routerLink]="[EtatComposants]"
+           routerLinkActive="visible"
+           class="nav-link collapsible">État des composants</a>
       </li>
       <li class="nav-item common-nav-item">
         <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse" 
@@ -35,20 +48,20 @@
         <div class="collapse nav-collapse" [class.show]="expanded" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
           <div class="nav-collapse-inner">
             <ul class="navbar-nav nav-lvl--2">
-              <li class="nav-item is-active common-nav-item" (click)="onMenuClick(Actions)">
-                <a class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
+              <li class="nav-item is-active common-nav-item">
+                <a [routerLink]="[Actions]" class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
               </li>
-              <li class="nav-item common-nav-item"  (click)="onMenuClick(FilesAttente)">
-                <a class="nav-link">Files d'attente</a>
+              <li class="nav-item common-nav-item">
+                <a [routerLink]="[FilesAttente]" class="nav-link">Files d'attente</a>
               </li>
-              <li class="nav-item common-nav-item"  (click)="onMenuClick(InterrogationPs)">
-                <a class="nav-link">Interrogation PS</a>
+              <li class="nav-item common-nav-item">
+                <a [routerLink]="[InterrogationPs]" class="nav-link">Interrogation PS</a>
               </li>
-              <li class="nav-item common-nav-item"  (click)="onMenuClick(RapportExecution)">
-                <a class="nav-link">Rapport d'exécution</a>
+              <li class="nav-item common-nav-item">
+                <a [routerLink]="[RapportExecution]" class="nav-link">Rapport d'exécution</a>
               </li>
-              <li class="nav-item common-nav-item"  (click)="onMenuClick(EtatComposants)">
-                <a class="nav-link">État des composants</a>
+              <li class="nav-item common-nav-item">
+                <a [routerLink]="[EtatComposants]" class="nav-link">État des composants</a>
               </li>
             </ul>
           </div>

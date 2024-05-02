@@ -14,54 +14,23 @@
 /// limitations under the License.
 ///
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
-import { DsService } from '../../../ds.service';
-import { ActivatedRoute, Router, RouterModule, UrlSegment } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MenuHelper, MenuOption } from './menu-options.model';
+import { RouterModule } from '@angular/router';
+import { MenuOption } from './menu-options.model';
 
 @Component({
   selector: 'app-main-menu',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [ RouterModule ],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
-export class MainMenuComponent extends DsPopup implements OnInit {
+export class MainMenuComponent extends DsPopup {
   Accueil           = MenuOption.Accueil
   Actions           = MenuOption.Actions  
   FilesAttente      = MenuOption.FilesAttente
   InterrogationPs   = MenuOption.InterrogationPs
   RapportExecution  = MenuOption.RapportExecution
   EtatComposants    = MenuOption.EtatComposants
-  
-  currentOption: MenuOption|null=null;
-  
-  constructor(
-      private _ds: DsService,
-      private router: Router,
-      private activeRoute: ActivatedRoute
-    ){
-    super(_ds);
-  }
-  
-  
-  override ngOnInit(): void{
-    super.ngOnInit();
-    this.activeRoute.url.subscribe(
-      (url: UrlSegment[]) => {  
-        this.currentOption=MenuHelper.valueOf(url[0].path);
-      }
-    );
-  }
-  
-  current(option: MenuOption): boolean {
-    return option===this.currentOption;
-  }
-  
-  onMenuClick(option: MenuOption): void{
-    this.router.navigateByUrl(option);
-    this.currentOption=option;
-  }
 }
