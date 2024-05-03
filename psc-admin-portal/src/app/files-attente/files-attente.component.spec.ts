@@ -16,31 +16,19 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { FilesAttenteComponent } from './files-attente.component';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('FilesAttenteComponent', () => {
+  let component: FilesAttenteComponent;
+  let fixture: ComponentFixture<FilesAttenteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
-      providers: [
-      {
-        provide: ActivatedRoute,
-        useValue: {
-          url: of(
-            [{path: ''}]
-          )
-        }
-      }
-      ]
+      imports: [FilesAttenteComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(FilesAttenteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -20,7 +20,30 @@
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
       <li class="nav-item common-nav-item">
-        <a class="nav-link" href="#">Accueil</a>
+        <a [routerLink]="[Accueil]" 
+           routerLinkActive="visible" 
+           [routerLinkActiveOptions]="{
+             paths: 'exact',
+             queryParams: 'ignored',
+             matrixParams: 'ignored',
+             fragment: 'ignored'
+             }"
+           class="nav-link collapsible">Accueil</a>
+        <a [routerLink]="[Actions]"
+           routerLinkActive="visible" 
+           class="nav-link collapsible">Actions</a>
+        <a [routerLink]="[FilesAttente]" 
+           routerLinkActive="visible" 
+           class="nav-link collapsible">Files d'attente</a>
+        <a [routerLink]="[InterrogationPs]" 
+           routerLinkActive="visible"
+           class="nav-link collapsible">Interrogation PS</a>
+        <a [routerLink]="[RapportExecution]" 
+           routerLinkActive="visible"
+           class="nav-link collapsible">Rapport d'exécution</a>
+        <a [routerLink]="[EtatComposants]"
+           routerLinkActive="visible"
+           class="nav-link collapsible">État des composants</a>
       </li>
       <li class="nav-item common-nav-item">
         <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse" 
@@ -31,16 +54,19 @@
           <div class="nav-collapse-inner">
             <ul class="navbar-nav nav-lvl--2">
               <li class="nav-item is-active common-nav-item">
-                <a class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
+                <a [routerLink]="[Actions]" class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
               </li>
               <li class="nav-item common-nav-item">
-                <a class="nav-link">Files d'attente</a>
+                <a [routerLink]="[FilesAttente]" class="nav-link">Files d'attente</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a class="nav-link">Interrogation PS</a>
+                <a [routerLink]="[InterrogationPs]" class="nav-link">Interrogation PS</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a class="nav-link">Rapport d'exécution</a>
+                <a [routerLink]="[RapportExecution]" class="nav-link">Rapport d'exécution</a>
+              </li>
+              <li class="nav-item common-nav-item">
+                <a [routerLink]="[EtatComposants]" class="nav-link">État des composants</a>
               </li>
             </ul>
           </div>

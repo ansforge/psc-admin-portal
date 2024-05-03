@@ -40,7 +40,6 @@ export class AppComponent implements OnInit{
   toggleState: string='Unknown';
   pscloadState: string='Unknown';
   extractState: string='Unknown';
-  location: Location;
   
   constructor(
     private dsService: DsService,
@@ -48,9 +47,7 @@ export class AppComponent implements OnInit{
     private psApi: PsApi,
     private pscload: Pscload,
     private extract: Extract
-  ){
-     this.location = window.location
-  }
+  ){}
     ngOnInit(): void {
       this.toggle.status
         .subscribe(

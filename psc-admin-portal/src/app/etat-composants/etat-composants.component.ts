@@ -15,22 +15,14 @@
 ///
 
 import { Component } from '@angular/core';
-import { DsPopup } from '../../../ds-popup.component';
-import { RouterModule } from '@angular/router';
-import { MenuOption } from './menu-options.model';
 
 @Component({
-  selector: 'app-main-menu',
+  selector: 'app-etat-composants',
   standalone: true,
-  imports: [ RouterModule ],
-  templateUrl: './main-menu.component.html',
-  styleUrl: './main-menu.component.scss'
+  imports: [],
+  templateUrl: './etat-composants.component.html',
+  styleUrl: './etat-composants.component.scss'
 })
-export class MainMenuComponent extends DsPopup {
-  Accueil           = MenuOption.Accueil
-  Actions           = MenuOption.Actions  
-  FilesAttente      = MenuOption.FilesAttente
-  InterrogationPs   = MenuOption.InterrogationPs
-  RapportExecution  = MenuOption.RapportExecution
-  EtatComposants    = MenuOption.EtatComposants
+export class EtatComposantsComponent {
+
 }

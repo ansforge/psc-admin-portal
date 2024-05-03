@@ -36,7 +36,7 @@ COPY --chown=ci psc-admin-portal /src/portal
 WORKDIR /src/portal
 RUN npm ci
 RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
-RUN ng build --base-href .
+RUN ng build --base-href /portal/ui/
 
 # This stage will get the OIDC module package, install it to grab its files.
 FROM debian:${BASE_DISTRO} as oidc_installer

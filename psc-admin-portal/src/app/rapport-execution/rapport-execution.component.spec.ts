@@ -16,31 +16,19 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { RapportExecutionComponent } from './rapport-execution.component';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('RapportExecutionComponent', () => {
+  let component: RapportExecutionComponent;
+  let fixture: ComponentFixture<RapportExecutionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
-      providers: [
-      {
-        provide: ActivatedRoute,
-        useValue: {
-          url: of(
-            [{path: ''}]
-          )
-        }
-      }
-      ]
+      imports: [RapportExecutionComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(RapportExecutionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

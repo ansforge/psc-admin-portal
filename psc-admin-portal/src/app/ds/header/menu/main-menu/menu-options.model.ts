@@ -14,22 +14,11 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { DsPopup } from '../../../ds-popup.component';
-import { DsService } from '../../../ds.service';
-
-@Component({
-  selector: 'app-user',
-  standalone: true,
-  imports: [],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
-})
-export class UserComponent extends DsPopup {
-  location: Location
-  
-  constructor(private _ds: DsService){
-    super(_ds);
-    this.location = window.location;
-  }
+export enum MenuOption {
+  Accueil          = '',
+  Actions          = 'actions',
+  FilesAttente     = 'filesAttente',
+  InterrogationPs  = 'interrogationPs',
+  RapportExecution = 'rapportExecution',
+  EtatComposants   = 'etatComposants'
 }
