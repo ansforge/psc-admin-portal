@@ -15,15 +15,16 @@
 ///
 
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { ActionsOptions } from './actions-options.model';
 
 @Component({
   selector: 'app-actions',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './actions.component.html',
   styleUrl: './actions.component.scss'
 })
 export class ActionsComponent {
-
+  readonly actionsOptions: typeof ActionsOptions = ActionsOptions;
 }

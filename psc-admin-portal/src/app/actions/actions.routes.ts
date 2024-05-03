@@ -18,9 +18,10 @@ import { Routes } from "@angular/router";
 import { GestionAutresIdComponent } from "./gestion-autres-id/gestion-autres-id.component";
 import { GestionProcessusComponent } from "./gestion-processus/gestion-processus.component";
 import { GestionAlertesComponent } from "./gestion-alertes/gestion-alertes.component";
+import { ActionsOptions } from "./actions-options.model";
 
 export const actionRoutes: Routes=[
-  {path: 'gestionProcessus',component:GestionProcessusComponent},
-  {path:'gestionAlertes',component:GestionAlertesComponent},
-  {path: 'toggle',component:GestionAutresIdComponent},
+  {path: ActionsOptions.GestionProcessus,component:GestionProcessusComponent},
+  {path: ActionsOptions.GestionAlertes,component:GestionAlertesComponent},
+  {path: ActionsOptions.GestionAutresId,component:GestionAutresIdComponent},
 ]
