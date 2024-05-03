@@ -1,0 +1,19 @@
+.FileUpload {
+  opacity: 0;
+  position: absolute;
+  z-index: 7000;
+  width: 100%;
+  cursor: pointer;
+}
+
+.input-group > .custom-select:not(:last-child), .input-group > .form-control:not(:last-child) {
+  border-bottom-right-radius: 1.4rem;
+  border-top-right-radius: 1.4rem;
+}
+
+#archiveInput {
+  background-image: url(/img/download.png);
+  background-repeat: no-repeat;
+  background-position: 99%;
+  padding-right: 0.1em;
+}

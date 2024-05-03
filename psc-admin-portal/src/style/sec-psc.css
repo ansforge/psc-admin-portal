@@ -23,4 +23,9 @@ section>.o-widget-access {
 
 h1.lvl1 {
   color: #D20050
+
+.rounded-md {
+  padding: 3em;
+  margin-top: 1em;
+  margin-bottom: 2em;
 }

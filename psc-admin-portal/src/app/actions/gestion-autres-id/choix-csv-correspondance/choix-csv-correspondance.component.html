@@ -1,0 +1,23 @@
+<h3>{{title}}</h3>
+<div class="form-group bg-gray-100 rounded-md">
+  <h4>Importer le fichier correspondances</h4>
+  <div class="form-group row">
+    <div class="input-group col-sm-10 upload">
+      <input 
+        class="form-control with-danger-addon" 
+        id="archiveInput" 
+        value="{{correspondance?.name}}"
+        
+      >
+      <input 
+        #fileInput 
+        (change)="selectFile($event)" 
+        accept=".csv" 
+        class="form-control with-danger-addon FileUpload" 
+        id="archiveFile" 
+        onclick="this.value=null" 
+        type="file"
+      >
+    </div>
+  </div>
+</div>
