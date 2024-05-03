@@ -20,3 +20,7 @@ section>.o-widget-access {
 .nav-link {
   cursor: pointer;
 }
+
+h1.lvl1 {
+  color: #D20050
+}
