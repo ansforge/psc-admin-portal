@@ -14,16 +14,13 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Routes } from "@angular/router";
+import { GestionAutresIdComponent } from "./gestion-autres-id/gestion-autres-id.component";
+import { GestionProcessusComponent } from "./gestion-processus/gestion-processus.component";
+import { GestionAlertesComponent } from "./gestion-alertes/gestion-alertes.component";
 
-@Component({
-  selector: 'app-actions',
-  standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './actions.component.html',
-  styleUrl: './actions.component.scss'
-})
-export class ActionsComponent {
-
-}
+export const actionRoutes: Routes=[
+  {path: 'gestionProcessus',component:GestionProcessusComponent},
+  {path:'gestionAlertes',component:GestionAlertesComponent},
+  {path: 'toggle',component:GestionAutresIdComponent},
+]

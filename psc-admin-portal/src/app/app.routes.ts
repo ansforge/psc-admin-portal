@@ -22,11 +22,15 @@ import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.co
 import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
 import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
 import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
+import { actionRoutes } from './actions/actions.routes';
 
 
 export const routes: Routes = [
 {path:MenuOption.Accueil,component:AccueilComponent,pathMatch:'full'},
-{path:MenuOption.Actions,component:ActionsComponent},
+{
+  path:MenuOption.Actions,component:ActionsComponent,
+  children:actionRoutes
+},
 {path:MenuOption.FilesAttente,component:FilesAttenteComponent},
 {path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
 {path:MenuOption.RapportExecution,component:RapportExecutionComponent},
