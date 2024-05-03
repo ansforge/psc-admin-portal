@@ -23,6 +23,16 @@ section>.o-widget-access {
 
 h1.lvl1 {
   color: #D20050
+}
+
+h3 {
+  color: #369AEE;
+}
+
+.svg-icon {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
 
 .rounded-md {
   padding: 3em;

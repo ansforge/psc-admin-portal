@@ -15,11 +15,12 @@
 ///
 
 import { Component } from '@angular/core';
+import { ChoixCsvCorrespondanceComponent } from './choix-csv-correspondance/choix-csv-correspondance.component';
 
 @Component({
   selector: 'app-toggle',
   standalone: true,
-  imports: [],
+  imports: [ChoixCsvCorrespondanceComponent],
   templateUrl: './gestion-autres-id.component.html',
   styleUrl: './gestion-autres-id.component.scss'
 })
