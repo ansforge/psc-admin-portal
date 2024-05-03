@@ -27,5 +27,5 @@ import { MenuOption } from './menu-options.model';
   styleUrl: './main-menu.component.scss'
 })
 export class MainMenuComponent extends DsPopup {
-  readonly menuOptions: typeof MenuOption = MenuOption;
+  readonly menu: typeof MenuOption = MenuOption;
 }

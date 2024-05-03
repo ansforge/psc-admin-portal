@@ -20,7 +20,7 @@
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
       <li class="nav-item common-nav-item">
-        <a [routerLink]="[menuOptions.Accueil]" 
+        <a [routerLink]="[menu.Accueil]" 
            routerLinkActive="visible" 
            [routerLinkActiveOptions]="{
              paths: 'exact',
@@ -29,19 +29,19 @@
              fragment: 'ignored'
              }"
            class="nav-link collapsible">Accueil</a>
-        <a [routerLink]="[menuOptions.Actions]"
+        <a [routerLink]="[menu.Actions]"
            routerLinkActive="visible" 
            class="nav-link collapsible">Actions</a>
-        <a [routerLink]="[menuOptions.FilesAttente]" 
+        <a [routerLink]="[menu.FilesAttente]" 
            routerLinkActive="visible" 
            class="nav-link collapsible">Files d'attente</a>
-        <a [routerLink]="[menuOptions.InterrogationPs]" 
+        <a [routerLink]="[menu.InterrogationPs]" 
            routerLinkActive="visible"
            class="nav-link collapsible">Interrogation PS</a>
-        <a [routerLink]="[menuOptions.RapportExecution]" 
+        <a [routerLink]="[menu.RapportExecution]" 
            routerLinkActive="visible"
            class="nav-link collapsible">Rapport d'exécution</a>
-        <a [routerLink]="[menuOptions.EtatComposants]"
+        <a [routerLink]="[menu.EtatComposants]"
            routerLinkActive="visible"
            class="nav-link collapsible">État des composants</a>
       </li>
@@ -54,19 +54,19 @@
           <div class="nav-collapse-inner">
             <ul class="navbar-nav nav-lvl--2">
               <li class="nav-item is-active common-nav-item">
-                <a [routerLink]="[menuOptions.Actions]" class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
+                <a [routerLink]="[menu.Actions]" class="nav-link">Actions<span class="sr-only">(page courante)</span></a>
               </li>
               <li class="nav-item common-nav-item">
-                <a [routerLink]="[menuOptions.FilesAttente]" class="nav-link">Files d'attente</a>
+                <a [routerLink]="[menu.FilesAttente]" class="nav-link">Files d'attente</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a [routerLink]="[menuOptions.InterrogationPs]" class="nav-link">Interrogation PS</a>
+                <a [routerLink]="[menu.InterrogationPs]" class="nav-link">Interrogation PS</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a [routerLink]="[menuOptions.RapportExecution]" class="nav-link">Rapport d'exécution</a>
+                <a [routerLink]="[menu.RapportExecution]" class="nav-link">Rapport d'exécution</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a [routerLink]="[menuOptions.EtatComposants]" class="nav-link">État des composants</a>
+                <a [routerLink]="[menu.EtatComposants]" class="nav-link">État des composants</a>
               </li>
             </ul>
           </div>
