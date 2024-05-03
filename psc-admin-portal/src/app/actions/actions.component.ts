@@ -27,4 +27,22 @@ import { ActionsOptions } from './actions-options.model';
 })
 export class ActionsComponent {
   readonly actionsOptions: typeof ActionsOptions = ActionsOptions;
+  
+  lastActiveChanged: ActionsOptions|null=null;
+  
+  onRouterLinkActive(event: boolean,radio: ActionsOptions): void {
+    if(event) {
+      this.lastActiveChanged = radio;
+    } else if( this.lastActiveChanged===radio) {
+      this.lastActiveChanged=null;
+    }
+  }
+  
+  checked(radio: ActionsOptions): string|null{
+    if(this.lastActiveChanged===radio) {
+      return 'checked';
+    } else {
+      return null;
+    }
+  }
 }
