@@ -27,10 +27,5 @@ import { MenuOption } from './menu-options.model';
   styleUrl: './main-menu.component.scss'
 })
 export class MainMenuComponent extends DsPopup {
-  Accueil           = MenuOption.Accueil
-  Actions           = MenuOption.Actions  
-  FilesAttente      = MenuOption.FilesAttente
-  InterrogationPs   = MenuOption.InterrogationPs
-  RapportExecution  = MenuOption.RapportExecution
-  EtatComposants    = MenuOption.EtatComposants
+  readonly menuOptions: typeof MenuOption = MenuOption;
 }
