@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EtatComposantsComponent } from './etat-composants.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('EtatComposantsComponent', () => {
   let component: EtatComposantsComponent;
@@ -24,9 +26,10 @@ describe('EtatComposantsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EtatComposantsComponent]
+      imports: [EtatComposantsComponent, HttpClientTestingModule]
     })
     .compileComponents();
+    TestBed.inject(HttpClient);
     
     fixture = TestBed.createComponent(EtatComposantsComponent);
     component = fixture.componentInstance;

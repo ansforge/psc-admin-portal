@@ -15,4 +15,15 @@
     limitations under the License.
 
 -->
-<p>etat-composants works!</p>
+<div>
+  <label class="status" [class.OK]="psApiState.available">PS-Api state : {{psApiState.message}}</label>
+</div>
+<div>
+  <label class="status" [class.OK]="toggleState.available">Toggle state : {{toggleState.message}}</label>
+</div>
+<div>
+  <label class="status" [class.OK]="pscloadState.available">Pscload state : {{pscloadState.message}}</label>
+</div>
+<div>
+  <label class="status" [class.OK]="extractState.available">Extract state : {{extractState.message}}</label>
+</div>

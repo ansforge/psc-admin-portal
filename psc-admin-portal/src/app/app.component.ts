@@ -15,7 +15,7 @@
 ///
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
@@ -35,47 +35,11 @@ import { DsService } from './ds/ds.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
-  psApiState: string='Unknown';
-  toggleState: string='Unknown';
-  pscloadState: string='Unknown';
-  extractState: string='Unknown';
+export class AppComponent {
   
-  constructor(
-    private dsService: DsService,
-    private toggle: Toggle,
-    private psApi: PsApi,
-    private pscload: Pscload,
-    private extract: Extract
-  ){}
-    ngOnInit(): void {
-      this.toggle.status
-        .subscribe(
-          {
-            next: (status: Status) => this.toggleState=status.message
-          }
-        );
-      this.psApi.status
-        .subscribe(
-          {
-            next: (status: Status) => this.psApiState=status.message
-          }
-        );
-      this.pscload.status
-        .subscribe(
-          {
-            next: (status: Status) => this.pscloadState=status.message
-          }
-        );
-      this.extract.status
-        .subscribe(
-          {
-            next: (status: Status) => this.extractState=status.message
-          }
-        );
-    }
-    
-    clicked(event: any) {
-      this.dsService.hideAllPopups(event);
-    }
+  constructor(private dsService: DsService){}
+  
+  clicked(event: any) {
+    this.dsService.hideAllPopups(event);
+  }
 }
