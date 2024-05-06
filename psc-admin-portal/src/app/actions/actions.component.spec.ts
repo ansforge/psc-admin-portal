@@ -14,26 +14,74 @@
 /// limitations under the License.
 ///
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ActionsComponent } from './actions.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('ActionsComponent', () => {
   let component: ActionsComponent;
   let fixture: ComponentFixture<ActionsComponent>;
+  let processusRadio: HTMLInputElement;
+  let autreIdsRadio: HTMLInputElement;
+  let alertesRadio: HTMLInputElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ActionsComponent]
+      imports: [ActionsComponent],
+      providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          url: of([
+            [{path: ''}]
+          ])
+        }
+      }
+      ]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(ActionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    processusRadio=fixture.debugElement
+          .nativeElement
+          .querySelector('#gestionProcessusBtn');
+    alertesRadio=fixture.debugElement
+          .nativeElement
+          .querySelector('#gestionAlertesBtn');
+    autreIdsRadio=fixture.debugElement
+          .nativeElement
+          .querySelector('#gestionAutresIdBtn');
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should honor clicks to Gestion du processus',  fakeAsync(() => {
+    processusRadio.click();
+    tick();
+    expect(processusRadio?.checked).toBeTrue();
+    expect(autreIdsRadio?.checked).toBeFalsy();
+    expect(alertesRadio?.checked).toBeFalsy();
+  }));
+  
+  it('should honor clicks to Gestion du processus',  fakeAsync(() => {
+    autreIdsRadio.click();
+    tick();
+    expect(autreIdsRadio?.checked).toBeTrue();
+    expect(processusRadio?.checked).toBeFalsy();
+    expect(alertesRadio?.checked).toBeFalsy();
+  }));
+  
+  it('should honor clicks to Gestion des alertes',  fakeAsync(() => {
+    alertesRadio.click();
+    tick();
+    expect(alertesRadio?.checked).toBeTrue();
+    expect(processusRadio?.checked).toBeFalsy();
+    expect(autreIdsRadio?.checked).toBeFalsy();
+  }));
 });
