@@ -15,17 +15,23 @@
 ///
 
 import { Component, Input } from '@angular/core';
+import { IdType, idTypeEnum } from './IdType.model';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-choix-csv-correspondance',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './choix-csv-correspondance.component.html',
   styleUrl: './choix-csv-correspondance.component.scss'
 })
 export class ChoixCsvCorrespondanceComponent {
   @Input() title: string='Choix csv correspondance';
   correspondance: {name?: string,data: File|null}|null=null;
+  
+  source: IdType|null=null;
+  destination: IdType|null=null;
   
   selectFile(event: Event): void {
     const fileSelector: HTMLInputElement = event.currentTarget as HTMLInputElement
@@ -38,7 +44,27 @@ export class ChoixCsvCorrespondanceComponent {
     }
   }
   
+  get destinationOptions(): IdType[]{
+    return idTypeEnum;
+  }
+  
+  get sourceOptions(): IdType[]{
+    return idTypeEnum;
+  }
+  
+  
+  destinationChange(event: IdType) {
+    this.destination=event;
+  }
+  
+  
+  sourceChange(event: IdType) {
+    this.source=event;
+  }
+  
   uploadReady(): boolean {
-    return this.correspondance!==null;
+    return this.correspondance!==null 
+            && this.source!==null
+            && this.destination!==null;
   }
 }

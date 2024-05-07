@@ -42,11 +42,25 @@
     </div>
   </div>
   <div class="form-group row">
-     <div class="input-group col-sm-10 src-dest-row">
+    <div class="input-group col-sm-10 src-dest-row">
       <ul>
         <li>Source (colonne de gauche ) = identifiant secondaire qui sera ajout</li>
         <li>Destination (colonne de droite) = identifiant principal</li>
       </ul>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="input-group col-sm-5">
+      <select class="form-control" (ngModelChange)="sourceChange($event)" [(ngModel)]="source">
+        <option [ngValue]="null">Source</option>
+        <option *ngFor="let idType of sourceOptions" [ngValue]="idType">{{idType.id}} : {{idType.name}}</option>
+      </select>
+    </div>
+    <div class="input-group col-sm-5">
+      <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
+        <option value="null">Destination</option>
+        <option *ngFor="let idType of destinationOptions" [ngValue]="idType">{{idType.id}} : {{idType.name}}</option>
+      </select>
     </div>
   </div>
   <div class="form-group row">
