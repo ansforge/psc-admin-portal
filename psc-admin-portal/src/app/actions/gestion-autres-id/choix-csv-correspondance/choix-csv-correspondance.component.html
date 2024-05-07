@@ -17,7 +17,11 @@
 -->
 <h3>{{title}}</h3>
 <div class="form-group bg-gray-100 rounded-md">
-  <h4>Importer le fichier correspondances</h4>
+  <h4>Importer le fichier correspondances
+    <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+      <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+    </svg>
+  </h4>
   <div class="form-group row">
     <div class="input-group col-sm-10 upload">
       <input 
@@ -35,6 +39,9 @@
         onclick="this.value=null" 
         type="file"
       >
+    </div>
+    <div class="input-group col-sm-10 send-row">
+      <button type="button" class="btn btn--plain btn--primary" [disabled]="!uploadReady()">Envoyer</button>
     </div>
   </div>
 </div>

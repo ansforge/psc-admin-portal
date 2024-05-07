@@ -37,4 +37,8 @@ export class ChoixCsvCorrespondanceComponent {
       };
     }
   }
+  
+  uploadReady(): boolean {
+    return this.correspondance!==null;
+  }
 }
