@@ -18,6 +18,7 @@ import { Component, Input } from '@angular/core';
 import { IdType, idTypeEnum } from './IdType.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus';
 
 @Component({
   selector: 'app-choix-csv-correspondance',
@@ -29,9 +30,12 @@ import { FormsModule } from '@angular/forms';
 export class ChoixCsvCorrespondanceComponent {
   @Input() title: string='Choix csv correspondance';
   correspondance: {name?: string,data: File|null}|null=null;
+  readonly qs: typeof QueryStatusEnum=QueryStatusEnum;
   
   source: IdType|null=null;
   destination: IdType|null=null;
+  
+  queryStatus: QueryStatus|null=null;
   
   selectFile(event: Event): void {
     const fileSelector: HTMLInputElement = event.currentTarget as HTMLInputElement
