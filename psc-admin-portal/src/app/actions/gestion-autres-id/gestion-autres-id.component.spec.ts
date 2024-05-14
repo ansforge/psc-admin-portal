@@ -17,18 +17,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GestionAutresIdComponent } from './gestion-autres-id.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
-describe('ToggleComponent', () => {
+describe('GestionAutresIdComponent', () => {
   let component: GestionAutresIdComponent;
   let fixture: ComponentFixture<GestionAutresIdComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GestionAutresIdComponent]
+      imports: [GestionAutresIdComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(GestionAutresIdComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

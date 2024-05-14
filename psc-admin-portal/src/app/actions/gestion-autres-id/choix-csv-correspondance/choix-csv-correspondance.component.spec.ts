@@ -15,6 +15,8 @@
 ///
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 import { ChoixCsvCorrespondanceComponent } from './choix-csv-correspondance.component';
 
@@ -24,11 +26,12 @@ describe('ChoixCsvCorrespondanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChoixCsvCorrespondanceComponent]
+      imports: [ChoixCsvCorrespondanceComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(ChoixCsvCorrespondanceComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
