@@ -21,6 +21,11 @@ export interface IdType {
 
 export const idTypeEnum: IdType[]=[
   {id: 0, name: 'ADELI'},
-  {id: 1, name: 'Cabinet ADELI/Rang'}
-  /* FIXME: there are ten all in all, create them */
+  {id: 1, name: 'Cabinet ADELI/Rang'},
+  {id: 2, name: 'DRASS(SIRIUS)'},
+  {id: 3, name: 'FINESS/Rang'},
+  {id: 4, name: 'SIREN/Rang'},
+  {id: 6, name: 'Cabinet RPPS/Rang'},
+  {id: 8, name: 'RPPS'},
+  {id: 9, name: 'Etudiant'}
 ]
