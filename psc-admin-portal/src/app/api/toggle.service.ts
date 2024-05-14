@@ -20,6 +20,23 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/htt
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
+import { QueryStatus, QueryStatusEnum } from "./queryStatus";
+
+export interface IdType {
+  id:  number;
+  name: string;
+}
+
+export const idTypeEnum: IdType[]=[
+  {id: 0, name: 'ADELI'},
+  {id: 1, name: 'Cabinet ADELI/Rang'},
+  {id: 2, name: 'DRASS(SIRIUS)'},
+  {id: 3, name: 'FINESS/Rang'},
+  {id: 4, name: 'SIREN/Rang'},
+  {id: 6, name: 'Cabinet RPPS/Rang'},
+  {id: 8, name: 'RPPS'},
+  {id: 9, name: 'Etudiant'}
+] 
 
 @Injectable({providedIn: "root"})
 export class Toggle {
@@ -37,5 +54,9 @@ export class Toggle {
         (err: HttpErrorResponse) => errorResponseToStatus(err)
       )
     );
+  }
+  
+  addOtherIds(source: IdType, destination: IdType, list: Blob): Observable<QueryStatus> {
+    return of({status: QueryStatusEnum.KO, message: "Gotcha ! Didn't even try !!"});
   }
 }

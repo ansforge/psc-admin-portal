@@ -15,10 +15,10 @@
 ///
 
 import { Component, Input } from '@angular/core';
-import { IdType, idTypeEnum } from './IdType.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus';
+import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
 
 @Component({
   selector: 'app-choix-csv-correspondance',
