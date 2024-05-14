@@ -37,6 +37,10 @@ export class ChoixCsvCorrespondanceComponent {
   
   queryStatus: QueryStatus|null=null;
   
+  constructor(
+    private toggleApi: Toggle
+  ){}
+  
   selectFile(event: Event): void {
     const fileSelector: HTMLInputElement = event.currentTarget as HTMLInputElement
     const files: FileList = fileSelector.files as FileList;
@@ -49,7 +53,14 @@ export class ChoixCsvCorrespondanceComponent {
   }
   
   send(): void {
-    this.queryStatus={status: QueryStatusEnum.OK,message: "L'opération a démarré avec succès"}
+    if(this.source && this.destination && this.correspondance?.data) {
+      this.queryStatus={status: QueryStatusEnum.OK,message: "L'opération a démarré avec succès"};
+      this.toggleApi.addOtherIds(this.source, this.destination, this.correspondance?.data).subscribe(
+        (status: QueryStatus) => this.queryStatus=status
+      );
+    } else {
+      this.queryStatus={status: QueryStatusEnum.KO, message: "Illegal state : missing data."}
+    }
   }
   
   get destinationOptions(): IdType[]{
