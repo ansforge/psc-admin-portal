@@ -48,6 +48,10 @@ export class ChoixCsvCorrespondanceComponent {
     }
   }
   
+  send(): void {
+    this.queryStatus={status: QueryStatusEnum.OK,message: "L'opération a démarré avec succès"}
+  }
+  
   get destinationOptions(): IdType[]{
     return idTypeEnum;
   }
