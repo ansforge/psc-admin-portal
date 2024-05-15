@@ -16,11 +16,11 @@
 
 -->
 <h3>{{title}}</h3>
-<div *ngIf="queryStatus" [class.o-alert--success]="queryStatus?.status===qs.OK" [class.o-alert--error]="queryStatus?.status===qs.KO" class="o-alert" role="status">
+<div *ngIf="queryStatus" [class.o-alert--success]="queryStatus.status===qs.OK" [class.o-alert--error]="queryStatus.status===qs.KO" class="o-alert" role="status">
   <div class="o-alert__icon">
     <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use></svg>
   </div>
-  <p>{{queryStatus?.message}}</p>
+  <p>{{queryStatus.message}}</p>
   <button type="button" class="btn btn--close btn--icon-only">
     <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
     <span class="sr-only">Masquer ce message</span>
