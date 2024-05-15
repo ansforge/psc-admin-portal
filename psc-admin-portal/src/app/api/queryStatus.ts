@@ -16,7 +16,8 @@
 
 export enum QueryStatusEnum {
   OK = 'OK',
-  KO = 'KO'
+  KO = 'KO',
+  PENDING = 'PENDING'
 }
 
 export interface QueryStatus {

@@ -54,7 +54,7 @@ export class ChoixCsvCorrespondanceComponent {
   
   send(): void {
     if(this.source && this.destination && this.correspondance?.data) {
-      this.queryStatus={status: QueryStatusEnum.OK,message: "L'opération a démarré avec succès"};
+      this.queryStatus={status: QueryStatusEnum.PENDING,message: "Requête soumise."};
       this.toggleApi.addOtherIds(this.source, this.destination, this.correspondance?.data).subscribe(
         (status: QueryStatus) => this.queryStatus=status
       );
