@@ -26,3 +26,5 @@ if [ -z ${OLD_PWD} ]; then
   SCRIPT_DIR=$(pwd)
   CODE_BASE_DIR=${SCRIPT_DIR}/../..
 fi
+
+export API_PORT=8080
