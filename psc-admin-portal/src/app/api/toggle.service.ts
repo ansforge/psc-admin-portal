@@ -16,7 +16,7 @@
 
 import { Observable, of, throwError } from "rxjs";
 import { Status, errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
@@ -38,6 +38,8 @@ export const idTypeEnum: IdType[]=[
   {id: 8, displayName: 'RPPS', code: 'RPPS'},
   {id: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
 ] 
+
+const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
 
 @Injectable({providedIn: "root"})
 export class Toggle {
@@ -62,25 +64,21 @@ export class Toggle {
     toggleFile.append('toggleFile',list);
     toggleFile.append('from',''+source.code);
     toggleFile.append('to',''+destination.code);
-    return this.http.post<HttpResponse<string>>(
+    return this.http.post<void>(
       `${environment.API_HOSTNAME}portal/service/toggle/v1/toggle`,
       toggleFile
     ).pipe(
       map(
-        (response: HttpResponse<string>) => {
-          if(response.ok) {
-            return {status: QueryStatusEnum.OK, message: "Succès"};
-          } else {
-            let queryMessage: string = 'Erreur non identifiée';
-            if(response.body) {
-              queryMessage=response.body;
-            }
-            return {status: QueryStatusEnum.KO, message: queryMessage};
-          }
-        }
+        () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
       ),
       catchError(
-        (err: HttpErrorResponse) => of({status: QueryStatusEnum.KO, message: err.message})
+        (err: HttpErrorResponse) => {
+          if(err.status===0 || !err.message) {
+            return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'})
+          } else {
+            return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ })
+          }
+        }
       )
     );
   }
