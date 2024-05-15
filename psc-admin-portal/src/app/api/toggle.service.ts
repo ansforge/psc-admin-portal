@@ -58,6 +58,30 @@ export class Toggle {
   }
   
   addOtherIds(source: IdType, destination: IdType, list: Blob): Observable<QueryStatus> {
-    return of({status: QueryStatusEnum.KO, message: "Gotcha ! Didn't even try !!"});
+    const toggleFile = new FormData();
+    toggleFile.append('toggleFile',list);
+    toggleFile.append('from',''+source.code);
+    toggleFile.append('to',''+destination.code);
+    return this.http.post<HttpResponse<string>>(
+      `${environment.API_HOSTNAME}portal/service/toggle/v1/toggle`,
+      toggleFile
+    ).pipe(
+      map(
+        (response: HttpResponse<string>) => {
+          if(response.ok) {
+            return {status: QueryStatusEnum.OK, message: "Succès"};
+          } else {
+            let queryMessage: string = 'Erreur non identifiée';
+            if(response.body) {
+              queryMessage=response.body;
+            }
+            return {status: QueryStatusEnum.KO, message: queryMessage};
+          }
+        }
+      ),
+      catchError(
+        (err: HttpErrorResponse) => of({status: QueryStatusEnum.KO, message: err.message})
+      )
+    );
   }
 }
