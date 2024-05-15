@@ -21,6 +21,6 @@ export enum QueryStatusEnum {
 }
 
 export interface QueryStatus {
-  status: QueryStatusEnum;
-  message: string;
+  readonly status: QueryStatusEnum;
+  readonly message: string;
 }
