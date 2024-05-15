@@ -20,6 +20,8 @@
   <div class="o-alert__icon">
     <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use></svg>
   </div>
+  <p *ngIf="queryStatus.status===qs.KO">Une erreur s’est produite lors de
+l’importation du fichier.</p>
   <p>{{queryStatus.message}}</p>
   <button type="button" class="btn btn--close btn--icon-only">
     <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
