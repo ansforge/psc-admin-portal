@@ -63,13 +63,13 @@
     <div class="input-group col-sm-5">
       <select class="form-control" (ngModelChange)="sourceChange($event)" [(ngModel)]="source">
         <option [ngValue]="null">Source</option>
-        <option *ngFor="let idType of sourceOptions" [ngValue]="idType">{{idType.id}} : {{idType.name}}</option>
+        <option *ngFor="let idType of sourceOptions" [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
       </select>
     </div>
     <div class="input-group col-sm-5">
       <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
         <option value="null">Destination</option>
-        <option *ngFor="let idType of destinationOptions" [ngValue]="idType">{{idType.id}} : {{idType.name}}</option>
+        <option *ngFor="let idType of destinationOptions" [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
       </select>
     </div>
   </div>

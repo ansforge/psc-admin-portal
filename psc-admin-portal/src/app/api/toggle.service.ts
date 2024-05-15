@@ -23,19 +23,20 @@ import { Injectable } from "@angular/core";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus";
 
 export interface IdType {
-  id:  number;
-  name: string;
+  readonly id:  number|''; //May be empty
+  readonly displayName: string;
+  readonly code: string;
 }
 
 export const idTypeEnum: IdType[]=[
-  {id: 0, name: 'ADELI'},
-  {id: 1, name: 'Cabinet ADELI/Rang'},
-  {id: 2, name: 'DRASS(SIRIUS)'},
-  {id: 3, name: 'FINESS/Rang'},
-  {id: 4, name: 'SIREN/Rang'},
-  {id: 6, name: 'Cabinet RPPS/Rang'},
-  {id: 8, name: 'RPPS'},
-  {id: 9, name: 'Etudiant'}
+  {id: 0, displayName: 'ADELI',code: 'ADELI'},
+  {id: 1, displayName: 'Cabinet ADELI/Rang',code: 'CAB_ADELI'},
+  {id: 2, displayName: 'DRASS(SIRIUS)', code: 'DRASS'},
+  {id: 3, displayName: 'FINESS/Rang', code: 'FINESS'},
+  {id: 4, displayName: 'SIREN/Rang', code: 'SIREN'},
+  {id: 6, displayName: 'Cabinet RPPS/Rang', code: 'CAB_RPPS'},
+  {id: 8, displayName: 'RPPS', code: 'RPPS'},
+  {id: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
 ] 
 
 @Injectable({providedIn: "root"})
