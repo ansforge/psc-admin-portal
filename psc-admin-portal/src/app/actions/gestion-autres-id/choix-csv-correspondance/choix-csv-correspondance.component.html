@@ -76,7 +76,7 @@
       <select class="form-control" (ngModelChange)="sourceChange($event)" [(ngModel)]="source">
         <option [ngValue]="null">Source</option>
       @for(idType of sourceOptions; track idType) {
-        <option [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+        <option [ngValue]="idType">{{idType.value}} : {{idType.displayName}}</option>
       }
       </select>
     </div>
@@ -84,7 +84,7 @@
       <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
         <option [ngValue]="null">Destination</option>
       @for(idType of destinationOptions; track idType) {
-        <option [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+        <option [ngValue]="idType">{{idType.value}} : {{idType.displayName}}</option>
       }
       </select>
     </div>

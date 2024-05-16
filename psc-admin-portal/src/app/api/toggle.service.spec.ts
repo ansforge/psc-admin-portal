@@ -17,10 +17,10 @@
 import { IdType, idTypeEnum } from "./toggle.service";
 
 describe('ToggleService', () => {
-  it('All idType ids should be unique', () => {
+  it('All idType values should be unique', () => {
     let counters=new Map<string,number>();
     for(let idType of idTypeEnum) {
-      let idName: string=''+idType.id;
+      let idName: string=''+idType.value;
       let count: number|undefined=counters.get(idName);
       if(count){
         counters.set(idName,count+1);

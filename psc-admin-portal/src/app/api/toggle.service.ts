@@ -23,20 +23,20 @@ import { Injectable } from "@angular/core";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus";
 
 export interface IdType {
-  readonly id:  number|''; //May be empty
+  readonly value:  number|''; //May be empty
   readonly displayName: string;
   readonly code: string;
 }
 
 export const idTypeEnum: IdType[]=[
-  {id: 0, displayName: 'ADELI',code: 'ADELI'},
-  {id: 1, displayName: 'Cabinet ADELI/Rang',code: 'CAB_ADELI'},
-  {id: 2, displayName: 'DRASS(SIRIUS)', code: 'DRASS'},
-  {id: 3, displayName: 'FINESS/Rang', code: 'FINESS'},
-  {id: 4, displayName: 'SIREN/Rang', code: 'SIREN'},
-  {id: 6, displayName: 'Cabinet RPPS/Rang', code: 'CAB_RPPS'},
-  {id: 8, displayName: 'RPPS', code: 'RPPS'},
-  {id: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
+  {value: 0, displayName: 'ADELI',code: 'ADELI'},
+  {value: 1, displayName: 'Cabinet ADELI/Rang',code: 'CAB_ADELI'},
+  {value: 2, displayName: 'DRASS(SIRIUS)', code: 'DRASS'},
+  {value: 3, displayName: 'FINESS/Rang', code: 'FINESS'},
+  {value: 4, displayName: 'SIREN/Rang', code: 'SIREN'},
+  {value: 6, displayName: 'Cabinet RPPS/Rang', code: 'CAB_RPPS'},
+  {value: 8, displayName: 'RPPS', code: 'RPPS'},
+  {value: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
 ] 
 
 const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
