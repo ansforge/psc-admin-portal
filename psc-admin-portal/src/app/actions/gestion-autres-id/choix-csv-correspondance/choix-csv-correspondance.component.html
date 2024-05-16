@@ -16,18 +16,27 @@
 
 -->
 <h3>{{title}}</h3>
-<div *ngIf="queryStatus" [class.o-alert--info]="queryStatus.status===qs.PENDING" [class.o-alert--success]="queryStatus.status===qs.OK" [class.o-alert--error]="queryStatus.status===qs.KO" class="o-alert" role="status">
+
+@if(queryStatus) {
+
+<div [class.o-alert--info]="queryStatus.status===qs.PENDING" [class.o-alert--success]="queryStatus.status===qs.OK" [class.o-alert--error]="queryStatus.status===qs.KO" class="o-alert" role="status">
   <div class="o-alert__icon">
     <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use></svg>
   </div>
-  <p *ngIf="queryStatus.status===qs.KO">Une erreur s’est produite lors de
-l’importation du fichier.</p>
+
+  @if(queryStatus.status===qs.KO){
+    <p>Une erreur s’est produite lors de l’importation du fichier.</p>
+  }
+
   <p>{{queryStatus.message}}</p>
   <button type="button" class="btn btn--close btn--icon-only">
     <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
     <span class="sr-only">Masquer ce message</span>
   </button>
 </div>
+
+}
+
 <div class="form-group bg-gray-100 rounded-md">
   <h4>Importer le fichier correspondances
     <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
@@ -65,13 +74,17 @@ l’importation du fichier.</p>
     <div class="input-group col-sm-5">
       <select class="form-control" (ngModelChange)="sourceChange($event)" [(ngModel)]="source">
         <option [ngValue]="null">Source</option>
-        <option *ngFor="let idType of sourceOptions" [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+      @for(idType of sourceOptions; track idType) {
+        <option [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+      }
       </select>
     </div>
     <div class="input-group col-sm-5">
       <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
         <option value="null">Destination</option>
-        <option *ngFor="let idType of destinationOptions" [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+      @for(idType of destinationOptions; track idType) {
+        <option [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
+      }
       </select>
     </div>
   </div>

@@ -15,7 +15,6 @@
 ///
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus';
 import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
@@ -23,7 +22,7 @@ import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
 @Component({
   selector: 'app-choix-csv-correspondance',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './choix-csv-correspondance.component.html',
   styleUrl: './choix-csv-correspondance.component.scss'
 })
