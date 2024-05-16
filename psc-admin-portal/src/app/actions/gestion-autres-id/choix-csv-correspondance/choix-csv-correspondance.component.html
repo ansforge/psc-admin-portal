@@ -29,7 +29,7 @@
   }
 
   <p>{{queryStatus.message}}</p>
-  <button type="button" class="btn btn--close btn--icon-only">
+  <button type="button" class="btn btn--close btn--icon-only" (click)="forgetStatus()">
     <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
     <span class="sr-only">Masquer ce message</span>
   </button>

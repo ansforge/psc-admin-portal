@@ -85,4 +85,8 @@ export class ChoixCsvCorrespondanceComponent {
             && this.source!==null
             && this.destination!==null;
   }
+  
+  forgetStatus() {
+    this.queryStatus=null;
+  }
 }
