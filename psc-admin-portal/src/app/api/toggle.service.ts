@@ -73,9 +73,13 @@ export class Toggle {
       ),
       catchError(
         (err: HttpErrorResponse) => {
-          if(err.status===0 || !err.message) {
+          if(err.status===0) { //No request happened. No way to diagnose more
             return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'})
+          } else if(err.status>=502 && err.status <= 504) {
+            // Error reporting from the proxy is HTML. Just use the text.
+            return of({status: QueryStatusEnum.KO, message: err.message})
           } else {
+            //If the message comes from the backend, a Json error is included, use it.
             return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ })
           }
         }
