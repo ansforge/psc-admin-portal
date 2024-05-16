@@ -82,7 +82,7 @@
     </div>
     <div class="input-group col-sm-5">
       <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
-        <option value="null">Destination</option>
+        <option [ngValue]="null">Destination</option>
       @for(idType of destinationOptions; track idType) {
         <option [ngValue]="idType">{{idType.id}} : {{idType.displayName}}</option>
       }
