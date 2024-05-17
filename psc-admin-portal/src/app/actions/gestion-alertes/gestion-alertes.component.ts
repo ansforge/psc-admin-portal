@@ -15,11 +15,12 @@
 ///
 
 import { Component } from '@angular/core';
+import { InformationDiffComponent } from './information-diff/information-diff.component';
 
 @Component({
   selector: 'app-gestion-alertes',
   standalone: true,
-  imports: [],
+  imports: [InformationDiffComponent],
   templateUrl: './gestion-alertes.component.html',
   styleUrl: './gestion-alertes.component.scss'
 })
