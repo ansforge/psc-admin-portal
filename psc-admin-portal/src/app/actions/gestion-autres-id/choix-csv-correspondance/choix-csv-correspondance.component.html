@@ -19,7 +19,13 @@
 
 @if(queryStatus) {
 
-<div [class.o-alert--info]="queryStatus.status===qs.PENDING" [class.o-alert--success]="queryStatus.status===qs.OK" [class.o-alert--error]="queryStatus.status===qs.KO" class="o-alert" role="status">
+<div 
+  [class.o-alert--info]="queryStatus.status===qs.PENDING" 
+  [class.o-alert--success]="queryStatus.status===qs.OK" 
+  [class.o-alert--error]="queryStatus.status===qs.KO" 
+  class="o-alert" 
+  role="status">
+
   <div class="o-alert__icon">
     <svg 
       class="svg-icon" 
