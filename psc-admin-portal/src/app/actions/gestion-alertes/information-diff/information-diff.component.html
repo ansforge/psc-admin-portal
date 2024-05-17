@@ -17,12 +17,18 @@
 -->
 <h3>Information sur le diff</h3>
 
-<div class="bg-gray-100 rounded-md">
-  <div [class.o-alert--warning]="true" class="o-alert" role="status">
-    <div class="o-alert__icon">
-      <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
-    </div>  
-    <p>Une alerte a été détectée.</p>
+<div class="form-group bg-gray-100 rounded-md">
+  <div class="form-group row center-col">
+      <div [class.o-alert--warning]="true" class="o-alert" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
+        </div>  
+        <p>Une alerte a été détectée.</p>
+      </div>
   </div>
-  <button type="button" class="btn btn--ghost btn--primary">Consulter le diff</button>
+  <div class="form-group row center-col">
+    <div class="input-group col-sm-10 center-col">
+      <button type="button" class="btn btn--ghost btn--primary">Consulter le diff</button>
+    </div>
+  </div>
 </div>
