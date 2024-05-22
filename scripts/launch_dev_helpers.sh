@@ -68,7 +68,7 @@ if [ $? -eq 0 ]; then
       --name sec-psc-alertmanager \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
-      --web.external-url=http://sec-psc.wom.dev.henix.fr
+      --web.external-url=http://sec-psc.wom.dev.henix.fr/
   else
     sudo docker start sec-psc-alertmanager
   fi
