@@ -14,15 +14,13 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+export enum QueryStatusEnum {
+  OK = 'OK',
+  KO = 'KO',
+  PENDING = 'PENDING'
+}
 
-@Component({
-  selector: 'app-gestion-processus',
-  standalone: true,
-  imports: [],
-  templateUrl: './gestion-processus.component.html',
-  styleUrl: './gestion-processus.component.scss'
-})
-export class GestionProcessusComponent {
-
+export interface QueryStatus {
+  readonly status: QueryStatusEnum;
+  readonly message: string;
 }

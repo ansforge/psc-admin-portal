@@ -29,11 +29,11 @@ fi
 echo "Reaching to interface ${HOST_ADDRESS} for mongodb. Set HOST_ADDRESS to override."
 
 cd ${CODE_BASE_DIR}/psc-ps-api
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8080 -Dspring.data.mongodb.host=${HOST_ADDRESS}" &
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=${API_PORT} -Dspring.data.mongodb.host=${HOST_ADDRESS}" &
 echo $! > ${SCRIPT_DIR}/api.pid
 
 cd ${CODE_BASE_DIR}/psc-toggle-ids/psc-toggle-manager
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8081" &
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8081 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api" &
 echo $! > ${SCRIPT_DIR}/toggle.pid
 
 cd ${CODE_BASE_DIR}/psc-rass-loader/pscload

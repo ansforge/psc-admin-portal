@@ -69,6 +69,7 @@
             <exclude>LICENSE.txt</exclude>
             <exclude>**/node_modules/**</exclude>
             <exclude>**/.angular/**</exclude>
+            <exclude>psc-admin-portal/dist/**</exclude>
             <exclude>dist/**</exclude>
             <exclude>.git/**</exclude>
             <!-- Generated files -->

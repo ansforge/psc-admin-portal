@@ -16,10 +16,30 @@
 
 import { Observable, of, throwError } from "rxjs";
 import { Status, errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
+import { QueryStatus, QueryStatusEnum } from "./queryStatus";
+
+export interface IdType {
+  readonly value:  number|''; //May be empty
+  readonly displayName: string;
+  readonly code: string;
+}
+
+export const idTypeEnum: IdType[]=[
+  {value: 0, displayName: 'ADELI',code: 'ADELI'},
+  {value: 1, displayName: 'Cabinet ADELI/Rang',code: 'CAB_ADELI'},
+  {value: 2, displayName: 'DRASS(SIRIUS)', code: 'DRASS'},
+  {value: 3, displayName: 'FINESS/Rang', code: 'FINESS'},
+  {value: 4, displayName: 'SIREN/Rang', code: 'SIREN'},
+  {value: 6, displayName: 'Cabinet RPPS/Rang', code: 'CAB_RPPS'},
+  {value: 8, displayName: 'RPPS', code: 'RPPS'},
+  {value: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
+] 
+
+const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
 
 @Injectable({providedIn: "root"})
 export class Toggle {
@@ -35,6 +55,34 @@ export class Toggle {
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
+      )
+    );
+  }
+  
+  addOtherIds(source: IdType, destination: IdType, list: Blob): Observable<QueryStatus> {
+    const toggleFile = new FormData();
+    toggleFile.append('toggleFile',list);
+    toggleFile.append('from',''+source.code);
+    toggleFile.append('to',''+destination.code);
+    return this.http.post<void>(
+      `${environment.API_HOSTNAME}portal/service/toggle/v1/toggle`,
+      toggleFile
+    ).pipe(
+      map(
+        () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
+      ),
+      catchError(
+        (err: HttpErrorResponse) => {
+          if(err.status===0) { //No request happened. No way to diagnose more
+            return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'})
+          } else if(err.status>=502 && err.status <= 504) {
+            // Error reporting from the proxy is HTML. Just use the text.
+            return of({status: QueryStatusEnum.KO, message: err.message})
+          } else {
+            //If the message comes from the backend, a Json error is included, use it.
+            return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ })
+          }
+        }
       )
     );
   }

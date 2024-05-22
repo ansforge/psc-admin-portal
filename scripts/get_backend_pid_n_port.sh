@@ -19,12 +19,13 @@
 # run from IDE with the necessary revers-proxy configuration to enable service call by
 # the angular front indevelopment mode.
 
-if [ -z ${OLD_PWD} ]; then
-  OLD_PWD=$(pwd)
-  SCRIPT_DIR=$(dirname $0)
-  cd $SCRIPT_DIR
-  SCRIPT_DIR=$(pwd)
-  CODE_BASE_DIR=${SCRIPT_DIR}/../..
-fi
+# This is an extremely rough attempt at getting information on each backend's PID and listening port(s).
 
-export API_PORT=8080
+. $(dirname $0)/backend_setup.sh
+
+for file in *.pid; do 
+  echo "$(basename $file | grep -Eo '^[a-zA-Z]+'): "
+  pid=$(ps -ef | tr -s " " | cut -d " " -f 2,3 |  grep $(cat $file) | cut -d " " -f1 | grep -v $(cat $file))
+  sudo netstat --tcp --numeric --listening --program | grep "${pid}/" | tr -s " " | cut -d" " -f 4,7
+  echo # End of line
+done

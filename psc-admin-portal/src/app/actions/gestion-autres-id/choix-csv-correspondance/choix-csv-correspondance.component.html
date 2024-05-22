@@ -1,0 +1,117 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<h3>{{title}}</h3>
+
+@if(queryStatus) {
+
+<div 
+  [class.o-alert--info]="queryStatus.status===qs.PENDING" 
+  [class.o-alert--success]="queryStatus.status===qs.OK" 
+  [class.o-alert--error]="queryStatus.status===qs.KO" 
+  class="o-alert" 
+  role="status">
+
+  <div class="o-alert__icon">
+    <svg 
+      class="svg-icon" 
+      [class.svg-circle-check]="queryStatus.status===qs.OK"
+      [class.svg-circle-cross]="queryStatus.status===qs.KO"
+      aria-hidden="true" 
+      focusable="false">
+    @if (queryStatus.status===qs.OK) {
+      <use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use>
+    } @else if(queryStatus.status===qs.KO) {
+      <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
+    } @else {
+      <use xlink:href="svg-icons/icon-sprite.svg#circle-info"></use>
+    }
+    </svg>
+  </div>
+
+  @if(queryStatus.status===qs.KO){
+    <p>Une erreur s’est produite lors de l’importation du fichier.</p>
+  }
+
+  <p>{{queryStatus.message}}</p>
+  <button type="button" class="btn btn--close btn--icon-only" (click)="forgetStatus()">
+    <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
+    <span class="sr-only">Masquer ce message</span>
+  </button>
+</div>
+
+}
+
+<div class="form-group bg-gray-100 rounded-md">
+  <h4>Importer le fichier correspondances
+    <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+      <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+    </svg>
+  </h4>
+  <div class="form-group row">
+    <div class="input-group col-sm-10 upload">
+      <input 
+        class="form-control with-danger-addon" 
+        id="archiveInput" 
+        value="{{correspondance?.name}}"
+        
+      >
+      <input 
+        #fileInput 
+        (change)="selectFile($event)" 
+        accept=".csv" 
+        class="form-control with-danger-addon FileUpload" 
+        id="archiveFile" 
+        onclick="this.value=null" 
+        type="file"
+      >
+    </div>
+  </div>
+@if(correspondance) {
+  <div class="form-group row">
+    <div class="input-group col-sm-10 src-dest-row">
+      <ul>
+        <li>Source (colonne de gauche ) = identifiant secondaire qui sera ajout</li>
+        <li>Destination (colonne de droite) = identifiant principal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="input-group col-sm-5">
+      <select class="form-control" (ngModelChange)="sourceChange($event)" [(ngModel)]="source">
+        <option [ngValue]="null">Source</option>
+      @for(idType of sourceOptions; track idType) {
+        <option [ngValue]="idType">{{idType.value}} : {{idType.displayName}}</option>
+      }
+      </select>
+    </div>
+    <div class="input-group col-sm-5">
+      <select class="form-control" (ngModelChange)="destinationChange($event)" [(ngModel)]="destination">
+        <option [ngValue]="null">Destination</option>
+      @for(idType of destinationOptions; track idType) {
+        <option [ngValue]="idType">{{idType.value}} : {{idType.displayName}}</option>
+      }
+      </select>
+    </div>
+  </div>
+}
+  <div class="form-group row">
+    <div class="input-group col-sm-10 send-row">
+      <button type="button" class="btn btn--plain btn--primary" [disabled]="!uploadReady()" (click)="send()">Envoyer</button>
+    </div>
+  </div>
+</div>
