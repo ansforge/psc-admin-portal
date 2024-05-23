@@ -37,7 +37,7 @@ mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8081 -Dapi.bas
 echo $! > ${SCRIPT_DIR}/toggle.pid
 
 cd ${CODE_BASE_DIR}/psc-rass-loader/pscload
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082" &
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api" &
 echo $! > ${SCRIPT_DIR}/psload.pid
 
 cd ${CODE_BASE_DIR}/psc-extract
