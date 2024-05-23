@@ -33,5 +33,5 @@
 import { QueryStatus } from "./queryStatus.model";
 
 export interface QueryResult<T> extends QueryStatus {
-  body: T|null;
+  body?: T;
 }

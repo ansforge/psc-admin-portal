@@ -31,13 +31,43 @@
  */
 
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, catchError, map, of } from "rxjs";
 import { QueryResult } from "./queryResult.model";
 import { QueryStatusEnum } from "./queryStatus.model";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { environment } from "../../environments/environment";
 
 @Injectable({providedIn: "root"})
 export class AlertManager {
+  
+  constructor(private http: HttpClient){}
+  
   hasLoaderAlerts(): Observable<QueryResult<boolean>> {
-    return of({status:QueryStatusEnum.OK,code:200,message:'Alertes détectées',body:true});
+    return this.http.get<any[]>(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    ).pipe(
+      map(
+        (alerts: any[]) => {
+          return {
+            status: QueryStatusEnum.OK,
+            message: alerts.length >0 ? "Alerts detected":"No alerts",
+            body: alerts.length > 0
+          };
+        }
+      ),
+      catchError(
+        (err: HttpErrorResponse) => {
+          if(err.status===0) { //No request happened. No way to diagnose more
+            return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'});
+          } else if(err.status>=502 && err.status <= 504) {
+            // Error reporting from the proxy is HTML. Just use the text.
+            return of({status: QueryStatusEnum.KO, message: err.message});
+          } else {
+            // Other error reporting
+            return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ });
+          }
+        }
+      )
+    );
   }
 }
