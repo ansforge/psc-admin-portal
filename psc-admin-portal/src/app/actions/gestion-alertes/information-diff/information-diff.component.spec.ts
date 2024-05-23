@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InformationDiffComponent } from './information-diff.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('InformationDiffComponent', () => {
   let component: InformationDiffComponent;
@@ -24,11 +26,12 @@ describe('InformationDiffComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InformationDiffComponent]
+      imports: [InformationDiffComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(InformationDiffComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
