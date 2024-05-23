@@ -14,7 +14,10 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AlertManager } from '../../../api/alertmanager.service';
+import { QueryResult } from '../../../api/queryResult.model';
+import { QueryStatusEnum } from '../../../api/queryStatus.model';
 
 @Component({
   selector: 'app-information-diff',
@@ -23,6 +26,18 @@ import { Component } from '@angular/core';
   templateUrl: './information-diff.component.html',
   styleUrl: './information-diff.component.scss'
 })
-export class InformationDiffComponent {
-
+export class InformationDiffComponent implements OnInit{
+  status: typeof QueryStatusEnum=QueryStatusEnum
+  alertResult: QueryResult<boolean>={status: QueryStatusEnum.PENDING,message:""};
+  constructor(private alertApi: AlertManager){}
+  ngOnInit(): void {
+    this.alertApi.hasLoaderAlerts()
+    .subscribe(
+      (result: QueryResult<boolean>) => this.alertResult=result
+    );
+  }
+  
+  get alertes(): boolean|null {
+    return this.alertResult?.body|| false;
+  }
 }
