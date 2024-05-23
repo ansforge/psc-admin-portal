@@ -19,4 +19,5 @@ FROM httpd:2.4.58-$BASE_DISTRO
 
 COPY server/service-proxy.conf /usr/local/apache2/conf/sec-psc/
 RUN echo "include conf/sec-psc/service-proxy.conf" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "Header unset Access-Control-Allow-Origin" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "Header always set Access-Control-Allow-Origin http://localhost:4200" >> /usr/local/apache2/conf/httpd.conf
