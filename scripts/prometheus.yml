@@ -41,4 +41,4 @@ alerting:
       - '172.17.0.1:9093'
 
 rule_files:
-  - /prometheus-rules.yml
+  - /rules.yml
