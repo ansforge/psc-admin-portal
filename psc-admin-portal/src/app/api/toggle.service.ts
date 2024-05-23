@@ -20,7 +20,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { QueryStatus, QueryStatusEnum } from "./queryStatus";
+import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 
 export interface IdType {
   readonly value:  number|''; //May be empty

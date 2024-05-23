@@ -16,7 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus';
+import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
 
 @Component({
