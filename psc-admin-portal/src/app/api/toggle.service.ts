@@ -21,6 +21,7 @@ import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
+import { errorResponseToQueryResult } from "./queryResult";
 
 export interface IdType {
   readonly value:  number|''; //May be empty
@@ -72,17 +73,7 @@ export class Toggle {
         () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
       ),
       catchError(
-        (err: HttpErrorResponse) => {
-          if(err.status===0) { //No request happened. No way to diagnose more
-            return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'})
-          } else if(err.status>=502 && err.status <= 504) {
-            // Error reporting from the proxy is HTML. Just use the text.
-            return of({status: QueryStatusEnum.KO, message: err.message})
-          } else {
-            //If the message comes from the backend, a Json error is included, use it.
-            return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ })
-          }
-        }
+        (err: HttpErrorResponse) => errorResponseToQueryResult<void>(err)
       )
     );
   }

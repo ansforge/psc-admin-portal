@@ -36,6 +36,7 @@ import { QueryResult } from "./queryResult.model";
 import { QueryStatusEnum } from "./queryStatus.model";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import { errorResponseToQueryResult } from "./queryResult";
 
 @Injectable({providedIn: "root"})
 export class AlertManager {
@@ -56,17 +57,7 @@ export class AlertManager {
         }
       ),
       catchError(
-        (err: HttpErrorResponse) => {
-          if(err.status===0) { //No request happened. No way to diagnose more
-            return of({status: QueryStatusEnum.KO, message: 'Erreur technique non-identifiée.'});
-          } else if(err.status>=502 && err.status <= 504) {
-            // Error reporting from the proxy is HTML. Just use the text.
-            return of({status: QueryStatusEnum.KO, message: err.message});
-          } else {
-            // Other error reporting
-            return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ });
-          }
-        }
+        (err: HttpErrorResponse) => errorResponseToQueryResult<boolean>(err)
       )
     );
   }
