@@ -17,12 +17,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InformationDiffComponent } from './information-diff.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { By } from '@angular/platform-browser';
+
+const ALERT_MOCK_1={};
 
 describe('InformationDiffComponent', () => {
   let component: InformationDiffComponent;
   let fixture: ComponentFixture<InformationDiffComponent>;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,12 +37,102 @@ describe('InformationDiffComponent', () => {
     .compileComponents();
     
     fixture = TestBed.createComponent(InformationDiffComponent);
-    TestBed.inject(HttpClient);
+    httpClient=TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  
+  it('should show alerts when some exist', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush([ALERT_MOCK_1]);
+    
+    fixture.detectChanges();
+    
+    const alertPanel = fixture.debugElement.query(By.css('div.o-alert'));
+    expect(alertPanel.nativeElement).toHaveClass('o-alert--warning');
+  });
+  
+  it('should show get diff when some alerts exist', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush([ALERT_MOCK_1]);
+    
+    fixture.detectChanges();
+    
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    expect(getDiffButton.nativeElement).toBeTruthy();
+    const buttonElt=getDiffButton.nativeElement as HTMLButtonElement;
+    expect(buttonElt.textContent).toEqual("Consulter le diff");
+  });
+  
+  it('should show green no alert when no alert exists', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush([]);
+    
+    fixture.detectChanges();
+    
+    const alertPanel = fixture.debugElement.query(By.css('div.o-alert'));
+    expect(alertPanel.nativeElement).toHaveClass('o-alert--success');
+  });
+  
+  it('should NOT show get diff when no alert exists', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush([]);
+    
+    fixture.detectChanges();
+    
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    expect(getDiffButton).toBeFalsy();
+  });
+  
+  it('should show error panel if alert service unavailable', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
+    
+    fixture.detectChanges();
+    
+    const alertPanel = fixture.debugElement.query(By.css('div.o-alert'));
+    expect(alertPanel.nativeElement).toHaveClass('o-alert--error');
+  });
+  
+  it('should show error panel if alert service unavailable', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
+    
+    fixture.detectChanges();
+    
+    const alertPanel = fixture.debugElement.query(By.css('div.o-alert'));
+    expect(alertPanel.nativeElement).toHaveClass('o-alert--error');
+  });
+  
+  it('no diff button if alert service unavailable', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
+    
+    fixture.detectChanges();
+    
+    const alertPanel = fixture.debugElement.query(By.css('div.o-alert'));
+    expect(alertPanel.nativeElement).toHaveClass('o-alert--error');
+    
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    expect(getDiffButton).toBeFalsy();
   });
 });
