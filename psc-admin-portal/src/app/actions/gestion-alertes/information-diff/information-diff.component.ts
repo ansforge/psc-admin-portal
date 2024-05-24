@@ -19,7 +19,7 @@ import { AlertManager } from '../../../api/alertmanager.service';
 import { QueryResult } from '../../../api/queryResult.model';
 import { QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Pscload } from '../../../api/pscload.service';
-import { PsDiff } from '../../../api/psload.model';
+import { PsDiff } from '../../../api/pscload.model';
 import FileSaver from 'file-saver';
 
 @Component({
