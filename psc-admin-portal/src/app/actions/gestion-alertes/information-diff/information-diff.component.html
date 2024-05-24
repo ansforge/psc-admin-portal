@@ -28,9 +28,23 @@
         <p>Une alerte a été détectée.</p>
       </div>
   </div>
+@if(psDiffError) {
+  <div class="form-group row center-col">
+      <div [class.o-alert--error]="true" class="o-alert" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use></svg>
+        </div>  
+        <p>Erreur lors de la récupération du diff</p>
+        <p>{{psDiffError}}</p>
+      </div>
+  </div>
+}
   <div class="form-group row center-col">
     <div class="input-group col-sm-10 center-col">
-      <button type="button" class="btn btn--ghost btn--primary">Consulter le diff</button>
+      <button 
+        type="button" 
+        class="btn btn--ghost btn--primary"
+        (click)="onGetDiff()">Consulter le diff</button>
     </div>
   </div>
 } @else if(alertResult.status===status.KO) {

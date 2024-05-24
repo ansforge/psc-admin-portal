@@ -18,6 +18,9 @@ import { Component, OnInit } from '@angular/core';
 import { AlertManager } from '../../../api/alertmanager.service';
 import { QueryResult } from '../../../api/queryResult.model';
 import { QueryStatusEnum } from '../../../api/queryStatus.model';
+import { Pscload } from '../../../api/pscload.service';
+import { PsDiff } from '../../../api/psload.model';
+import FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-information-diff',
@@ -29,7 +32,13 @@ import { QueryStatusEnum } from '../../../api/queryStatus.model';
 export class InformationDiffComponent implements OnInit{
   status: typeof QueryStatusEnum=QueryStatusEnum
   alertResult: QueryResult<boolean>={status: QueryStatusEnum.PENDING,message:""};
-  constructor(private alertApi: AlertManager){}
+  psDiffError: string|null=null;
+  
+  constructor(
+    private alertApi: AlertManager,
+    private loaderApi: Pscload
+  ){}
+  
   ngOnInit(): void {
     this.alertApi.hasLoaderAlerts()
     .subscribe(
@@ -40,4 +49,38 @@ export class InformationDiffComponent implements OnInit{
   get alertes(): boolean|null {
     return this.alertResult?.body|| false;
   }
+  
+  onGetDiff(): void {
+    this.loaderApi.getDiff().subscribe(
+      (res: QueryResult<PsDiff>) => {
+        if(res.status===this.status.KO) {
+          this.psDiffError=res.message;
+        } else{
+          this.psDiffError=null;
+          const psDiff=res.body as PsDiff
+          var csvContent: string="Created;Updated;Deleted\n";
+          var created=psDiff.created.slice();
+          var updated=psDiff.updated.slice();
+          var deleted=psDiff.deleted.slice();
+          var tuple=[created.pop(),updated.pop(),deleted.pop()];
+          while(tuple[0] || tuple[1] || tuple[2]) {
+            csvContent+=this.tupleFormat(tuple)+"\n";
+            tuple=[created.pop(),updated.pop(),deleted.pop()];
+          }
+          
+          const diffBlob=new Blob([csvContent],{type: "application/csv"});
+          FileSaver.saveAs(diffBlob, `pscload_diff_${new Date().valueOf()}.csv`);
+        }
+      }
+    );
+  }
+  
+  private tupleFormat(tuple: nullableString[]): string {
+    return `${this.dataFormat(tuple[0])};${this.dataFormat(tuple[1])};${this.dataFormat(tuple[2])}`;
+  }
+  
+  private dataFormat(value: nullableString): string {
+    return value?`"${value}"`:"";
+  }
 }
+type nullableString = string | undefined;
