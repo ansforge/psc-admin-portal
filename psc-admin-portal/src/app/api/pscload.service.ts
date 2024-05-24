@@ -27,7 +27,7 @@ export class Pscload {
   
   get status(): Observable<Status> {
     return this.http.get<string>(
-        `${environment.API_HOSTNAME}portal/service/pscload/v1/check`,
+        `${environment.API_HOSTNAME}portal/service/pscload/v2/check`,
       {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
     ).pipe(
       map(
