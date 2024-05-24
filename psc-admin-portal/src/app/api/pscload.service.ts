@@ -20,6 +20,10 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/htt
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
+import { QueryResult } from "./queryResult.model";
+import { NO_DIFF, PsDiff, PsLoadStatus } from "./psload.model";
+import { QueryStatusEnum } from "./queryStatus.model";
+import { errorResponseToQueryResult } from "./queryResult";
 
 @Injectable({providedIn: "root"})
 export class Pscload {
@@ -35,6 +39,34 @@ export class Pscload {
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
+      )
+    );
+  }
+  
+  getDiff(): Observable<QueryResult<PsDiff>> {
+    return this.http.get<PsLoadStatus[]>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`,
+    ).pipe(
+      map(
+        (statusTable: PsLoadStatus[]) => {
+          if(statusTable.length>0){
+            const status: PsLoadStatus=statusTable.pop() as PsLoadStatus;
+            const created=status.psToCreateIds?status.psToCreateIds:[];
+            const deleted=status.psToDeleteIds?status.psToDeleteIds:[];
+            const updated=status.psToUpdateIds?status.psToUpdateIds:[];
+            var diff={created: created, deleted: deleted, updated: updated};
+          } else{
+            var diff=NO_DIFF;
+          }
+          return {
+            status: QueryStatusEnum.OK,
+            message: "Diff downloaded",
+            body: diff
+          };
+        }
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult<PsDiff>(err)
       )
     );
   }
