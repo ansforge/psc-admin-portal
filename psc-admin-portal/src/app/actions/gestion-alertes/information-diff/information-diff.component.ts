@@ -50,6 +50,10 @@ export class InformationDiffComponent implements OnInit{
     return this.alertResult?.body|| false;
   }
   
+  forgetPsDiffError(): void {
+    this.psDiffError=null;
+  }
+  
   onGetDiff(): void {
     this.loaderApi.getDiff().subscribe(
       (res: QueryResult<PsDiff>) => {

@@ -19,15 +19,7 @@
 
 <div class="form-group bg-gray-100 rounded-md">
   
-@if(alertes) {
-  <div class="form-group row center-col">
-      <div class="o-alert o-alert--warning" role="status">
-        <div class="o-alert__icon">
-          <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
-        </div>  
-        <p>Une alerte a été détectée.</p>
-      </div>
-  </div>
+@if(alertes) {  
 @if(psDiffError) {
   <div class="form-group row center-col">
       <div [class.o-alert--error]="true" class="o-alert" role="status">
@@ -36,6 +28,19 @@
         </div>  
         <p>Erreur lors de la récupération du diff</p>
         <p>{{psDiffError}}</p>
+        <button type="button" class="btn btn--close btn--icon-only" (click)="forgetPsDiffError()">
+          <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
+          <span class="sr-only">Masquer ce message</span>
+        </button>
+      </div>
+  </div>
+} @else {
+  <div class="form-group row center-col">
+      <div class="o-alert o-alert--warning" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
+        </div>  
+        <p>Une alerte a été détectée.</p>
       </div>
   </div>
 }
