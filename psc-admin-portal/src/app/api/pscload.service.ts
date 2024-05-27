@@ -22,7 +22,7 @@ import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryResult } from "./queryResult.model";
 import { NO_DIFF, PsDiff, PsLoadStatus } from "./psload.model";
-import { QueryStatusEnum } from "./queryStatus.model";
+import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 import { errorResponseToQueryResult } from "./queryResult";
 
 @Injectable({providedIn: "root"})
@@ -69,5 +69,9 @@ export class Pscload {
         (err: HttpErrorResponse) => errorResponseToQueryResult<PsDiff>(err)
       )
     );
+  }
+  
+  forceContinue(): Observable<QueryStatus> {
+    return of({status: QueryStatusEnum.PENDING,message:"C'est parti!"});
   }
 }
