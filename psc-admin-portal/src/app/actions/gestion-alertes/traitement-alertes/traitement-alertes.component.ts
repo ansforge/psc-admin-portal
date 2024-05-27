@@ -26,9 +26,15 @@ import { Pscload } from '../../../api/pscload.service';
   styleUrl: './traitement-alertes.component.scss'
 })
 export class TraitementAlertesComponent {
-
+  qs: typeof QueryStatusEnum=QueryStatusEnum;
   queryStatus: QueryStatus|null=null;
+  
   constructor(private loaderApi: Pscload){}
+  
+  forgetStatus(): void {
+    this.queryStatus=null;
+  }
+  
   forceContinue(): void {
     this.loaderApi.forceContinue().subscribe(
       (status: QueryStatus) => this.queryStatus=status
