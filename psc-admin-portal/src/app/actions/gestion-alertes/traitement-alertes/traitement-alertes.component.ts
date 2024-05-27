@@ -15,6 +15,8 @@
 ///
 
 import { Component } from '@angular/core';
+import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
+import { Pscload } from '../../../api/pscload.service';
 
 @Component({
   selector: 'app-traitement-alertes',
@@ -25,4 +27,11 @@ import { Component } from '@angular/core';
 })
 export class TraitementAlertesComponent {
 
+  queryStatus: QueryStatus|null=null;
+  constructor(private loaderApi: Pscload){}
+  forceContinue(): void {
+    this.loaderApi.forceContinue().subscribe(
+      (status: QueryStatus) => this.queryStatus=status
+    );
+  }
 }
