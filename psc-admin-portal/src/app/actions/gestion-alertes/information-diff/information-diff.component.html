@@ -1,0 +1,75 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<h3>Information sur le diff</h3>
+
+<div class="form-group bg-gray-100 rounded-md">
+  
+@if(alertes) {  
+@if(psDiffError) {
+  <div class="form-group row center-col">
+      <div [class.o-alert--error]="true" class="o-alert" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use></svg>
+        </div>  
+        <p>Erreur lors de la récupération du diff</p>
+        <p>{{psDiffError}}</p>
+        <button type="button" class="btn btn--close btn--icon-only" (click)="forgetPsDiffError()">
+          <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
+          <span class="sr-only">Masquer ce message</span>
+        </button>
+      </div>
+  </div>
+} @else {
+  <div class="form-group row center-col">
+      <div class="o-alert o-alert--warning" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
+        </div>  
+        <p>Une alerte a été détectée.</p>
+      </div>
+  </div>
+}
+  <div class="form-group row center-col">
+    <div class="input-group col-sm-10 center-col">
+      <button 
+        type="button" 
+        class="btn btn--ghost btn--primary"
+        (click)="onGetDiff()">Consulter le diff</button>
+    </div>
+  </div>
+} @else if(alertResult.status===status.KO) {
+  <div class="form-group row center-col">
+      <div [class.o-alert--error]="true" class="o-alert" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use></svg>
+        </div>  
+        <p>Erreur à la vérification des alertes</p>
+        <p>{{alertResult.message}}</p>
+      </div>
+  </div>
+} @else {
+     <div class="form-group row center-col">
+      <div class="o-alert o-alert--success" role="status">
+        <div class="o-alert__icon">
+          <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use></svg>
+        </div>  
+        <p>Aucune alerte</p>
+      </div>
+  </div>
+}
+</div>

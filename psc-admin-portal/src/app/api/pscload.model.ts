@@ -14,16 +14,34 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { InformationDiffComponent } from './information-diff/information-diff.component';
+export interface PsDiff {
+  deleted: string[];
+  created: string[];
+  updated: string[];
+}
 
-@Component({
-  selector: 'app-gestion-alertes',
-  standalone: true,
-  imports: [InformationDiffComponent],
-  templateUrl: './gestion-alertes.component.html',
-  styleUrl: './gestion-alertes.component.scss'
-})
-export class GestionAlertesComponent {
+export const NO_DIFF: PsDiff = {
+  created: [] as string[], 
+  deleted: [] as string[], 
+  updated: [] as string[]
+}
 
+export enum PsLoadState {
+  DIFF_COMPUTED = "DiffComputed"
+}
+
+export interface PsLoadStatus {
+  processId: number;
+  createdOn: Date;
+  state?: PsLoadState;
+  psToCreate?: number;
+  psToCreateIds?: string[];
+  psToUpdate?: number;
+  psToUpdateIds?: string[];
+  psToDelete?: number;
+  psToDeleteIds?: string[];
+  downloadedFileName?: string;
+  extractFileName?: string;
+  lockedSerializedFileName?: string;
+  detailed: boolean;
 }

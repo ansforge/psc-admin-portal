@@ -14,16 +14,19 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { InformationDiffComponent } from './information-diff/information-diff.component';
-
-@Component({
-  selector: 'app-gestion-alertes',
-  standalone: true,
-  imports: [InformationDiffComponent],
-  templateUrl: './gestion-alertes.component.html',
-  styleUrl: './gestion-alertes.component.scss'
-})
-export class GestionAlertesComponent {
-
-}
+export const STATUS_MOCK_2_DELETED = [
+    {
+        "processId": "8",
+        "createdOn": "23/05/2024 17:35",
+        "state": "DiffComputed",
+        "psToCreate": 0,
+        "psToCreateIds": [ ],
+        "psToUpdate": 0,
+        "psToUpdateIds": [ ],
+        "psToDelete": 2,
+        "psToDeleteIds": ["id1","id2"],
+        "downloadedFileName": null,
+        "extractFileName": "./target/PunkTotal.txt",
+        "lockedSerializedFileName": null
+    }
+]
