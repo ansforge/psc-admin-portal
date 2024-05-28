@@ -36,6 +36,7 @@ export class TraitementAlertesComponent {
   }
   
   forceContinue(): void {
+    this.queryStatus={status: QueryStatusEnum.PENDING,message:"C'est parti!"};
     this.loaderApi.forceContinue().subscribe(
       (status: QueryStatus) => this.queryStatus=status
     );

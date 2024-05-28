@@ -72,6 +72,16 @@ export class Pscload {
   }
   
   forceContinue(): Observable<QueryStatus> {
-    return of({status: QueryStatusEnum.PENDING,message:"C'est parti!"});
+    return this.http.post(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`,
+      '[]'
+    ).pipe(
+      map(
+        () => ({status: QueryStatusEnum.OK,message: 'Processus successfully relaunched'})
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult(err)
+      )
+    );
   }
 }
