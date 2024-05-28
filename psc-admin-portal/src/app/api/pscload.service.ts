@@ -72,9 +72,9 @@ export class Pscload {
   }
   
   forceContinue(): Observable<QueryStatus> {
-    return this.http.post(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`,
-      '[]'
+    return this.http.post<void>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=delete,update`,
+      ''
     ).pipe(
       map(
         () => ({status: QueryStatusEnum.OK,message: 'Processus successfully relaunched'})
