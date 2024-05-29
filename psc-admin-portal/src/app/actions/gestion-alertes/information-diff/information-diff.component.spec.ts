@@ -23,8 +23,7 @@ import { environment } from '../../../../environments/environment';
 import { By } from '@angular/platform-browser';
 import { STATUS_MOCK_2_DELETED } from './diffStatusMock';
 import FileSaver from 'file-saver';
-
-const ALERT_MOCK_1={};
+import { ALERT_MOCK_1 } from '../alertMocks';
 
 describe('InformationDiffComponent', () => {
   let component: InformationDiffComponent;
