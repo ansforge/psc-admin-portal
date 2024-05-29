@@ -69,7 +69,7 @@ describe('InformationDiffComponent', () => {
     
     fixture.detectChanges();
     
-    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'));
     expect(getDiffButton.nativeElement).toBeTruthy();
     const buttonElt=getDiffButton.nativeElement as HTMLButtonElement;
     expect(buttonElt.textContent).toEqual("Consulter le diff");
@@ -148,7 +148,7 @@ describe('InformationDiffComponent', () => {
     
     spyOn(FileSaver, 'saveAs').and.stub();
     
-    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'))
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'))
       .nativeElement as HTMLButtonElement;
     getDiffButton.click();
     
