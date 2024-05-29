@@ -25,8 +25,11 @@ export function errorResponseToQueryResult<T>(err: HttpErrorResponse): Observabl
   } else if(err.status>=502 && err.status <= 504) {
     // Error reporting from the proxy is HTML. Just use the text.
     return of({status: QueryStatusEnum.KO, message: err.message});
-  } else {
-    // Other error reporting
+  } else if(err.error){
+    // Other error reporting, when error data is provided
     return of({status: QueryStatusEnum.KO, message: err.error.error /*sic[k] ... */ });
+  } else {
+    // Other error reporting when no error data is provided
+    return of({status: QueryStatusEnum.KO, message: `Failure code ${err.status}`});
   }
 }
