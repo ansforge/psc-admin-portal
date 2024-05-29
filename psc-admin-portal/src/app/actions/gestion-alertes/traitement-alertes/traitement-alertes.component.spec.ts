@@ -17,6 +17,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TraitementAlertesComponent } from './traitement-alertes.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TraitementAlertesComponent', () => {
   let component: TraitementAlertesComponent;
@@ -24,7 +25,7 @@ describe('TraitementAlertesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TraitementAlertesComponent]
+      imports: [TraitementAlertesComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
