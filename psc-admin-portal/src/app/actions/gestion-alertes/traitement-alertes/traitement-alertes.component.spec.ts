@@ -15,13 +15,19 @@
 ///
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 import { TraitementAlertesComponent } from './traitement-alertes.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { environment } from '../../../../environments/environment';
 
 describe('TraitementAlertesComponent', () => {
   let component: TraitementAlertesComponent;
   let fixture: ComponentFixture<TraitementAlertesComponent>;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,6 +36,8 @@ describe('TraitementAlertesComponent', () => {
     .compileComponents();
     
     fixture = TestBed.createComponent(TraitementAlertesComponent);
+    httpClient=TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -37,4 +45,66 @@ describe('TraitementAlertesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('Should POST continue with no excludes when only Force Continue is clicked', () => {
+      
+    clickForceContinue(fixture);
+      
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+    );
+      
+    httpTestingController.verify();
+  });
+  
+  it('should display success if POST succeeds',() => {
+    
+    clickForceContinue(fixture);
+    
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+    );
+    
+    const success: Partial<HttpResponse<void>> = {
+      ok: true,
+      status: 202
+    }
+    req.flush(success);
+    
+    fixture.detectChanges();
+    
+    const okPanel=fixture.debugElement.query(By.css('div.o-alert--success>p')).nativeElement as HTMLElement;
+    expect(okPanel.textContent).toBe('Processus successfully relaunched');
+    
+    httpTestingController.verify();
+  });
+  
+  it('should display failure if POST fails',() => {
+    
+    clickForceContinue(fixture);
+    
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+    );
+    
+    const failure: Partial<HttpResponse<void>> = {
+      ok: false,
+      status: 503
+    }
+    req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
+    
+    fixture.detectChanges();
+    
+    const okPanel=fixture.debugElement.query(By.css('div.o-alert--error>p')).nativeElement as HTMLElement;
+    expect(okPanel.textContent).toBe('Une erreur s’est produite lors de l’importation du fichier.');
+    
+    httpTestingController.verify();
+  });
+    
 });
+
+function clickForceContinue(fixture: ComponentFixture<TraitementAlertesComponent>) {
+  const forceContinueButton = fixture.debugElement.query(By.css('button.btn--primary.btn--plain')).nativeElement as HTMLButtonElement;
+  expect(forceContinueButton.textContent).toBe('Force continue');
+  forceContinueButton.click();
+}
