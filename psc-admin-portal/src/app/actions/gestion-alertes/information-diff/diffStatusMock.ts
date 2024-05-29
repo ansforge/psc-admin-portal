@@ -14,34 +14,19 @@
 /// limitations under the License.
 ///
 
-export interface PsDiff {
-  deleted: string[];
-  created: string[];
-  updated: string[];
-}
-
-export const NO_DIFF: PsDiff = {
-  created: [] as string[], 
-  deleted: [] as string[], 
-  updated: [] as string[]
-}
-
-export enum PsLoadState {
-  DIFF_COMPUTED = "DiffComputed"
-}
-
-export interface PsLoadStatus {
-  processId: number;
-  createdOn: Date;
-  state?: PsLoadState;
-  psToCreate?: number;
-  psToCreateIds?: string[];
-  psToUpdate?: number;
-  psToUpdateIds?: string[];
-  psToDelete?: number;
-  psToDeleteIds?: string[];
-  downloadedFileName?: string;
-  extractFileName?: string;
-  lockedSerializedFileName?: string;
-  detailed: boolean;
-}
+export const STATUS_MOCK_2_DELETED = [
+    {
+        "processId": "8",
+        "createdOn": "23/05/2024 17:35",
+        "state": "DiffComputed",
+        "psToCreate": 0,
+        "psToCreateIds": [ ],
+        "psToUpdate": 0,
+        "psToUpdateIds": [ ],
+        "psToDelete": 2,
+        "psToDeleteIds": ["id1","id2"],
+        "downloadedFileName": null,
+        "extractFileName": "./target/PunkTotal.txt",
+        "lockedSerializedFileName": null
+    }
+]

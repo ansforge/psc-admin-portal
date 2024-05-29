@@ -21,7 +21,7 @@ import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryResult } from "./queryResult.model";
-import { NO_DIFF, PsDiff, PsLoadStatus } from "./psload.model";
+import { NO_DIFF, PsDiff, PsLoadStatus } from "./pscload.model";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 import { errorResponseToQueryResult } from "./queryResult";
 
