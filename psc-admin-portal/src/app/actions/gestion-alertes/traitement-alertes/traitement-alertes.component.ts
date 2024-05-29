@@ -17,17 +17,20 @@
 import { Component } from '@angular/core';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Pscload } from '../../../api/pscload.service';
+import { Operation, Operations } from '../../../api/psload.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-traitement-alertes',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './traitement-alertes.component.html',
   styleUrl: './traitement-alertes.component.scss'
 })
 export class TraitementAlertesComponent {
   qs: typeof QueryStatusEnum=QueryStatusEnum;
   queryStatus: QueryStatus|null=null;
+  excludeModel: {operation: Operation,selected: boolean}={operation: Operations[0],selected: false};
   
   constructor(private loaderApi: Pscload){}
   
