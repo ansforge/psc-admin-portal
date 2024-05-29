@@ -14,6 +14,17 @@
 /// limitations under the License.
 ///
 
+export interface Operation {
+  displayName: string;
+  code: string;
+}
+
+export const Operations: Operation[]=[
+  {displayName: "Create",code: "CREATE"},
+  {displayName: "Update",code: "UPDATE"},
+  {displayName: "Delete",code: "DELETE"}
+];
+
 export interface PsDiff {
   deleted: string[];
   created: string[];
