@@ -51,7 +51,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
       
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
       
     httpTestingController.verify();
@@ -62,7 +62,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
     
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
     
     const success: Partial<HttpResponse<void>> = {
@@ -84,7 +84,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
     
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
     
     const failure: Partial<HttpResponse<void>> = {
@@ -107,4 +107,12 @@ function clickForceContinue(fixture: ComponentFixture<TraitementAlertesComponent
   const forceContinueButton = fixture.debugElement.query(By.css('button.btn--primary.btn--plain')).nativeElement as HTMLButtonElement;
   expect(forceContinueButton.textContent).toBe('Force continue');
   forceContinueButton.click();
+  
+  const confirmButton = fixture.debugElement.query(
+      By.css('app-confirm-modal button.btn--primary.btn--plain')
+    )
+    .nativeElement as HTMLButtonElement;
+  
+  expect(confirmButton.textContent).toBe('Lancer');
+  confirmButton.click();
 }
