@@ -23,8 +23,7 @@ import { environment } from '../../../../environments/environment';
 import { By } from '@angular/platform-browser';
 import { STATUS_MOCK_2_DELETED } from './diffStatusMock';
 import FileSaver from 'file-saver';
-
-const ALERT_MOCK_1={};
+import { ALERT_MOCK_1 } from '../alertMocks';
 
 describe('InformationDiffComponent', () => {
   let component: InformationDiffComponent;
@@ -69,7 +68,7 @@ describe('InformationDiffComponent', () => {
     
     fixture.detectChanges();
     
-    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'));
     expect(getDiffButton.nativeElement).toBeTruthy();
     const buttonElt=getDiffButton.nativeElement as HTMLButtonElement;
     expect(buttonElt.textContent).toEqual("Consulter le diff");
@@ -148,7 +147,7 @@ describe('InformationDiffComponent', () => {
     
     spyOn(FileSaver, 'saveAs').and.stub();
     
-    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'))
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'))
       .nativeElement as HTMLButtonElement;
     getDiffButton.click();
     

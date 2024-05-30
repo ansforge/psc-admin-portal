@@ -22,7 +22,7 @@ import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryResult } from "./queryResult.model";
 import { NO_DIFF, PsDiff, PsLoadStatus } from "./pscload.model";
-import { QueryStatusEnum } from "./queryStatus.model";
+import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 import { errorResponseToQueryResult } from "./queryResult";
 
 @Injectable({providedIn: "root"})
@@ -67,6 +67,20 @@ export class Pscload {
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToQueryResult<PsDiff>(err)
+      )
+    );
+  }
+  
+  forceContinue(): Observable<QueryStatus> {
+    return this.http.post(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`,
+      '[]'
+    ).pipe(
+      map(
+        () => ({status: QueryStatusEnum.OK,message: 'Processus successfully relaunched'})
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult(err)
       )
     );
   }

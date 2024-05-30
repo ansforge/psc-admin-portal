@@ -116,9 +116,6 @@ describe('ChoixCsvCorrespondanceComponent', () => {
   });
   
   it('should diagnose proxy problem',() => {
-    const error503: Partial<HttpErrorResponse> = {
-      status: 503
-    };
      
     sendFile(component);
     
