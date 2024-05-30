@@ -1,0 +1,30 @@
+/**
+ * Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.show {
+  background-color: rgba(105,112,130,0.7);
+}
+
+.modal-content:before {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 106 134'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M40.501 134H40.5C18.132 134 0 115.813 0 93.376V46c3.166 3.537 9.524 6.548 22.43 6.752h18.071C62.868 52.752 81 70.939 81 93.376S62.868 134 40.501 134' fill='%231D71B8'/%3E%3Cpath d='M85 46c11.598 0 21-9.507 21-21.235V0c-1.642 1.849-4.939 3.423-11.63 3.53H85c-11.598 0-21 9.506-21 21.235C64 36.493 73.402 46 85 46' fill='%23D20050'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  content: "";
+  height: 9.5rem;
+  left: -3rem;
+  position: absolute;
+  top: 1.5rem;
+  width: 7.5rem;
+}
