@@ -31,6 +31,7 @@ export class TraitementAlertesComponent {
   qs: typeof QueryStatusEnum=QueryStatusEnum;
   queryStatus: QueryStatus|null=null;
   excludeCheckModel: {operation: Operation,selected: boolean}[]=[];
+  excludesVisible: boolean=false;
   
   constructor(private loaderApi: Pscload){
     for(let operation of Operations){
@@ -40,6 +41,10 @@ export class TraitementAlertesComponent {
   
   forgetStatus(): void {
     this.queryStatus=null;
+  }
+  
+  showExcludes(): void {
+    this.excludesVisible=true;
   }
   
   forceContinue(): void {
