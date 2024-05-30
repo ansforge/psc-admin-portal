@@ -14,16 +14,17 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Pscload } from '../../../api/pscload.service';
 import { Operation, Operations } from '../../../api/psload.model';
 import { FormsModule } from '@angular/forms';
+import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-traitement-alertes',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,ConfirmModalComponent],
   templateUrl: './traitement-alertes.component.html',
   styleUrl: './traitement-alertes.component.scss'
 })
@@ -32,6 +33,7 @@ export class TraitementAlertesComponent {
   queryStatus: QueryStatus|null=null;
   excludeCheckModel: {operation: Operation,selected: boolean}[]=[];
   excludesVisible: boolean=false;
+  forceContinueEmitter: EventEmitter<void>=new EventEmitter();
   
   constructor(private loaderApi: Pscload){
     for(let operation of Operations){
@@ -45,6 +47,10 @@ export class TraitementAlertesComponent {
   
   showExcludes(): void {
     this.excludesVisible=true;
+  }
+  
+  showContinueConfirmModal(): void {
+    this.forceContinueEmitter.next();
   }
   
   forceContinue(): void {

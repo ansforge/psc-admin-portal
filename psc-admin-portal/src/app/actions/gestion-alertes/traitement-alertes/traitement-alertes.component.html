@@ -62,7 +62,7 @@
   :</h4>
   <div class="btn-group form-group row">
       <button type="button" class="btn btn--ghost btn--primary" (click)="showExcludes()">Force continue load with exclude</button>
-      <button type="button" class="btn btn--plain btn--primary" (click)="forceContinue()">Force continue</button>
+      <button type="button" class="btn btn--plain btn--primary" (click)="showContinueConfirmModal()">Force continue</button>
   </div>
 @if(excludesVisible) {
   <div class="form-group row">
@@ -77,4 +77,10 @@
     </fieldset>
   </div>
 }
+<app-confirm-modal 
+  contentText="Étes-vous sûr de vouloir lancer le force-continue ?"
+  [showEvent]="forceContinueEmitter"
+  (confirm)="forceContinue()"
+  >
+</app-confirm-modal>
 </div>
