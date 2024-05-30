@@ -17,12 +17,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GestionAlertesComponent } from './gestion-alertes.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
+import { ALERT_MOCK_1 } from './alertMocks';
+import { environment } from '../../../environments/environment';
+import { By } from '@angular/platform-browser';
 
 describe('GestionAlertesComponent', () => {
   let component: GestionAlertesComponent;
   let fixture: ComponentFixture<GestionAlertesComponent>;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,6 +36,8 @@ describe('GestionAlertesComponent', () => {
     .compileComponents();
     
     fixture = TestBed.createComponent(GestionAlertesComponent);
+    httpClient=TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
     TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -39,4 +46,37 @@ describe('GestionAlertesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should display traitement alertes if there are alerts', () => {
+    const reqs = httpTestingController.match(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    
+    expect(reqs.length).toBeGreaterThanOrEqual(1);
+    
+    for(let req of reqs) {
+      req.flush([ALERT_MOCK_1]);
+    }
+    
+    fixture.detectChanges();
+    
+    expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeTruthy();
+  });
+  
+  it('should not display traitement alertes if there is no alert', () => {
+    const reqs = httpTestingController.match(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    
+    expect(reqs.length).toBeGreaterThanOrEqual(1);
+    
+    for(let req of reqs) {
+      req.flush([]);
+    }
+    
+    fixture.detectChanges();
+    
+    expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeFalsy();
+  });
+  
 });

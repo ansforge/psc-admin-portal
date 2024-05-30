@@ -21,8 +21,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { By } from '@angular/platform-browser';
-
-const ALERT_MOCK_1={};
+import { STATUS_MOCK_2_DELETED } from './diffStatusMock';
+import FileSaver from 'file-saver';
+import { ALERT_MOCK_1 } from '../alertMocks';
 
 describe('InformationDiffComponent', () => {
   let component: InformationDiffComponent;
@@ -67,7 +68,7 @@ describe('InformationDiffComponent', () => {
     
     fixture.detectChanges();
     
-    const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'));
     expect(getDiffButton.nativeElement).toBeTruthy();
     const buttonElt=getDiffButton.nativeElement as HTMLButtonElement;
     expect(buttonElt.textContent).toEqual("Consulter le diff");
@@ -134,5 +135,27 @@ describe('InformationDiffComponent', () => {
     
     const getDiffButton = fixture.debugElement.query(By.css('button.btn--primary'));
     expect(getDiffButton).toBeFalsy();
+  });
+  
+  it('When diff downloaded, save as csv', () => {
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+    );
+    req.flush([ALERT_MOCK_1]);
+    
+    fixture.detectChanges();
+    
+    spyOn(FileSaver, 'saveAs').and.stub();
+    
+    const getDiffButton = fixture.debugElement.query(By.css('button.btn--default'))
+      .nativeElement as HTMLButtonElement;
+    getDiffButton.click();
+    
+    const req2=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`
+    );
+    req2.flush(STATUS_MOCK_2_DELETED);
+    
+    expect(FileSaver.saveAs).toHaveBeenCalled();
   });
 });

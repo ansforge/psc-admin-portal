@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { Operations as OperationEnum } from "./psload.model";
+import { Operations as OperationEnum } from "./pscload.model";
 
 describe('PsLoadService', () => {
   it('All operation codes should be unique', () => {

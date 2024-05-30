@@ -17,7 +17,7 @@
 import { Component, EventEmitter } from '@angular/core';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Pscload } from '../../../api/pscload.service';
-import { Operation, Operations } from '../../../api/psload.model';
+import { Operation, Operations } from '../../../api/pscload.model';
 import { FormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.component';
 
