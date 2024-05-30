@@ -30,9 +30,13 @@ import { FormsModule } from '@angular/forms';
 export class TraitementAlertesComponent {
   qs: typeof QueryStatusEnum=QueryStatusEnum;
   queryStatus: QueryStatus|null=null;
-  excludeModel: {operation: Operation,selected: boolean}={operation: Operations[0],selected: false};
+  excludeCheckModel: {operation: Operation,selected: boolean}[]=[];
   
-  constructor(private loaderApi: Pscload){}
+  constructor(private loaderApi: Pscload){
+    for(let operation of Operations){
+      this.excludeCheckModel.push({operation: operation,selected: false});
+    }
+  }
   
   forgetStatus(): void {
     this.queryStatus=null;
