@@ -96,7 +96,7 @@ describe('TraitementAlertesComponent', () => {
     fixture.detectChanges();
     
     const okPanel=fixture.debugElement.query(By.css('div.o-alert--error>p')).nativeElement as HTMLElement;
-    expect(okPanel.textContent).toBe('Une erreur s’est produite lors de l’importation du fichier.');
+    expect(okPanel.textContent).toBe('Erreur de déclenchement de l\'opération.');
     
     httpTestingController.verify();
   });
