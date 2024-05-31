@@ -22,6 +22,7 @@ import { TraitementAlertesComponent } from './traitement-alertes.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
+import { Operations } from '../../../api/pscload.model';
 
 describe('TraitementAlertesComponent', () => {
   let component: TraitementAlertesComponent;
@@ -100,7 +101,31 @@ describe('TraitementAlertesComponent', () => {
     
     httpTestingController.verify();
   });
+  
+  it('should ask continue without exclude DELETE if selected', () => {
     
+    const forceContinueWithExcludeBtn = fixture.debugElement.query(By.css('button.btn--primary.btn--ghost')).nativeElement as HTMLButtonElement;
+    expect(forceContinueWithExcludeBtn.textContent).toBe('Force continue load with exclude');    
+    
+    forceContinueWithExcludeBtn.click();
+    
+    fixture.detectChanges();
+    
+    const deleteOperation = Operations.filter(op => op.code==="DELETE")[0];
+    
+    const deleteCheckBox = fixture.debugElement.query(By.css(`input#${deleteOperation.code}`)).nativeElement as HTMLOptionElement;
+    expect(deleteCheckBox).toBeTruthy();
+    deleteCheckBox.click();
+    fixture.detectChanges();
+    
+    clickForceContinue(fixture);
+    
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=DELETE`
+    );
+    
+    httpTestingController.verify();    
+  });
 });
 
 function clickForceContinue(fixture: ComponentFixture<TraitementAlertesComponent>) {
