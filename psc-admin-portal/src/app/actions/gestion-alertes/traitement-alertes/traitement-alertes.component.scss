@@ -13,3 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+legend.redlegend {
+  color: #D20050;
+}
+
+.lvl2 legend {
+  margin-bottom: 2rem;
+}
+
+.lvl2 label,.lvl2 legend, input.lvl2,.lvl2 div {
+  font-weight: bolder;
+  font-size: smaller;
+  line-height: 0.5rem;
+  min-height: 0.5rem;
+}

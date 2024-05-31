@@ -22,6 +22,7 @@ import { TraitementAlertesComponent } from './traitement-alertes.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
+import { Operations } from '../../../api/pscload.model';
 
 describe('TraitementAlertesComponent', () => {
   let component: TraitementAlertesComponent;
@@ -51,7 +52,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
       
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
       
     httpTestingController.verify();
@@ -62,7 +63,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
     
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
     
     const success: Partial<HttpResponse<void>> = {
@@ -84,7 +85,7 @@ describe('TraitementAlertesComponent', () => {
     clickForceContinue(fixture);
     
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=`
     );
     
     const failure: Partial<HttpResponse<void>> = {
@@ -96,15 +97,47 @@ describe('TraitementAlertesComponent', () => {
     fixture.detectChanges();
     
     const okPanel=fixture.debugElement.query(By.css('div.o-alert--error>p')).nativeElement as HTMLElement;
-    expect(okPanel.textContent).toBe('Une erreur s’est produite lors de l’importation du fichier.');
+    expect(okPanel.textContent).toBe('Erreur de déclenchement de l\'opération.');
     
     httpTestingController.verify();
   });
+  
+  it('should ask continue without exclude DELETE if selected', () => {
     
+    const forceContinueWithExcludeBtn = fixture.debugElement.query(By.css('button.btn--primary.btn--ghost')).nativeElement as HTMLButtonElement;
+    expect(forceContinueWithExcludeBtn.textContent).toBe('Force continue load with exclude');    
+    
+    forceContinueWithExcludeBtn.click();
+    
+    fixture.detectChanges();
+    
+    const deleteOperation = Operations.filter(op => op.code==="DELETE")[0];
+    
+    const deleteCheckBox = fixture.debugElement.query(By.css(`input#${deleteOperation.code}`)).nativeElement as HTMLOptionElement;
+    expect(deleteCheckBox).toBeTruthy();
+    deleteCheckBox.click();
+    fixture.detectChanges();
+    
+    clickForceContinue(fixture);
+    
+    const req=httpTestingController.expectOne(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=DELETE`
+    );
+    
+    httpTestingController.verify();    
+  });
 });
 
 function clickForceContinue(fixture: ComponentFixture<TraitementAlertesComponent>) {
   const forceContinueButton = fixture.debugElement.query(By.css('button.btn--primary.btn--plain')).nativeElement as HTMLButtonElement;
   expect(forceContinueButton.textContent).toBe('Force continue');
   forceContinueButton.click();
+  
+  const confirmButton = fixture.debugElement.query(
+      By.css('app-confirm-modal button.btn--primary.btn--plain')
+    )
+    .nativeElement as HTMLButtonElement;
+  
+  expect(confirmButton.textContent).toBe('Lancer');
+  confirmButton.click();
 }

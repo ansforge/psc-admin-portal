@@ -43,7 +43,7 @@
   </div>
 
 @if(queryStatus.status===qs.KO){
-  <p>Une erreur s’est produite lors de l’importation du fichier.</p>
+  <p>Erreur de déclenchement de l'opération.</p>
 }
 
   <p>{{queryStatus.message}}</p>
@@ -61,7 +61,26 @@
     </svg>
   :</h4>
   <div class="btn-group form-group row">
-      <button type="button" class="btn btn--ghost btn--primary">Force continue load with exclude</button>
-      <button type="button" class="btn btn--plain btn--primary" (click)="forceContinue()">Force continue</button>
+      <button type="button" class="btn btn--ghost btn--primary" (click)="showExcludes()">Force continue load with exclude</button>
+      <button type="button" class="btn btn--plain btn--primary" (click)="showContinueConfirmModal()">Force continue</button>
   </div>
+@if(excludesVisible) {
+  <div class="form-group row">
+    <fieldset class="lvl2">
+      <legend class="redlegend">Force continue load with exclude :</legend>
+      @for(excludeModel of excludeCheckModel; track excludeModel) {
+        <div class="custom-control custom-checkbox">
+          <input class="lvl2" [id]="excludeModel.operation.code" [name]="excludeModel.operation.code" type="checkbox" [(ngModel)]="excludeModel.selected" [ngModelOptions]="{standalone: true}" />
+          <label for="excludeModel.operation.code">{{excludeModel.operation.displayName}}</label>
+        </div>
+      }
+    </fieldset>
+  </div>
+}
+<app-confirm-modal 
+  contentText="Étes-vous sûr de vouloir lancer le force-continue ?"
+  [showEvent]="forceContinueEmitter"
+  (confirm)="forceContinue()"
+  >
+</app-confirm-modal>
 </div>

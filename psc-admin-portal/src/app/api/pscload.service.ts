@@ -21,7 +21,7 @@ import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryResult } from "./queryResult.model";
-import { NO_DIFF, PsDiff, PsLoadStatus } from "./pscload.model";
+import { NO_DIFF, Operation, PsDiff, PsLoadStatus } from "./pscload.model";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 import { errorResponseToQueryResult } from "./queryResult";
 
@@ -71,10 +71,11 @@ export class Pscload {
     );
   }
   
-  forceContinue(): Observable<QueryStatus> {
-    return this.http.post(
-      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue`,
-      '[]'
+  forceContinue(excludes: Operation[] = []): Observable<QueryStatus> {
+    const excludeParm=excludes.map( (op: Operation) => op.code );
+    return this.http.post<void>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/continue?exclude=${excludeParm.toString()}`,
+      ''
     ).pipe(
       map(
         () => ({status: QueryStatusEnum.OK,message: 'Processus successfully relaunched'})
