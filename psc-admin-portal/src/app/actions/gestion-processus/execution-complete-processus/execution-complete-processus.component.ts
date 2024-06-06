@@ -27,6 +27,9 @@ import { FormsModule } from '@angular/forms';
 export class ExecutionCompleteProcessusComponent {
   Confirm: typeof Confirm=Confirm;
   supprimerExtraction: Confirm=Confirm.NO;
+  
+  executer(): void {
+  }
 }
 enum Confirm {
   YES='Oui',

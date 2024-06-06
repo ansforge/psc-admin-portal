@@ -17,7 +17,8 @@
 -->
 <h3>Exécution complète du processus.</h3>
 <div class="form-group bg-gray-100 rounded-md">
-  <fieldset class="horizontal">
+  <div class="row">
+  <fieldset class="horizontal col-sm-auto">
     <div class="redlegend">Souhaitez-vous supprimer l'extraction RASS en Anomalie avant de charger le RASS : </div>
     <div class="custom-control custom-radio custom-control-inline">
       <input type="radio"
@@ -38,24 +39,35 @@
       <label class="custom-control-label" for="non">Non</label>
     </div>
   </fieldset>
-  <ol>
-    <li>Charger le RASS</li>
-    <li>Traiter le fichier RASS
-      <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
-        <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
-      </svg>
-    </li>
-    <li>Lever des alertes (éventuellement)
-      <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
-        <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
-      </svg>
-    </li>
-    <li>Enregistrer les PS en base</li>
-    <li>Générer le fichier sécurisé
-      <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
-        <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
-      </svg>
-    </li>
-    <li>Envoyer les PS à l'Imprimerie Nationale</li>
-  </ol>
+  </div>
+  <div class="row">
+    <div class="col-sm-auto"></div>
+    <div class="col-sm-auto">
+      <ol>
+        <li>Charger le RASS</li>
+        <li>Traiter le fichier RASS
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Lever des alertes (éventuellement)
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Enregistrer les PS en base</li>
+        <li>Générer le fichier sécurisé
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Envoyer les PS à l'Imprimerie Nationale</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-group col-sm-auto executes-row row">
+      <button type="button" class="btn btn--plain btn--primary" (click)="executer()">Exécuter</button>
+    </div>
+  </div>
 </div>
