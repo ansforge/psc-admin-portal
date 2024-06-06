@@ -43,6 +43,10 @@ export class Pscload {
     );
   }
   
+  executerProcessusComplet(): Observable<QueryResult<void>>{
+    return of({status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"});
+  }
+  
   getDiff(): Observable<QueryResult<PsDiff>> {
     return this.http.get<PsLoadStatus[]>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`,
