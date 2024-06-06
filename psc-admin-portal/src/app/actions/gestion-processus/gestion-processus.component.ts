@@ -15,11 +15,12 @@
 ///
 
 import { Component } from '@angular/core';
+import { ExecutionCompleteProcessusComponent } from './execution-complete-processus/execution-complete-processus.component';
 
 @Component({
   selector: 'app-gestion-processus',
   standalone: true,
-  imports: [],
+  imports: [ExecutionCompleteProcessusComponent],
   templateUrl: './gestion-processus.component.html',
   styleUrl: './gestion-processus.component.scss'
 })
