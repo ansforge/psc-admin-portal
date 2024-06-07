@@ -16,6 +16,8 @@
 
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
+import { Pscload } from '../../../api/pscload.service';
 
 @Component({
   selector: 'app-execution-complete-processus',
@@ -27,8 +29,16 @@ import { FormsModule } from '@angular/forms';
 export class ExecutionCompleteProcessusComponent {
   Confirm: typeof Confirm=Confirm;
   supprimerExtraction: Confirm=Confirm.NO;
+  executionStatus: QueryStatus|null=null;
+  
+  constructor(private loader: Pscload){}
   
   executer(): void {
+    this.executionStatus={status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"};
+    this.loader.executerProcessusComplet()
+        .subscribe(
+          (status: QueryStatus) => this.executionStatus=status
+        );
   }
 }
 enum Confirm {

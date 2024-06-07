@@ -43,8 +43,8 @@ export class Pscload {
     );
   }
   
-  executerProcessusComplet(): Observable<QueryResult<void>>{
-    return of({status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"});
+  executerProcessusComplet(): Observable<QueryStatus>{
+    return of({status:QueryStatusEnum.KO,message:"Unsupported operation"});
   }
   
   getDiff(): Observable<QueryResult<PsDiff>> {
