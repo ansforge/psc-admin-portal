@@ -17,12 +17,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
+import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 import { Pscload } from '../../../api/pscload.service';
 
 @Component({
   selector: 'app-execution-complete-processus',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,QueryStatusPanelComponent],
   templateUrl: './execution-complete-processus.component.html',
   styleUrl: './execution-complete-processus.component.scss'
 })
