@@ -55,7 +55,7 @@ export class TraitementAlertesComponent {
   }
   
   forceContinue(): void {
-    this.queryStatus={status: QueryStatusEnum.PENDING,message:"C'est parti!"};
+    this.queryStatus={status: QueryStatusEnum.PENDING,message:"Requête en cours."};
 
     const excludes: Operation[]=this.excludeCheckModel
       .filter(checkbox => checkbox.selected)
