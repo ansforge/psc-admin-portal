@@ -27,6 +27,10 @@ ol {
   list-style: decimal;
 }
 
+.o-stepper>ol {
+  list-style: none;
+}
+
 .executes-row {
   justify-content: center;
 }
