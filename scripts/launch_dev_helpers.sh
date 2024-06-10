@@ -33,6 +33,13 @@ elif [ ! $(grep Define scripts/service-addresses.conf.in| wc -l) -eq $(grep Defi
   exit 2;
 fi
 
+
+if [ -z ${DOCKER_GATEWAY} ]; then
+  export DOCKER_GATEWAY=172.17.0.1
+fi
+echo "Linking containers through docker gateway ${DOCKER_GATEWAY} interface set up DOCKER_GATEWAY to override."
+sed -i -e "s/172\.17\.0\.1/${DOCKER_GATEWAY}/g" scripts/service-addresses.conf
+
 sudo docker buildx build . -f devProxy.Dockerfile -t sec-psc/devproxy
 
 if [ $? -eq 0 ]; then
@@ -64,7 +71,7 @@ if [ $? -eq 0 ]; then
   if [ $(docker ps -a | grep "sec-psc-alertmanager" | wc -l) -eq 0 ]; then
     sudo docker run \
       --detach \
-      --publish 172.17.0.1:9093:9093 \
+      --publish ${DOCKER_GATEWAY}:9093:9093 \
       --name sec-psc-alertmanager \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
