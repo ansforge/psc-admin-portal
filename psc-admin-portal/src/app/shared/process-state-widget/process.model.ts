@@ -14,13 +14,13 @@
 /// limitations under the License.
 ///
 
-export class State {
+export class ProcessState {
   constructor(public numeroEtape: number,public code: string){
     codeToState.set(this.code.toLowerCase(),this);
   }
 }
 
-const codeToState: Map<string,State>=new Map();
+const codeToState: Map<string,ProcessState>=new Map();
 
 export function stateFromCode(code: string) {
   if(codeToState.has(code.toLowerCase())) {
@@ -30,13 +30,13 @@ export function stateFromCode(code: string) {
   }
 }
 
-export const processStates: State[]=[
-  new State(1,"submitted"),
-  new State(1,"readyToExtract"),
-  new State(2,"readyToComputeDiff"),
-  new State(3,"diffComputed"),
-  new State(4,"uploadingChanges"),
-  new State(5,"changesApplied"),
+export const processStateEnum: ProcessState[]=[
+  new ProcessState(1,"submitted"),
+  new ProcessState(1,"readyToExtract"),
+  new ProcessState(2,"readyToComputeDiff"),
+  new ProcessState(3,"diffComputed"),
+  new ProcessState(4,"uploadingChanges"),
+  new ProcessState(5,"changesApplied"),
   //This last state is synthetic and generated from extract's state.
-  new State(6,"messageSend")
+  new ProcessState(6,"messageSend")
 ]
