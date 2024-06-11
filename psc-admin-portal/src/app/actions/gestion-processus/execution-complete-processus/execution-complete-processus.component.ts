@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 import { Pscload } from '../../../api/pscload.service';
+import { State, processStates, stateFromCode } from './process.model';
 
 @Component({
   selector: 'app-execution-complete-processus',
@@ -31,11 +32,13 @@ export class ExecutionCompleteProcessusComponent {
   Confirm: typeof Confirm=Confirm;
   supprimerExtraction: Confirm=Confirm.NO;
   executionStatus: QueryStatus|null=null;
+  processState: State|undefined|null=null;
   
   constructor(private loader: Pscload){}
   
   executer(): void {
     this.executionStatus={status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"};
+    this.processState=processStates[3];
     this.loader.executerProcessusComplet()
         .subscribe(
           (status: QueryStatus) => this.executionStatus=status
