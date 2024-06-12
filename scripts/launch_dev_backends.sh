@@ -23,8 +23,8 @@
 
 ${SCRIPT_DIR}/stop_dev_backends.sh
 
-touch scripts/dev.cfg
-. scripts/dev.cfg
+touch ${SCRIPT_DIR}/dev.cfg
+. ${SCRIPT_DIR}/dev.cfg
 
 if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
