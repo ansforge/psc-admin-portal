@@ -82,6 +82,24 @@ if [ $? -eq 0 ]; then
     sudo docker start sec-psc-alertmanager
   fi
 
+  if [ ! -f $(pwd)/target/rass-archive-mock.zip ]; then
+    mkdir -p $(pwd)/target
+    touch $(pwd)/target/rass-archive-mock.txt
+    (cd $(pwd)/target/;zip rass-archive-mock.zip rass-archive-mock.txt)
+  fi
+
+  if [ $(docker ps -a | grep "sec-psc-dev-rass-mock" | wc -l) -eq 0 ]; then
+    sudo docker run \
+      --detach \
+      --publish ${HOST_ADDRESS}:9094:80 \
+      --name "sec-psc-dev-rass-mock" \
+      -v $(pwd)/target/rass-archive-mock.zip:/usr/local/apache2/htdocs/rass-archive-mock.zip \
+      -v $(pwd)/scripts/rass-mock/httpd.conf:/usr/local/apache2/conf/httpd.conf \
+      httpd:2.4.58-bookworm
+  else
+    sudo docker start sec-psc-dev-rass-mock
+  fi
+
   sudo docker run \
      --publish ${HOST_ADDRESS}:80:80 \
      --rm \

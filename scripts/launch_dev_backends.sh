@@ -39,8 +39,13 @@ cd ${CODE_BASE_DIR}/psc-toggle-ids/psc-toggle-manager
 mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8081 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api" &
 echo $! > ${SCRIPT_DIR}/toggle.pid
 
+PSCLOAD_FILES_DIR=${SCRIPT_DIR}/../target/pscload_files
+if [ ! -d ${PSCLOAD_FILES_DIR} ]; then
+  mkdir -p ${PSCLOAD_FILES_DIR}
+fi
+
 cd ${CODE_BASE_DIR}/psc-rass-loader/pscload
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api" &
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api -Dextract.download.url=http://${HOST_ADDRESS}:9094/rass-archive-mock.zip -Duse.x509.auth=false -Dfiles.directory=${PSCLOAD_FILES_DIR}" &
 echo $! > ${SCRIPT_DIR}/psload.pid
 
 cd ${CODE_BASE_DIR}/psc-extract
