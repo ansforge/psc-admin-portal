@@ -18,6 +18,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProcessState } from './process.model';
 import { ProcessService } from './process.service';
 import { QueryResult } from '../../api/queryResult.model';
+import { Subscription, timer } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-process-state-widget',
@@ -28,22 +30,34 @@ import { QueryResult } from '../../api/queryResult.model';
 })
 export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
   processState: ProcessState|null=null;
+  private updateSubscription: Subscription|null=null; 
   
   constructor(private procesService: ProcessService){}
   
   ngOnInit(): void {
-    this.procesService
-      .getProcessState()
+    
+    this.updateSubscription=timer(0,environment.UPDATE_PERIOD)
       .subscribe(
-        (state: QueryResult<ProcessState|null>) => {
-          if(state.body) {
-            this.processState = state.body
-          }
+        () => {
+          this.procesService
+            .getProcessState()
+            .subscribe(
+              (state: QueryResult<ProcessState|null>) => this.updateState(state)
+            );
         }
       );
   }
   
+  private updateState(state: QueryResult<ProcessState|null>) {
+    if(state.body || state.body===null) {
+      this.processState = state.body
+    }
+  }
+  
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    if(this.updateSubscription!==null) {
+      this.updateSubscription.unsubscribe();
+      this.updateSubscription=null;
+    }
   }
 }
