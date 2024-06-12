@@ -14,6 +14,9 @@
 /// limitations under the License.
 ///
 
+/**
+ * Model for process state data.
+ */
 export class ProcessState {
   constructor(public numeroEtape: number,public code: string){
     codeToState.set(this.code.toLowerCase(),this);
@@ -22,6 +25,9 @@ export class ProcessState {
 
 const codeToState: Map<string,ProcessState>=new Map();
 
+/**
+ * Decoding logic to retrieve process state from underlying partial states.
+ */
 export function stateFromCode(code: string) {
   if(codeToState.has(code.toLowerCase())) {
     return codeToState.get(code.toLowerCase());
@@ -30,6 +36,9 @@ export function stateFromCode(code: string) {
   }
 }
 
+/**
+ * Synthetic process state model based on the pscload (RASS laoder), psc-extract and AMAR message queue states.
+ */
 export const processStateEnum: ProcessState[]=[
   new ProcessState(1,"submitted"),
   new ProcessState(1,"readyToExtract"),
@@ -37,6 +46,5 @@ export const processStateEnum: ProcessState[]=[
   new ProcessState(3,"diffComputed"),
   new ProcessState(4,"uploadingChanges"),
   new ProcessState(5,"changesApplied"),
-  //This last state is synthetic and generated from extract's state.
   new ProcessState(6,"messageSend")
 ]
