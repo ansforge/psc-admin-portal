@@ -21,7 +21,7 @@ import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { QueryResult } from "./queryResult.model";
-import { NO_DIFF, Operation, PsDiff, PsLoadStatus } from "./pscload.model";
+import { NO_DIFF, Operation, PsDiff, PscLoadStatus } from "./pscload.model";
 import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
 import { errorResponseToQueryResult } from "./queryResult";
 
@@ -48,13 +48,13 @@ export class Pscload {
   }
   
   getDiff(): Observable<QueryResult<PsDiff>> {
-    return this.http.get<PsLoadStatus[]>(
+    return this.http.get<PscLoadStatus[]>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`,
     ).pipe(
       map(
-        (statusTable: PsLoadStatus[]) => {
+        (statusTable: PscLoadStatus[]) => {
           if(statusTable.length>0){
-            const status: PsLoadStatus=statusTable.pop() as PsLoadStatus;
+            const status: PscLoadStatus=statusTable.pop() as PscLoadStatus;
             const created=status.psToCreateIds?status.psToCreateIds:[];
             const deleted=status.psToDeleteIds?status.psToDeleteIds:[];
             const updated=status.psToUpdateIds?status.psToUpdateIds:[];
