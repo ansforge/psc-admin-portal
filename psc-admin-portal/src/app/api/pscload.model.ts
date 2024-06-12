@@ -44,7 +44,7 @@ export enum PsLoadState {
 export interface PscLoadStatus {
   processId: number;
   createdOn: Date;
-  state?: PsLoadState;
+  state: PsLoadState;
   psToCreate?: number;
   psToCreateIds?: string[];
   psToUpdate?: number;
