@@ -28,9 +28,9 @@ const codeToState: Map<string,ProcessState>=new Map();
 /**
  * Decoding logic to retrieve process state from underlying partial states.
  */
-export function stateFromCode(code: string) {
+export function stateFromCode(code: string): ProcessState {
   if(codeToState.has(code.toLowerCase())) {
-    return codeToState.get(code.toLowerCase());
+    return codeToState.get(code.toLowerCase()) as ProcessState;
   } else {
     throw new Error(`No such state code ${code}`);
   }
