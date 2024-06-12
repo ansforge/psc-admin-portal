@@ -14,7 +14,10 @@
 /// limitations under the License.
 ///
 
+import { msFromMinutes } from "../app/shared/time.model";
+
 export const environment = {
   packaged: true,
-  API_HOSTNAME:'/'
+  API_HOSTNAME: '/',
+  UPDATE_PERIOD: msFromMinutes(1) // updating the display every minute as enough in production
 }
