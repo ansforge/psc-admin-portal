@@ -23,10 +23,13 @@
 
 ${SCRIPT_DIR}/stop_dev_backends.sh
 
+touch scripts/dev.cfg
+. scripts/dev.cfg
+
 if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
 fi
-echo "Reaching to interface ${HOST_ADDRESS} for mongodb. Set HOST_ADDRESS to override."
+echo "Reaching to interface ${HOST_ADDRESS} for mongodb. Add HOST_ADRESS in scripts/dev.cfg to override."
 
 cd ${CODE_BASE_DIR}/psc-ps-api
 mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=${API_PORT} -Dspring.data.mongodb.host=${HOST_ADDRESS}" &
