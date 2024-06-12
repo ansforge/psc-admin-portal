@@ -20,3 +20,4 @@
 
 # Script pid files
 /scripts/*.pid
+/scripts/dev.cfg

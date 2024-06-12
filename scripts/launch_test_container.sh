@@ -19,19 +19,23 @@
 
 cd $(dirname $0)/..
 
+touch scripts/dev.cfg
+. scripts/dev.cfg
+
 if [ -z ${CLIENT_ID} ]; then
-  echo "Missing CLIENT_ID value in env" >&2
+  echo "Missing CLIENT_ID value in env. Please add CLIENT_ID in scripts/dev.cfg." >&2
   exit 2
 fi
 
 if [ -z ${CLIENT_SECRET} ]; then
-  echo "Missing CLIENT_SECRET value in env" >&2
+  echo "Missing CLIENT_SECRET value in env. Please add CLIENT_SECRET in scripts/dev.cfg." >&2
   exit 2
 fi
 
 if [ -z ${HOST_ADDRESS} ]; then
   HOST_ADDRESS=127.0.0.2
 fi
+echo "Listening through interface ${HOST_ADDRESS}. Add HOST_ADDRESS in scripts/dev.cfg to override."
 
 if [ ! -f scripts/service-addresses.conf ]; then
   cp scripts/service-addresses.conf.in scripts/service-addresses.conf
