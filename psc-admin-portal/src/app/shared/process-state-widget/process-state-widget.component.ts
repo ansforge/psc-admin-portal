@@ -14,8 +14,9 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProcessState } from './process.model';
+import { ProcessService } from './process.service';
 
 @Component({
   selector: 'app-process-state-widget',
@@ -24,6 +25,20 @@ import { ProcessState } from './process.model';
   templateUrl: './process-state-widget.component.html',
   styleUrl: './process-state-widget.component.scss'
 })
-export class ProcessStateWidgetComponent {
+export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
   processState: ProcessState|null=null;
+  
+  constructor(private procesService: ProcessService){}
+  
+  ngOnInit(): void {
+    this.procesService
+      .getProcessState()
+      .subscribe(
+        (state: ProcessState|null) => this.processState = state
+      );
+  }
+  
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 }
