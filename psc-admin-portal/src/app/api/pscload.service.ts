@@ -47,8 +47,31 @@ export class Pscload {
     return of({status:QueryStatusEnum.KO,message:"Unsupported operation"});
   }
   
-  getPscLoadStatus(): Observable<PscLoadStatus|null> {
-    return of(null);
+  getPscLoadStatus(details: boolean=false): Observable<QueryResult<PscLoadStatus|null>> {
+    return this.http.get<PscLoadStatus[]>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=${details}`
+    ).pipe(
+      map(
+        (statusTable: PscLoadStatus[]) => {
+          if(statusTable.length>0) {
+            return {
+              status: QueryStatusEnum.OK,
+              message: 'Status found',
+              body:  statusTable.pop() as PscLoadStatus
+            };
+          } else {
+            return {
+              status: QueryStatusEnum.OK,
+              message: 'No current status',
+              body: null
+            };
+          }
+        }
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult<PscLoadStatus>(err)        
+      )
+    );
   }
   
   getDiff(): Observable<QueryResult<PsDiff>> {

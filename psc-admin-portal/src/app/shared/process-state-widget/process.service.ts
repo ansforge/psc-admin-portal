@@ -15,12 +15,50 @@
 ///
 
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
-import { ProcessState } from "./process.model";
+import { Observable, map, of, pipe } from "rxjs";
+import { ProcessState, stateFromCode } from "./process.model";
+import { Pscload } from "../../api/pscload.service";
+import { QueryResult } from "../../api/queryResult.model";
+import { PscLoadStatus } from "../../api/pscload.model";
+import { QueryStatusEnum } from "../../api/queryStatus.model";
 
 @Injectable({providedIn: "root"})
 export class ProcessService {
-  getProcessState(): Observable<ProcessState|null> {
-    return of(null);
+  
+  constructor(private pscLoad: Pscload){}
+  
+  getProcessState(): Observable<QueryResult<ProcessState|null>> {
+    return this.pscLoad
+      .getPscLoadStatus()
+      .pipe(
+      map(
+        (res: QueryResult<PscLoadStatus|null>) => {
+          if(res.status===QueryStatusEnum.OK) {
+            const pscloadStatus = res.body as PscLoadStatus|null;
+            if(pscloadStatus===null) {
+              const body: null=null;
+              return {
+                status: QueryStatusEnum.OK,
+                message: 'Pas de processus en cours',
+                body:  body
+              };
+            } else {
+              const state = pscloadStatus.state;
+              const processState: ProcessState = stateFromCode(state)
+              return {
+                status: QueryStatusEnum.OK,
+                message: 'Processus en cours',
+                body: processState
+              } as QueryResult<ProcessState | null>;;
+            }
+          } else {
+            return {
+              status: QueryStatusEnum.KO,
+              message: res.message
+            } as QueryResult<ProcessState | null>;
+          }
+        }
+      )
+    );
   }
 }

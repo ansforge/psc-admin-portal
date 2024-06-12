@@ -17,6 +17,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProcessState } from './process.model';
 import { ProcessService } from './process.service';
+import { QueryResult } from '../../api/queryResult.model';
 
 @Component({
   selector: 'app-process-state-widget',
@@ -34,7 +35,11 @@ export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
     this.procesService
       .getProcessState()
       .subscribe(
-        (state: ProcessState|null) => this.processState = state
+        (state: QueryResult<ProcessState|null>) => {
+          if(state.body) {
+            this.processState = state.body
+          }
+        }
       );
   }
   
