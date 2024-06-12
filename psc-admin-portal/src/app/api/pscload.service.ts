@@ -47,6 +47,10 @@ export class Pscload {
     return of({status:QueryStatusEnum.KO,message:"Unsupported operation"});
   }
   
+  getPscLoadStatus(): Observable<PscLoadStatus|null> {
+    return of(null);
+  }
+  
   getDiff(): Observable<QueryResult<PsDiff>> {
     return this.http.get<PscLoadStatus[]>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`,
