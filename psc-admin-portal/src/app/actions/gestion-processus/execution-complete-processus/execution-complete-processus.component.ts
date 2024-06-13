@@ -14,16 +14,17 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 import { Pscload } from '../../../api/pscload.service';
+import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-execution-complete-processus',
   standalone: true,
-  imports: [FormsModule,QueryStatusPanelComponent],
+  imports: [FormsModule,QueryStatusPanelComponent,ConfirmModalComponent],
   templateUrl: './execution-complete-processus.component.html',
   styleUrl: './execution-complete-processus.component.scss'
 })
@@ -31,10 +32,22 @@ export class ExecutionCompleteProcessusComponent {
   Confirm: typeof Confirm=Confirm;
   supprimerExtraction: Confirm=Confirm.NO;
   executionStatus: QueryStatus|null=null;
+  removeWarningExecution: EventEmitter<void> = new EventEmitter();
   
   constructor(private loader: Pscload){}
   
+  askExecuter() {
+    if(this.supprimerExtraction===Confirm.YES) {
+      this.removeWarningExecution.next();
+    } else {
+      this.executer();
+    }
+  }
+  
   executer(): void {
+    if(this.supprimerExtraction===Confirm.YES) {
+      
+    }
     this.executionStatus={status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"};
     this.loader.executerProcessusComplet()
         .subscribe(

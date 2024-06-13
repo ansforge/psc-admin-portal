@@ -69,7 +69,13 @@
   </div>
   <div class="row">
     <div class="input-group col-sm-auto executes-row row">
-      <button type="button" class="btn btn--plain btn--primary" (click)="executer()">Exécuter</button>
+      <button type="button" class="btn btn--plain btn--primary" (click)="askExecuter()">Exécuter</button>
     </div>
   </div>
 </div>
+<app-confirm-modal
+  contentText="Êtes-vous sûr de vouloir supprimer l'extraction RASS en anomalie ?"
+  (confirm)="executer()"
+  [showEvent]="removeWarningExecution"
+  confirmButtonText="Supprimer"
+  ></app-confirm-modal>
