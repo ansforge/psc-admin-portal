@@ -14,15 +14,75 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PsSearchService} from '../api/ps-search.service';
+import {Subject, takeUntil} from 'rxjs';
+import {JsonPipe} from '@angular/common';
+import {QueryStatusEnum} from '../api/queryStatus.model';
 
 @Component({
   selector: 'app-interrogation-ps',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    JsonPipe
+  ],
   templateUrl: './interrogation-ps.component.html',
   styleUrl: './interrogation-ps.component.scss'
 })
-export class InterrogationPsComponent {
+export class InterrogationPsComponent implements OnInit, OnDestroy {
+  private ID_NAT_PS: string = 'idNatPS';
 
+  apiErrorMessage: string = '';
+  isInvalid: boolean = false;
+  shouldShowAlert: boolean = false;
+  formGroup: FormGroup;
+
+  unsub$: Subject<void> = new Subject<void>();
+  response: any = null;
+
+  constructor(private formBuilder: FormBuilder,
+              private psSearchService: PsSearchService) {
+    this.formGroup = formBuilder.group({idNatPS: new FormControl('', [Validators.required])});
+  }
+
+  ngOnInit(): void {
+    this.formGroup.get(this.ID_NAT_PS)?.valueChanges.pipe(
+      takeUntil(this.unsub$)
+    ).subscribe(() => {
+      if (this.formGroup.get(this.ID_NAT_PS)?.valid) {
+        this.formGroup.get(this.ID_NAT_PS)?.setErrors(null);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
+  }
+
+  findPSByIDNat(): void {
+    this.isInvalid = this.formGroup.invalid;
+    this.shouldShowAlert = this.isInvalid;
+    const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
+
+    if (!this.isInvalid) {
+      this.psSearchService.getPSByIDNat(idNatPS).pipe(
+        takeUntil(this.unsub$)
+      ).subscribe((response) => {
+        if (QueryStatusEnum.OK === response.status) {
+          this.response = response;
+        } else {
+          this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
+          this.shouldShowAlert = true;
+        }
+      });
+    }
+  }
+
+  hideAlert(): void {
+    this.shouldShowAlert = false;
+  }
 }
