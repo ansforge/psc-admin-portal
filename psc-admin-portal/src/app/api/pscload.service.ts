@@ -44,7 +44,16 @@ export class Pscload {
   }
   
   executerProcessusComplet(): Observable<QueryStatus>{
-    return of({status:QueryStatusEnum.KO,message:"Unsupported operation"});
+    return this.http.post<void>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/full-run`,''
+    ).pipe(
+      map(
+        () => ({status: QueryStatusEnum.OK,message:"L'exécution a démarré avec succès."})
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult(err)
+      )
+    );
   }
   
   getPscLoadStatus(details: boolean=false): Observable<QueryResult<PscLoadStatus|null>> {
