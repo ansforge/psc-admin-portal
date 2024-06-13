@@ -29,15 +29,15 @@ import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.c
   styleUrl: './execution-complete-processus.component.scss'
 })
 export class ExecutionCompleteProcessusComponent {
-  Confirm: typeof Confirm=Confirm;
-  supprimerExtraction: Confirm=Confirm.NO;
+  RemoveRassExtract: typeof RemoveRassExtract=RemoveRassExtract;
+  supprimerExtraction: RemoveRassExtract=RemoveRassExtract.NO;
   executionStatus: QueryStatus|null=null;
   removeWarningExecution: EventEmitter<void> = new EventEmitter();
   
   constructor(private loader: Pscload){}
   
   askExecuter() {
-    if(this.supprimerExtraction===Confirm.YES) {
+    if(this.supprimerExtraction===RemoveRassExtract.YES) {
       this.removeWarningExecution.next();
     } else {
       this.executer();
@@ -45,7 +45,7 @@ export class ExecutionCompleteProcessusComponent {
   }
   
   executer(): void {
-    if(this.supprimerExtraction===Confirm.YES) {
+    if(this.supprimerExtraction===RemoveRassExtract.YES) {
       
     }
     this.executionStatus={status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"};
@@ -55,7 +55,7 @@ export class ExecutionCompleteProcessusComponent {
         );
   }
 }
-enum Confirm {
+enum RemoveRassExtract {
   YES='Oui',
   NO='Non'
 }
