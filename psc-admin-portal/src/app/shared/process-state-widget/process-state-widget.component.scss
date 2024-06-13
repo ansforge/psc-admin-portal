@@ -13,3 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+.o-stepper__number, .o-stepper__name {
+  opacity: 50%;
+}
+
+li.o-stepper--current .o-stepper__number,li.o-stepper--current .o-stepper__name,li.o-stepper--checked .o-stepper__number,li.o-stepper--checked .o-stepper__name {
+  opacity: 100%;
+}
