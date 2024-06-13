@@ -45,7 +45,7 @@ if [ ! -d ${PSCLOAD_FILES_DIR} ]; then
 fi
 
 cd ${CODE_BASE_DIR}/psc-rass-loader/pscload
-mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8082 -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api -Dextract.download.url=http://${HOST_ADDRESS}:9094/rass-archive-mock.zip -Duse.x509.auth=false -Dfiles.directory=${PSCLOAD_FILES_DIR}" &
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=${RASS_LOAD_PORT} -Dapi.base.url=http://${HOST_ADDRESS}:${API_PORT}/psc-api-maj/api -Dextract.download.url=http://${HOST_ADDRESS}:9094/rass-archive-mock.zip -Duse.x509.auth=false -Dfiles.directory=${PSCLOAD_FILES_DIR}" &
 echo $! > ${SCRIPT_DIR}/psload.pid
 
 cd ${CODE_BASE_DIR}/psc-extract

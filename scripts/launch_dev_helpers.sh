@@ -19,6 +19,8 @@
 # run from IDE with the necessary revers-proxy configuration to enable service call by
 # the angular front indevelopment mode.
 
+. $(dirname $0)/backend_setup.sh
+
 cd $(dirname $0)/..
 touch scripts/dev.cfg
 . scripts/dev.cfg
@@ -71,10 +73,12 @@ if [ $? -eq 0 ]; then
   fi
 
   if [ $(docker ps -a | grep "sec-psc-alertmanager" | wc -l) -eq 0 ]; then
+    sed -e "s|http://127.0.0.2:5001/|http://${DOCKER_GATEWAY}:${RASS_LOAD_PORT}/pscload/v2/process/continue|g" $(pwd)/scripts/alertmanager.yml > $(pwd)/target/alertmanager.yml
     sudo docker run \
       --detach \
       --publish ${DOCKER_GATEWAY}:9093:9093 \
       --name sec-psc-alertmanager \
+      -v $(pwd)/target/alertmanager.yml:/etc/alertmanager/alertmanager.yml \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
       --web.external-url=http://sec-psc.wom.dev.henix.fr/
