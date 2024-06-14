@@ -26,6 +26,13 @@
     <div>
       <app-choix-csv-correspondance
         title="Ajouter d'autres identifiants"
+        [operation]="CsvOperationsModel.INSERT"
       ></app-choix-csv-correspondance>
     </div>
+  <div class="mt-6">
+    <app-choix-csv-correspondance
+      title="Suppression d'autres identifiants"
+      [operation]="CsvOperationsModel.DELETE"
+    ></app-choix-csv-correspondance>
+  </div>
 </div>
