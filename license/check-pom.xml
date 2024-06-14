@@ -89,6 +89,8 @@
             <exclude>**/*.p12</exclude>
             <exclude>**/*.srl</exclude>
             <exclude>**/*.jks</exclude>
+            <exclude>**/*.csr</exclude>
+            <!-- This should disappear if we remove test resources -->
           </excludes>
           <mapping>
             <scss>JAVADOC_STYLE</scss>
