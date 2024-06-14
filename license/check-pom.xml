@@ -82,6 +82,13 @@
             <exclude>**/*.ico</exclude>
             <exclude>**/*.json</exclude>
             <exclude>**/.gitkeep</exclude>
+            <!-- Treat certificate related files as binaries (which they are) -->
+            <exclude>**/*.key</exclude>
+            <exclude>**/*.pem</exclude>
+            <exclude>**/*.crt</exclude>
+            <exclude>**/*.p12</exclude>
+            <exclude>**/*.srl</exclude>
+            <exclude>**/*.jks</exclude>
           </excludes>
           <mapping>
             <scss>JAVADOC_STYLE</scss>
