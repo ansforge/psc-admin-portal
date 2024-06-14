@@ -32,7 +32,7 @@
       @if (isInvalid) {
         <p>Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer une recherche</p>
       } @else {
-        <p>{{apiErrorMessage}}</p>
+        <p>{{ apiErrorMessage }}</p>
       }
 
       <button type="button" class="btn btn--close btn--icon-only" (click)="hideAlert()">
@@ -44,7 +44,7 @@
   }
 
   <p class="h4 mt-6" [class.is-invalid]="isInvalid">ID National * </p>
-  <div class="input-group search-group" style="width: 50%" [class.is-invalid]="isInvalid" [formGroup]="formGroup">
+  <div class="input-group search-group w-50" [class.is-invalid]="isInvalid" [formGroup]="formGroup">
     <label for="idNatPS" class="sr-only">Recherche</label>
 
     <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"/>
@@ -61,9 +61,9 @@
   }
 
   @if (response && !shouldShowAlert) {
-  <p class="h4 mt-6">Résultats de la recherche</p>
-  <div class="container search-result-container">
-    <pre>{{ response | json }}</pre>
-  </div>
+    <p class="h4 mt-6">Résultats de la recherche</p>
+    <div class="container search-result-container">
+      <ngx-json-viewer [json]="response"></ngx-json-viewer>
+    </div>
   }
 </div>

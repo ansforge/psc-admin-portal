@@ -20,6 +20,7 @@ import {PsSearchService} from '../api/ps-search.service';
 import {Subject, takeUntil} from 'rxjs';
 import {JsonPipe} from '@angular/common';
 import {QueryStatusEnum} from '../api/queryStatus.model';
+import {NgxJsonViewerModule} from 'ngx-json-viewer';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -27,7 +28,8 @@ import {QueryStatusEnum} from '../api/queryStatus.model';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe
+    JsonPipe,
+    NgxJsonViewerModule
   ],
   templateUrl: './interrogation-ps.component.html',
   styleUrl: './interrogation-ps.component.scss'
@@ -73,7 +75,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsub$)
       ).subscribe((response) => {
         if (QueryStatusEnum.OK === response.status) {
-          this.response = response;
+          this.response = { data: response.data };
         } else {
           this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
           this.shouldShowAlert = true;
