@@ -17,6 +17,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InterrogationPsComponent } from './interrogation-ps.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('InterrogationPsComponent', () => {
   let component: InterrogationPsComponent;
@@ -24,10 +25,10 @@ describe('InterrogationPsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InterrogationPsComponent]
+      imports: [InterrogationPsComponent, HttpClientTestingModule]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(InterrogationPsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
