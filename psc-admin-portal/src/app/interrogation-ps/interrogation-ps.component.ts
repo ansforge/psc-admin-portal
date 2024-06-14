@@ -16,11 +16,11 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {PsSearchService} from '../api/ps-search.service';
 import {Subject, takeUntil} from 'rxjs';
 import {JsonPipe} from '@angular/common';
 import {QueryStatusEnum} from '../api/queryStatus.model';
 import {NgxJsonViewerModule} from 'ngx-json-viewer';
+import {PsApi} from '../api/psApi.service';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -46,7 +46,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   response: any = null;
 
   constructor(private formBuilder: FormBuilder,
-              private psSearchService: PsSearchService) {
+              private psApiService: PsApi,) {
     this.formGroup = formBuilder.group({idNatPS: new FormControl('', [Validators.required])});
   }
 
@@ -71,7 +71,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
 
     if (!this.isInvalid) {
-      this.psSearchService.getPSByIDNat(idNatPS).pipe(
+      this.psApiService.getPSByIDNat(idNatPS).pipe(
         takeUntil(this.unsub$)
       ).subscribe((response) => {
         if (QueryStatusEnum.OK === response.status) {
