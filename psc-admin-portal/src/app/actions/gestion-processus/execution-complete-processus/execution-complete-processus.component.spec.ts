@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExecutionCompleteProcessusComponent } from './execution-complete-processus.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('ExecutionCompleteProcessusComponent', () => {
   let component: ExecutionCompleteProcessusComponent;
@@ -24,11 +26,12 @@ describe('ExecutionCompleteProcessusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExecutionCompleteProcessusComponent]
+      imports: [ExecutionCompleteProcessusComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(ExecutionCompleteProcessusComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

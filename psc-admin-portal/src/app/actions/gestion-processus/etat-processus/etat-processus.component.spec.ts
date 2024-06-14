@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EtatProcessusComponent } from './etat-processus.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('EtatProcessusComponent', () => {
   let component: EtatProcessusComponent;
@@ -24,11 +26,12 @@ describe('EtatProcessusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EtatProcessusComponent]
+      imports: [EtatProcessusComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(EtatProcessusComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

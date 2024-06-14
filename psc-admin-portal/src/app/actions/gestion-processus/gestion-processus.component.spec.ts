@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GestionProcessusComponent } from './gestion-processus.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('GestionProcessusComponent', () => {
   let component: GestionProcessusComponent;
@@ -24,11 +26,12 @@ describe('GestionProcessusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GestionProcessusComponent]
+      imports: [GestionProcessusComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(GestionProcessusComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

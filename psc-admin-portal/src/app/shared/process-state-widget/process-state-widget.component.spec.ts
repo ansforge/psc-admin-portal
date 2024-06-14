@@ -17,6 +17,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProcessStateWidgetComponent } from './process-state-widget.component';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ProcessStateWidgetComponent', () => {
   let component: ProcessStateWidgetComponent;
@@ -24,11 +26,12 @@ describe('ProcessStateWidgetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProcessStateWidgetComponent]
+      imports: [ProcessStateWidgetComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(ProcessStateWidgetComponent);
+    TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
