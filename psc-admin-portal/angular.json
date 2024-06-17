@@ -35,6 +35,7 @@
               "src/style/style-ans.css",
               "src/style/print.css",
               "src/style/sec-psc.css",
+              "src/style/bloc-global.css",
               "src/styles.scss"
             ],
             "scripts": []
