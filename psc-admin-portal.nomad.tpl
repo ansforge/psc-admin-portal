@@ -64,18 +64,36 @@ job "psc-admin-portal" {
       }
       
       template {
-        data = << EOH
+        data = <<EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}
-PSC_HOST={{Data.data.hostname}}
-PROTOCOL={{Data.data.protocol}}
-CLIENT_ID={{Data.data.client_id}}
-CLIENT_SECRET={{Data.data.client_secret}}
+PSC_HOST={{.Data.data.hostname}}
+PROTOCOL={{.Data.data.protocol}}
+CLIENT_ID={{.Data.data.client_id}}
+CLIENT_SECRET={{.Data.data.client_secret}}
 {{end}}
-EOF
-        destination = secrets/front.env
+EOH
+        destination = "secrets/front.env"
         env = true
       }
 
+      template {
+        data = <<EOH
+PS_API_ADDRESS={{ range service "${nomad_namespace}-psc-api-maj-v2" }}{.Address}}{{ end }}
+PS_API_PORT={{ range service "${nomad_namespace}-psc-api-maj-v2" }}{.Port}}{{ end }}
+TOGGLE_ADDRESS={{ range service "${nomad_namespace}-psc-toggle-manager" }}{.Address}}{{ end }}
+TOGGLE_PORT={{ range service "${nomad_namespace}-psc-toggle-manager" }}{.Port}}{{ end }}
+PSCLOAD_ADDRESS={{ range service "${nomad_namespace}-pscload" }}{.Address}}{{ end }}
+PSCLOAD_PORT={{ range service "${nomad_namespace}-pscload" }}{.Port}}{{ end }}
+PSCEXTRACT_ADDRESS={{ range service "${nomad_namespace}-pscextract" }}{.Address}}{{ end }}
+PSCEXTRACT_PORT={{ range service "${nomad_namespace}-pscextract" }}{.Port}}{{ end }}
+ALERT_MANAGER_ADDRESS={{ range service "${nomad_namespace}-psc-alertmanager" }}{.Address}}{{ end }}
+ALERT_MANAGER_PORT={{ range service "${nomad_namespace}-psc-alertmanager" }}{.Port}}{{ end }}
+
+EOH
+        destination = "secrets/back.env"
+        env = true
+      }
+      
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
         tags = ["urlprefix-$\u007BPUBLIC_HOSTNAME\u007D/toggle/"]
