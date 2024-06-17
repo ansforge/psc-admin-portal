@@ -56,6 +56,12 @@ job "psc-admin-portal" {
       config {
         image = "${artifact.image}:${artifact.tag}"
         ports = ["https"]
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/whitelist.conf"
+          source = "local/whitelist.conf"
+          readonly = true
+        }
       }
   
       resources {
@@ -94,6 +100,18 @@ EOH
         env = true
       }
       
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal/whitelist" }}
+{{range $k, $v := .Data.data }}
+# Some rights for {{ $k }}
+Require claim SubjectNameID:{{ $v }}
+{{ end}}
+{{ end }}
+EOH
+        destination = "local/whitelist.conf"
+      }
+
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
         tags = ["urlprefix-$\u007BPUBLIC_HOSTNAME\u007D/toggle/"]
