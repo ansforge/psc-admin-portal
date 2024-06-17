@@ -62,6 +62,12 @@ job "psc-admin-portal" {
           source = "local/whitelist.conf"
           readonly = true
         }
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/service-addresses.conf"
+          source = "local/service-addresses.conf"
+          readonly = true
+        }
       }
   
       resources {
@@ -84,20 +90,19 @@ EOH
 
       template {
         data = <<EOH
-PS_API_ADDRESS={{ range service "${nomad_namespace}-psc-api-maj-v2" }}{.Address}}{{ end }}
-PS_API_PORT={{ range service "${nomad_namespace}-psc-api-maj-v2" }}{.Port}}{{ end }}
-TOGGLE_ADDRESS={{ range service "${nomad_namespace}-psc-toggle-manager" }}{.Address}}{{ end }}
-TOGGLE_PORT={{ range service "${nomad_namespace}-psc-toggle-manager" }}{.Port}}{{ end }}
-PSCLOAD_ADDRESS={{ range service "${nomad_namespace}-pscload" }}{.Address}}{{ end }}
-PSCLOAD_PORT={{ range service "${nomad_namespace}-pscload" }}{.Port}}{{ end }}
-PSCEXTRACT_ADDRESS={{ range service "${nomad_namespace}-pscextract" }}{.Address}}{{ end }}
-PSCEXTRACT_PORT={{ range service "${nomad_namespace}-pscextract" }}{.Port}}{{ end }}
-ALERT_MANAGER_ADDRESS={{ range service "${nomad_namespace}-psc-alertmanager" }}{.Address}}{{ end }}
-ALERT_MANAGER_PORT={{ range service "${nomad_namespace}-psc-alertmanager" }}{.Port}}{{ end }}
+Define PS_API_ADDRESS "{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Address}}{{ end }}"
+Define PS_API_PORT "{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Port}}{{ end }}"
+Define TOGGLE_ADDRESS "{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Address}}{{ end }}"
+Define TOGGLE_PORT "{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Port}}{{ end }}"
+Define PSCLOAD_ADDRESS "{{ range service "${nomad_namespace}-pscload" }}{{.Address}}{{ end }}"
+Define PSCLOAD_PORT "{{ range service "${nomad_namespace}-pscload" }}{{.Port}}{{ end }}"
+Define PSCEXTRACT_ADDRESS "{{ range service "${nomad_namespace}-pscextract" }}{{.Address}}{{ end }}"
+Define PSCEXTRACT_PORT "{{ range service "${nomad_namespace}-pscextract" }}{{.Port}}{{ end }}"
+Define ALERT_MANAGER_ADDRESS "{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}"
+Define ALERT_MANAGER_PORT "{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Port}}{{ end }}"
 
 EOH
-        destination = "secrets/back.env"
-        env = true
+        destination = "local/service-addresses.conf"
       }
       
       template {
