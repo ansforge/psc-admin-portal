@@ -23,7 +23,7 @@
 
 . $(dirname $0)/backend_setup.sh
 
-for file in *.pid; do 
+for file in ${SCRIPT_DIR}/*.pid; do 
   echo "$(basename $file | grep -Eo '^[a-zA-Z]+'): "
   pid=$(ps -ef | tr -s " " | cut -d " " -f 2,3 |  grep $(cat $file) | cut -d " " -f1 | grep -v $(cat $file))
   sudo netstat --tcp --numeric --listening --program | grep "${pid}/" | tr -s " " | cut -d" " -f 4,7

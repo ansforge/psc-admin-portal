@@ -31,6 +31,9 @@ script to draft the header bump commit. **Always** check the result before commi
 but in some corner cases (some partial match with the header with too much difference) it will make invalid change
 that needs to be manually fixed.
 
+
+<a name="runInDev"></a>
+
 ### Running the angular application in development mode
 
 #### Prerequisits
@@ -88,7 +91,7 @@ Two helper processes may be run as docker containers :
 The mapping to backend processes IP and PORT is defined in the `scripts/service-addresses.conf` file. This file is not committed, but generated from the `scripts/service-addresses.conf.in` file if it does not exist.
 Default values are OK if you run backends alongside the proxy container using the script (see [Running backend processes](#runningBackendProcesses)). If this is not your configuration, adjust the IP or PORT variables as you need.
 
-1. Mongodb databse for the backends
+1. Mongodb database for the backends
 
 Both containers can be launched by running the [`scripts/launch_dev_helpers.sh`](scripts/launch_dev_helpers.sh) script.
 
@@ -99,3 +102,24 @@ Both containers can be launched by running the [`scripts/launch_dev_helpers.sh`]
 Launch the [`scripts/launch_dev_backends.sh`](scripts/launch_dev_backends.sh) script.
 
 To stop the backend, launch the [`scripts/stop_dev_backends.sh`](scripts/stop_dev_backends.sh) script.
+
+### Testing the process
+
+After launching development processes (see [above](#runInDev)), processes may be tested using two datasets :
+
+1.  Creation dataset
+
+    This dataset is in the file `src/test/resources/rass-2000-lignes.txt`. To load it:
+
+    1.  first copy the (empty) `target/rass-archive-mock.txt` file created by dev helpers into the `target/pscload_files` directory.
+    1.  then copy the `src/test/resources/rass-2000-lignes.txt` file content into the `target/pscload_files/rass-archive-mock.txt` file.
+    1.  The process will run all along by itself (no restriction on PS creations)
+
+1.  The complete deletion dataset
+
+    This dataset is the empty rass mock extract created by the dev helpers. To load it :
+
+    1.  Empty the `target/pscload_files` directory
+    1.  Launch the process
+    1.  Deleting 2000 PS will trigger an alert (which can be bypassed from the gestion des alertes action pane)
+

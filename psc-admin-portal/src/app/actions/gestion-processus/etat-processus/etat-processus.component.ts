@@ -15,16 +15,13 @@
 ///
 
 import { Component } from '@angular/core';
-import { ExecutionCompleteProcessusComponent } from './execution-complete-processus/execution-complete-processus.component';
-import { EtatProcessusComponent } from './etat-processus/etat-processus.component';
+import { ProcessStateWidgetComponent } from '../../../shared/process-state-widget/process-state-widget.component';
 
 @Component({
-  selector: 'app-gestion-processus',
+  selector: 'app-etat-processus',
   standalone: true,
-  imports: [ExecutionCompleteProcessusComponent,EtatProcessusComponent],
-  templateUrl: './gestion-processus.component.html',
-  styleUrl: './gestion-processus.component.scss'
+  imports: [ProcessStateWidgetComponent],
+  templateUrl: './etat-processus.component.html',
+  styleUrl: './etat-processus.component.scss'
 })
-export class GestionProcessusComponent {
-
-}
+export class EtatProcessusComponent {}

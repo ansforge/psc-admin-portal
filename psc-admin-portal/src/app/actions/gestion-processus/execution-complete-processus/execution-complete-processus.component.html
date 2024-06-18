@@ -1,0 +1,81 @@
+<!--
+
+    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<h3>Exécution complète du processus</h3>
+<app-query-status-panel 
+  [queryStatus]="executionStatus" errorMessage="Erreur lors de l'envoi de la requête d'exécution."></app-query-status-panel>
+<div class="form-group bg-gray-100 rounded-md">
+  <div class="row">
+  <fieldset class="horizontal col-sm-auto">
+    <div class="redlegend">Souhaitez-vous supprimer l'extraction RASS en Anomalie avant de charger le RASS : </div>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+        class="custom-control-input"
+        name="supprimerExtractionRadioBox"
+        value="{{RemoveRassExtract.YES}}"
+        [(ngModel)]="supprimerExtraction"
+        id="oui" />
+      <label class="custom-control-label" for="oui">Oui</label>
+    </div>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+        class="custom-control-input"
+        name="supprimerExtractionRadioBox"
+        value="{{RemoveRassExtract.NO}}"
+        [(ngModel)]="supprimerExtraction"
+        id="non" />
+      <label class="custom-control-label" for="non">Non</label>
+    </div>
+  </fieldset>
+  </div>
+  <div class="row">
+    <div class="col-sm-auto"></div>
+    <div class="col-sm-auto">
+      <ol>
+        <li>Charger le RASS</li>
+        <li>Traiter le fichier RASS
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Lever des alertes (éventuellement)
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Enregistrer les PS en base</li>
+        <li>Générer le fichier sécurisé
+          <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+          </svg>
+        </li>
+        <li>Envoyer les PS à l'Imprimerie Nationale</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-group col-sm-auto executes-row row">
+      <button type="button" class="btn btn--plain btn--primary" (click)="askExecuter()">Exécuter</button>
+    </div>
+  </div>
+</div>
+<app-confirm-modal
+  contentText="Êtes-vous sûr de vouloir supprimer l'extraction RASS en anomalie ?"
+  (confirm)="executer()"
+  [showEvent]="removeWarningExecution"
+  confirmButtonText="Supprimer"
+  ></app-confirm-modal>

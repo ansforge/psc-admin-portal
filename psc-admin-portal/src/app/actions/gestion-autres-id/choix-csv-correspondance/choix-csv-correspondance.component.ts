@@ -18,11 +18,12 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
+import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 
 @Component({
   selector: 'app-choix-csv-correspondance',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, QueryStatusPanelComponent],
   templateUrl: './choix-csv-correspondance.component.html',
   styleUrl: './choix-csv-correspondance.component.scss'
 })

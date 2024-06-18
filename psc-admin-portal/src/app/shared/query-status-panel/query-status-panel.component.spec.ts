@@ -14,17 +14,26 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { ExecutionCompleteProcessusComponent } from './execution-complete-processus/execution-complete-processus.component';
-import { EtatProcessusComponent } from './etat-processus/etat-processus.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-gestion-processus',
-  standalone: true,
-  imports: [ExecutionCompleteProcessusComponent,EtatProcessusComponent],
-  templateUrl: './gestion-processus.component.html',
-  styleUrl: './gestion-processus.component.scss'
-})
-export class GestionProcessusComponent {
+import { QueryStatusPanelComponent } from './query-status-panel.component';
 
-}
+describe('QueryStatusPanelComponent', () => {
+  let component: QueryStatusPanelComponent;
+  let fixture: ComponentFixture<QueryStatusPanelComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [QueryStatusPanelComponent]
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(QueryStatusPanelComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
