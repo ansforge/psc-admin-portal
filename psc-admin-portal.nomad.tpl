@@ -55,7 +55,7 @@ job "psc-admin-portal" {
       driver = "docker"
       config {
         image = "${artifact.image}:${artifact.tag}"
-        ports = ["https"]
+        ports = ["https","http"]
         mount {
           type = "bind"
           target = "/usr/local/apache2/conf/sec-psc/whitelist.conf"
