@@ -86,6 +86,8 @@ CLIENT_SECRET={{.Data.data.client_secret}}
 EOH
         destination = "secrets/front.env"
         env = true
+        change_mode = "signal"
+    change_signal = "SIGWINCH"
       }
 
       template {
@@ -157,6 +159,8 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
 
 EOH
         destination = "local/service-addresses.conf"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
       
       template {
