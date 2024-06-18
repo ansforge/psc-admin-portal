@@ -175,8 +175,8 @@ EOH
 
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
-        tags = ["urlprefix-$\u007BPUBLIC_HOSTNAME\u007D/toggle/"]
-        port = "https"
+        tags = ["urlprefix-$\u007BPSC_HOST\u007D/"]
+        port = "http"
         check {
           type = "http"
           path = "/"
