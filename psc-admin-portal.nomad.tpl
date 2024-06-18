@@ -90,16 +90,70 @@ EOH
 
       template {
         data = <<EOH
+# For each variable, a guard is added 
+# so that configuration remains parseable even if services are not found in consul
+# The guard is a hack replacing non-existing variable value test 
+# for conditional configuration a la IfDefine
+
 Define PS_API_ADDRESS "{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Address}}{{ end }}"
-Define PS_API_PORT "{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Port}}{{ end }}"
-Define TOGGLE_ADDRESS "{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Address}}{{ end }}"
-Define TOGGLE_PORT "{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Port}}{{ end }}"
-Define PSCLOAD_ADDRESS "{{ range service "${nomad_namespace}-pscload" }}{{.Address}}{{ end }}"
-Define PSCLOAD_PORT "{{ range service "${nomad_namespace}-pscload" }}{{.Port}}{{ end }}"
-Define PSCEXTRACT_ADDRESS "{{ range service "${nomad_namespace}-pscextract" }}{{.Address}}{{ end }}"
-Define PSCEXTRACT_PORT "{{ range service "${nomad_namespace}-pscextract" }}{{.Port}}{{ end }}"
-Define ALERT_MANAGER_ADDRESS "{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}"
-Define ALERT_MANAGER_PORT "{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Port}}{{ end }}"
+Define TEST_PS_API_ADDRESS{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Address}}{{ end }}
+<IfDefine TEST_PS_API_ADDRESS>
+  Define PS_API_ADDRESS unknown
+</IfDefine>
+
+Define PS_API_PORT {{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Port}}{{ end }}
+Define TEST_PS_API_PORT{{ range service "${nomad_namespace}-psc-api-maj-v2" }}{{.Port}}{{ end }}
+<IfDefine TEST_PS_API_PORT>
+  Define PS_API_PORT 00
+</IfDefine>
+
+Define TOGGLE_ADDRESS {{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Address}}{{ end }}
+Define TEST_TOGGLE_ADDRESS{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Address}}{{ end }}
+<IfDefine TEST_TOGGLE_ADDRESS>
+  Define TOGGLE_ADDRESS unknown
+</IfDefine>
+
+Define TOGGLE_PORT {{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Port}}{{ end }}
+Define TEST_TOGGLE_PORT{{ range service "${nomad_namespace}-psc-toggle-manager" }}{{.Port}}{{ end }}
+<IfDefine TEST_TOGGLE_PORT>
+  Define TOGGLE_PORT 00
+</IfDefine>
+
+Define PSCLOAD_ADDRESS {{ range service "${nomad_namespace}-pscload" }}{{.Address}}{{ end }}
+Define TEST_PSCLOAD_ADDRESS{{ range service "${nomad_namespace}-pscload" }}{{.Address}}{{ end }}
+<IfDefine TEST_PSCLOAD_ADDRESS>
+  Define PSCLOAD_ADDRESS unknown
+</IfDefine>
+
+Define PSCLOAD_PORT {{ range service "${nomad_namespace}-pscload" }}{{.Port}}{{ end }}
+Define TEST_PSCLOAD_PORT{{ range service "${nomad_namespace}-pscload" }}{{.Port}}{{ end }}
+<IfDefine TEST_PSCLOAD_PORT>
+  Define PSCLOAD_PORT 00
+</IfDefine>
+
+Define PSCEXTRACT_ADDRESS {{ range service "${nomad_namespace}-pscextract" }}{{.Address}}{{ end }}
+Define TEST_PSCEXTRACT_ADDRESS{{ range service "${nomad_namespace}-pscextract" }}{{.Address}}{{ end }}
+<IfDefine TEST_PSCEXTRACT_ADDRESS>
+  Define PSCEXTRACT_ADDRESS unknown
+</IfDefine>
+
+Define PSCEXTRACT_PORT {{ range service "${nomad_namespace}-pscextract" }}{{.Port}}{{ end }}
+Define TEST_PSCEXTRACT_PORT{{ range service "${nomad_namespace}-pscextract" }}{{.Port}}{{ end }}
+<IfDefine TEST_PSCEXTRACT_PORT>
+  Define PSCEXTRACT_PORT 00
+</IfDefine>
+
+Define ALERT_MANAGER_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define TEST_ALERT_MANAGER_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+<IfDefine TEST_ALERT_MANAGER_ADDRESS>
+  Define ALERT_MANAGER_ADDRESS unknown
+</IfDefine>
+
+Define ALERT_MANAGER_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Port}}{{ end }}
+Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Port}}{{ end }}
+<IfDefine TEST_ALERT_MANAGER_PORT>
+  Define ALERT_MANAGER_PORT 00
+</IfDefine>
 
 EOH
         destination = "local/service-addresses.conf"
