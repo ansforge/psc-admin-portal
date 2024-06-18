@@ -86,8 +86,6 @@ CLIENT_SECRET={{.Data.data.client_secret}}
 EOH
         destination = "secrets/front.env"
         env = true
-        change_mode = "signal"
-    change_signal = "SIGWINCH"
       }
 
       template {
