@@ -78,8 +78,9 @@ job "psc-admin-portal" {
       template {
         data = <<EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}
-PSC_HOST={{.Data.data.hostname}}
+HOSTNAME={{.Data.data.hostname}}
 PROTOCOL={{.Data.data.protocol}}
+PSC_HOST={{.Data.data.psc_host}}
 CLIENT_ID={{.Data.data.client_id}}
 CLIENT_SECRET={{.Data.data.client_secret}}
 {{end}}
@@ -175,7 +176,7 @@ EOH
 
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
-        tags = ["urlprefix-$\u007BPSC_HOST\u007D/"]
+        tags = ["urlprefix-$\u007BHOSTNAME\u007D/"]
         port = "http"
         check {
           type = "http"
