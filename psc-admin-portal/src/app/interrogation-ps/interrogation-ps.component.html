@@ -22,27 +22,11 @@
       *Champ obligatoire
     </p>
 
-    @if (shouldShowAlert) {
-      <div class="o-alert o-alert--error" role="alert">
-        <div class="o-alert__icon">
-          <svg class="svg-icon svg-circle-cross" aria-hidden="true" focusable="false">
-            <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
-          </svg>
-        </div>
-
-        @if (isInvalidInput) {
-          <p id="invalidInputErr">Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer
-            une recherche</p>
-        } @else {
-          <p>{{ apiErrorMessage }}</p>
-        }
-
-        <button type="button" class="btn btn--close btn--icon-only" (click)="hideAlert()">
-          <svg class="svg-icon svg-close" aria-hidden="true" focusable="false">
-            <use xlink:href="svg-icons/icon-sprite.svg#close"></use>
-          </svg>
-          <span class="sr-only">Masquer ce message</span></button>
-      </div>
+    @if (QueryStatusEnum.PENDING !== toggleAlertCSS()) {
+      <app-query-status-panel [queryStatus]="queryStatus"
+                              [errorMessage]="''"
+                              (alertClosed)="removeAlertCSS()">
+      </app-query-status-panel>
     }
 
     <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">ID National * </p>
@@ -52,7 +36,7 @@
       <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
 
       <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
-             aria-labelledby="idNatPS" aria-errormessage="invalidInputErr" [attr.aria-invalid]="isInvalidInput"/>
+             aria-labelledby="idNatPS" [attr.aria-invalid]="isInvalidInput"/>
 
       <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
               (click)="findPSByIDNat()">
@@ -70,7 +54,7 @@
       <p class="h4 mt-6">Résultats de la recherche</p>
       <div class="container d-flex flex-column">
         <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2"
-             [ngClass]="{'editor-error-border': shouldShowAlert}"></div>
+             [ngClass]="{'editor-error-border': toggleAlertCSS() === QueryStatusEnum.KO, 'editor-success-border': toggleAlertCSS() === QueryStatusEnum.OK}"></div>
         @if (editor) {
           <button type="button" class="btn btn--plain btn--primary m-auto" aria-label="Enregistrer le JSON modifié"
                   [attr.aria-disabled]="!canSave()"

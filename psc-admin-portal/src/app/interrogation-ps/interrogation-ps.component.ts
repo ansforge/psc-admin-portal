@@ -28,10 +28,11 @@ import {
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Subject, takeUntil} from 'rxjs';
 import {JsonPipe, NgClass} from '@angular/common';
-import {QueryStatusEnum} from '../api/queryStatus.model';
+import {QueryStatus, QueryStatusEnum} from '../api/queryStatus.model';
 import {PsApi} from '../api/psApi.service';
 import JSONEditor, {JSONEditorOptions, ParseError, SchemaValidationError} from 'jsoneditor';
 import {Router} from '@angular/router';
+import {QueryStatusPanelComponent} from '../shared/query-status-panel/query-status-panel.component';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -41,23 +42,27 @@ import {Router} from '@angular/router';
     ReactiveFormsModule,
     JsonPipe,
     NgClass,
+    QueryStatusPanelComponent,
   ],
   templateUrl: './interrogation-ps.component.html',
   styleUrl: './interrogation-ps.component.scss'
 })
 export class InterrogationPsComponent implements OnInit, OnDestroy {
   private ID_NAT_PS: string = 'idNatPS';
+  private ERROR_OCCURRED: string = 'Une erreur est survenue';
 
-  @ViewChild('jsonEditorContainer', { static: false })
+  @ViewChild('jsonEditorContainer', {static: false})
   jsonEditorContainer!: ElementRef;
   editor!: JSONEditor;
 
   canSave: WritableSignal<boolean> = signal(false);
+  toggleAlertCSS: WritableSignal<QueryStatusEnum> = signal(QueryStatusEnum.PENDING);
 
   formGroup: FormGroup;
   apiErrorMessage: string = '';
   isInvalidInput: boolean = false;
-  shouldShowAlert: boolean = false;
+
+  queryStatus: QueryStatus | null = null;
 
   unsub$: Subject<void> = new Subject<void>();
   response: any = null;
@@ -83,63 +88,66 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyEditor();
     this.unsub$.next();
     this.unsub$.complete();
   }
 
   findPSByIDNat(): void {
+    this.destroyEditor();
+    this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
     this.isInvalidInput = this.formGroup.invalid;
-    this.shouldShowAlert = this.isInvalidInput;
-    const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
 
-    if (!this.isInvalidInput) {
+    if (this.isInvalidInput) {
+      this.handleAlert(QueryStatusEnum.KO, 'Veuillez renseigner le champ « ID National » correctement avant de lancer une recherche')
+    } else {
+      const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
       this.psApiService.getPSByIDNat(idNatPS).pipe(
         takeUntil(this.unsub$)
       ).subscribe((response) => {
         if (QueryStatusEnum.OK === response.status) {
           this.response = response.data;
           this.cdr.detectChanges();
-          if (!this.editor) {
-            this.initializeEditor();
-          } else {
-            this.editor.set(this.response);
-          }
+          this.initializeEditor();
         } else {
-          this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
-          this.shouldShowAlert = true;
+          this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
+          this.response = null;
         }
       });
     }
   }
 
-  hideAlert(): void {
-    this.shouldShowAlert = false;
+  saveJsonPs(): void {
+    if (this.canSave()) {
+      this.psApiService.updatePS(this.editor.get()).pipe(
+        takeUntil(this.unsub$)
+      ).subscribe((response) => {
+        if (QueryStatusEnum.OK === response.status) {
+          this.handleAlert(QueryStatusEnum.OK, 'PS mis à jour avec succès');
+        } else {
+          this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
+        }
+      })
+    }
   }
 
-  saveJsonPs(): void {
-    try {
-      const jsonPs: JSON = this.editor.get();
-      const hasChanged: boolean = JSON.stringify(this.response) !== JSON.stringify(jsonPs);
-      // if (this.canSave() && hasChanged) {
-        // TODO LMU call service to save new JSON
-        this.psApiService.updatePS(jsonPs).pipe(
-          takeUntil(this.unsub$)
-        ).subscribe((response) => {
-          if (QueryStatusEnum.OK === response.status) {
-            console.log('success!');
-          } else {
-            this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
-            this.shouldShowAlert = true;
-          }
-        })
-      // } else {
-      //   this.shouldShowAlert = true;
-      //   this.apiErrorMessage = 'Aucun changement détecté';
-      // }
-    } catch (e) {
-      this.shouldShowAlert = true;
-      this.apiErrorMessage = 'Une erreur est survenue';
-    }
+  handleAlert(status: QueryStatusEnum, message: string): void {
+    this.queryStatus = {status: status, message: message};
+    this.apiErrorMessage = QueryStatusEnum.KO === status ? message : '';
+    this.toggleAlertCSS.set(status);
+  }
+
+  removeAlertCSS(): void {
+    this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
+  }
+
+  navigateToHomePage(): void {
+    this.router.navigate(['/']);
+  }
+
+  scrollToTop(): void {
+    this.renderer.setProperty(document.body, 'scrollTop', 0);
+    this.renderer.setProperty(document.documentElement, 'scrollTop', 0);
   }
 
   private initializeEditor(): void {
@@ -173,12 +181,11 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateToHomePage(): void {
-    this.router.navigate(['/']);
+  private destroyEditor() {
+    if (this.editor) {
+      this.editor.destroy();
+    }
   }
 
-  scrollToTop(): void {
-    this.renderer.setProperty(document.body, 'scrollTop', 0);
-    this.renderer.setProperty(document.documentElement, 'scrollTop', 0);
-  }
+  protected readonly QueryStatusEnum = QueryStatusEnum;
 }

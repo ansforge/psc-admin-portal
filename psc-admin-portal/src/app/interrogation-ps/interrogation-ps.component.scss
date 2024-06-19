@@ -20,16 +20,6 @@
   border-color: #d20024;
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-div::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 10px;
-}
-
 .search-result-container {
   overflow: scroll;
   border: .1rem solid var(--input-border-color);
@@ -46,6 +36,12 @@ div::-webkit-scrollbar-thumb {
 .editor-error-border {
   ::ng-deep .jsoneditor {
     border: .1rem solid #D20050 !important;
+  }
+}
+
+.editor-success-border {
+  ::ng-deep .jsoneditor {
+    border: .1rem solid #9AB938 !important;
   }
 }
 
@@ -108,18 +104,4 @@ div::-webkit-scrollbar-thumb {
   .ace-jsoneditor .ace_string {
     color: #4EC79C;
   }
-
-  //.ace-jsoneditor .ace_string {
-  //  color: #4EC79C;
-  //}
-
 }
-
-
-//:host ::ng-deep .ngx-json-viewer {
-//  overflow:visible !important;
-//  --ngx-json-null: black;
-//  --ngx-json-null-bg: none;
-//  --ngx-json-undefined: blue;
-//  --ngx-json-undefined-bg: none;
-//}
