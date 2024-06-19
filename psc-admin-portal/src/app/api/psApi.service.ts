@@ -14,17 +14,19 @@
 /// limitations under the License.
 ///
 
-import { Observable, of, throwError } from "rxjs";
+import { Observable, of } from "rxjs";
 import { Status, errorResponseToStatus as errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
+import {QueryStatusEnum} from './queryStatus.model';
+import {errorResponseToQueryResult} from './queryResult';
 
 @Injectable({providedIn: "root"})
 export class PsApi {
   constructor(private http: HttpClient){}
-  
+
   get status(): Observable<Status> {
     return this.http.get<any>(
         `${environment.API_HOSTNAME}portal/service/ps-api/`
@@ -35,6 +37,25 @@ export class PsApi {
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
       )
+    );
+  }
+
+  getPSByIDNat(idNatPS: string): Observable<any> {
+    return this.http.get(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${idNatPS}`).pipe(
+      map(response => {
+        return {
+          status: QueryStatusEnum.OK,
+          message: 'Recherche effectuée avec succès',
+          data: response
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        if (410 === err.status) {
+          return of({status: QueryStatusEnum.KO, message: `Le PS avec l'id ${idNatPS} n'a pas été trouvé.`});
+        } else {
+          return errorResponseToQueryResult<void>(err);
+        }
+      })
     );
   }
 }

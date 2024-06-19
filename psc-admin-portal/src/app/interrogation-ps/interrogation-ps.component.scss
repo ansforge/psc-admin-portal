@@ -13,3 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+.is-invalid {
+  color: #d20024;
+  border-color: #d20024;
+}
+
+.search-result-container {
+  overflow:scroll;
+  border: .1rem solid var(--input-border-color);
+  border-radius: 1.4rem 2.5rem 2.5rem 1.4rem;
+  max-height: 30em;
+  min-height: 20em;
+  padding: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .ngx-json-viewer {
+  overflow:visible !important;
+  --ngx-json-null: black;
+  --ngx-json-null-bg: none;
+  --ngx-json-undefined: blue;
+  --ngx-json-undefined-bg: none;
+}
