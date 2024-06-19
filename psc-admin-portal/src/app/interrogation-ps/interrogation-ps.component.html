@@ -31,7 +31,8 @@
         </div>
 
         @if (isInvalidInput) {
-          <p>Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer une recherche</p>
+          <p id="invalidInputErr">Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer
+            une recherche</p>
         } @else {
           <p>{{ apiErrorMessage }}</p>
         }
@@ -45,13 +46,16 @@
     }
 
     <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">ID National * </p>
-    <div class="input-group search-group w-50" [class.is-invalid]="isInvalidInput" [formGroup]="formGroup">
-      <label for="idNatPS" class="sr-only">Recherche</label>
+    <div class="input-group search-group w-50"
+         [class.is-invalid]="isInvalidInput"
+         [formGroup]="formGroup">
+      <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
 
-      <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS"
-             id="idNatPS"/>
+      <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
+             aria-labelledby="idNatPS" aria-errormessage="invalidInputErr" [attr.aria-invalid]="isInvalidInput"/>
 
-      <button type="submit" class="btn btn--plain btn--primary btn--icon-before" (click)="findPSByIDNat()">
+      <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
+              (click)="findPSByIDNat()">
         <svg class="svg-icon svg-search" aria-hidden="true" focusable="false">
           <use xlink:href="svg-icons/icon-sprite.svg#search"></use>
         </svg>
@@ -65,14 +69,24 @@
     @if (response && !isInvalidInput) {
       <p class="h4 mt-6">Résultats de la recherche</p>
       <div class="container d-flex flex-column">
-        <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2" [ngClass]="{'editor-error-border': shouldShowAlert}"></div>
+        <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2"
+             [ngClass]="{'editor-error-border': shouldShowAlert}"></div>
         @if (editor) {
-          <button type="button" class="btn btn--plain btn--primary m-auto"
+          <button type="button" class="btn btn--plain btn--primary m-auto" aria-label="Enregistrer le JSON modifié"
+                  [attr.aria-disabled]="!canSave()"
                   [disabled]="!canSave()"
                   (click)="saveJsonPs()">Enregistrer les modifications
           </button>
         }
       </div>
     }
+  </div>
+  <div class="btn-group justify-content-between">
+    <button type="button" class="btn btn--ghost btn--default" aria-label="retour à l'accueil"
+            (click)="navigateToHomePage()">Retour à l’accueil
+    </button>
+    <button type="button" class="btn btn--plain btn--primary" aria-label="revenir en haut" (click)="scrollToTop()">Haut
+      de page
+    </button>
   </div>
 </div>

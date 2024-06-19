@@ -20,6 +20,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
+  Renderer2,
   signal,
   ViewChild,
   WritableSignal
@@ -30,6 +31,7 @@ import {JsonPipe, NgClass} from '@angular/common';
 import {QueryStatusEnum} from '../api/queryStatus.model';
 import {PsApi} from '../api/psApi.service';
 import JSONEditor, {JSONEditorOptions, ParseError, SchemaValidationError} from 'jsoneditor';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -62,7 +64,9 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef,
               private formBuilder: FormBuilder,
-              private psApiService: PsApi,) {
+              private psApiService: PsApi,
+              private renderer: Renderer2,
+              private router: Router) {
     this.formGroup = formBuilder.group({
       idNatPS: new FormControl('', [Validators.required])
     });
@@ -113,11 +117,34 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   }
 
   saveJsonPs(): void {
-    // TODO implement save
+    try {
+      const jsonPs: JSON = this.editor.get();
+      const hasChanged: boolean = JSON.stringify(this.response) !== JSON.stringify(jsonPs);
+      console.log('hasChanged', hasChanged);
+      // if (this.canSave() && hasChanged) {
+        // TODO LMU call service to save new JSON
+        this.psApiService.updatePS(jsonPs).pipe(
+          takeUntil(this.unsub$)
+        ).subscribe((response) => {
+          if (QueryStatusEnum.OK === response.status) {
+            console.log('success!');
+          } else {
+            this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
+            this.shouldShowAlert = true;
+          }
+        })
+      // } else {
+      //   this.shouldShowAlert = true;
+      //   this.apiErrorMessage = 'Aucun changement détecté';
+      // }
+    } catch (e) {
+      this.shouldShowAlert = true;
+      this.apiErrorMessage = 'Une erreur est survenue';
+    }
   }
 
   private initializeEditor(): void {
-    if (this.jsonEditorContainer && this.jsonEditorContainer.nativeElement) {
+    if (this.jsonEditorContainer?.nativeElement) {
       const options: JSONEditorOptions = {
         mode: 'view',
         modes: ['tree', 'code', 'form', 'view', 'text'],
@@ -129,11 +156,30 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
         colorPicker: true,
         enableTransform: false,
         onValidationError: (errors: readonly(SchemaValidationError | ParseError)[]) => {
-          this.canSave.set(errors.length === 0);
+          if (errors.length > 0) {
+            this.canSave.set(false);
+          }
         },
+        onChange: () => {
+          const hasChanged: boolean = JSON.stringify(this.response) !== JSON.stringify(this.editor.get());
+          if (hasChanged) {
+            this.canSave.set(true);
+          } else {
+            this.canSave.set(false);
+          }
+        }
       };
       this.editor = new JSONEditor(this.jsonEditorContainer.nativeElement, options);
       this.editor.set(this.response);
     }
+  }
+
+  navigateToHomePage(): void {
+    this.router.navigate(['/']);
+  }
+
+  scrollToTop(): void {
+    this.renderer.setProperty(document.body, 'scrollTop', 0);
+    this.renderer.setProperty(document.documentElement, 'scrollTop', 0);
   }
 }
