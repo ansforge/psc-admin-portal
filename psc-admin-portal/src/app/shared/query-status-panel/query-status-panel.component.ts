@@ -14,17 +14,22 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import { ExecutionCompleteProcessusComponent } from './execution-complete-processus/execution-complete-processus.component';
-import { EtatProcessusComponent } from './etat-processus/etat-processus.component';
+import { Component, Input } from '@angular/core';
+import { QueryStatus, QueryStatusEnum } from '../../api/queryStatus.model';
 
 @Component({
-  selector: 'app-gestion-processus',
+  selector: 'app-query-status-panel',
   standalone: true,
-  imports: [ExecutionCompleteProcessusComponent,EtatProcessusComponent],
-  templateUrl: './gestion-processus.component.html',
-  styleUrl: './gestion-processus.component.scss'
+  imports: [],
+  templateUrl: './query-status-panel.component.html',
+  styleUrl: './query-status-panel.component.scss'
 })
-export class GestionProcessusComponent {
-
+export class QueryStatusPanelComponent {
+  qs: typeof QueryStatusEnum=QueryStatusEnum;
+  @Input() errorMessage: string='Erreur lors de la requête';
+  @Input() queryStatus: QueryStatus|null=null;
+  
+  forgetStatus() {
+    this.queryStatus=null;
+  }
 }

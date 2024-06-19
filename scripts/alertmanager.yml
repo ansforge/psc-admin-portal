@@ -1,4 +1,3 @@
-#!/bin/bash
 #
 # Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 #
@@ -15,18 +14,19 @@
 # limitations under the License.
 #
 
-# This script enables tests from IDE configuration (angular and necessary services
-# run from IDE with the necessary revers-proxy configuration to enable service call by
-# the angular front indevelopment mode.
-
-if [ -z ${OLD_PWD} ]; then
-  OLD_PWD=$(pwd)
-  SCRIPT_DIR=$(dirname $0)
-  cd $SCRIPT_DIR
-  SCRIPT_DIR=$(pwd)
-  CODE_BASE_DIR=${SCRIPT_DIR}/../..
-  cd ${OLD_PWD}
-fi
-
-export API_PORT=8080
-export RASS_LOAD_PORT=8082
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'web.hook'
+receivers:
+  - name: 'web.hook'
+    webhook_configs:
+      - url: 'http://127.0.0.2:5001/'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']

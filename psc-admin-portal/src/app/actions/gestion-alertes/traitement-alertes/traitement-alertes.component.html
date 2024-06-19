@@ -16,44 +16,7 @@
 
 -->
 <h3>Traitement des alertes</h3>
-@if(queryStatus) {
-
-<div 
-  [class.o-alert--info]="queryStatus.status===qs.PENDING" 
-  [class.o-alert--success]="queryStatus.status===qs.OK" 
-  [class.o-alert--error]="queryStatus.status===qs.KO" 
-  class="o-alert" 
-  role="status">
-
-  <div class="o-alert__icon">
-    <svg 
-      class="svg-icon" 
-      [class.svg-circle-check]="queryStatus.status===qs.OK"
-      [class.svg-circle-cross]="queryStatus.status===qs.KO"
-      aria-hidden="true" 
-      focusable="false">
-    @if (queryStatus.status===qs.OK) {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use>
-    } @else if(queryStatus.status===qs.KO) {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
-    } @else {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-info"></use>
-    }
-    </svg>
-  </div>
-
-@if(queryStatus.status===qs.KO){
-  <p>Erreur de déclenchement de l'opération.</p>
-}
-
-  <p>{{queryStatus.message}}</p>
-  <button type="button" class="btn btn--close btn--icon-only" (click)="forgetStatus()">
-    <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
-    <span class="sr-only">Masquer ce message</span>
-  </button>
-</div>
-
-}
+<app-query-status-panel [queryStatus]="queryStatus" errorMessage="Erreur de déclenchement de l'opération"></app-query-status-panel>
 <div class="form-group bg-gray-100 rounded-md">
   <h4>Selon le type d'alerte, vous pouvez 
     <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
@@ -81,6 +44,8 @@
   contentText="Étes-vous sûr de vouloir lancer le force-continue ?"
   [showEvent]="forceContinueEmitter"
   (confirm)="forceContinue()"
+  confirmButtonText="Lancer"
   >
 </app-confirm-modal>
 </div>
+<app-process-state-widget></app-process-state-widget>

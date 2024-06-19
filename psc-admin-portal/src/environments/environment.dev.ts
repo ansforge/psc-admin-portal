@@ -14,7 +14,10 @@
 /// limitations under the License.
 ///
 
+import { msFromSeconds } from "../app/shared/time.model";
+
 export const environment = {
   packaged: true,
-  API_HOSTNAME:'http://sec-psc.wom.dev.henix.fr/'
+  API_HOSTNAME: 'http://sec-psc.wom.dev.henix.fr/',
+  UPDATE_PERIOD: msFromSeconds(5) // we can't wait a whole minute before seing anything in dev
 }

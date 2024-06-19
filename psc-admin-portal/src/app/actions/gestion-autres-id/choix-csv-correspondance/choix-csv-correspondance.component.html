@@ -16,45 +16,9 @@
 
 -->
 <h3>{{title}}</h3>
-
-@if(queryStatus) {
-
-<div 
-  [class.o-alert--info]="queryStatus.status===qs.PENDING" 
-  [class.o-alert--success]="queryStatus.status===qs.OK" 
-  [class.o-alert--error]="queryStatus.status===qs.KO" 
-  class="o-alert" 
-  role="status">
-
-  <div class="o-alert__icon">
-    <svg 
-      class="svg-icon" 
-      [class.svg-circle-check]="queryStatus.status===qs.OK"
-      [class.svg-circle-cross]="queryStatus.status===qs.KO"
-      aria-hidden="true" 
-      focusable="false">
-    @if (queryStatus.status===qs.OK) {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use>
-    } @else if(queryStatus.status===qs.KO) {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
-    } @else {
-      <use xlink:href="svg-icons/icon-sprite.svg#circle-info"></use>
-    }
-    </svg>
-  </div>
-
-  @if(queryStatus.status===qs.KO){
-    <p>Une erreur s’est produite lors de l’importation du fichier.</p>
-  }
-
-  <p>{{queryStatus.message}}</p>
-  <button type="button" class="btn btn--close btn--icon-only" (click)="forgetStatus()">
-    <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
-    <span class="sr-only">Masquer ce message</span>
-  </button>
-</div>
-
-}
+<app-query-status-panel
+  [queryStatus]="queryStatus"
+  errorMessage="Une erreur s’est produite lors de l’importation du fichier."></app-query-status-panel>
 
 <div class="form-group bg-gray-100 rounded-md">
   <h4>Importer le fichier correspondances

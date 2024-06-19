@@ -16,21 +16,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionProcessusComponent } from './gestion-processus.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ProcessStateWidgetComponent } from './process-state-widget.component';
 import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('GestionProcessusComponent', () => {
-  let component: GestionProcessusComponent;
-  let fixture: ComponentFixture<GestionProcessusComponent>;
+describe('ProcessStateWidgetComponent', () => {
+  let component: ProcessStateWidgetComponent;
+  let fixture: ComponentFixture<ProcessStateWidgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GestionProcessusComponent,HttpClientTestingModule]
+      imports: [ProcessStateWidgetComponent,HttpClientTestingModule]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(GestionProcessusComponent);
+    fixture = TestBed.createComponent(ProcessStateWidgetComponent);
     TestBed.inject(HttpClient);
     component = fixture.componentInstance;
     fixture.detectChanges();

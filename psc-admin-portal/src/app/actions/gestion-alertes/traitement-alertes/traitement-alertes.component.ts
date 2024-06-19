@@ -20,11 +20,13 @@ import { Pscload } from '../../../api/pscload.service';
 import { Operation, Operations } from '../../../api/pscload.model';
 import { FormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.component';
+import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
+import { ProcessStateWidgetComponent } from '../../../shared/process-state-widget/process-state-widget.component';
 
 @Component({
   selector: 'app-traitement-alertes',
   standalone: true,
-  imports: [FormsModule,ConfirmModalComponent],
+  imports: [FormsModule,ConfirmModalComponent,QueryStatusPanelComponent,ProcessStateWidgetComponent],
   templateUrl: './traitement-alertes.component.html',
   styleUrl: './traitement-alertes.component.scss'
 })
@@ -54,7 +56,7 @@ export class TraitementAlertesComponent {
   }
   
   forceContinue(): void {
-    this.queryStatus={status: QueryStatusEnum.PENDING,message:"C'est parti!"};
+    this.queryStatus={status: QueryStatusEnum.PENDING,message:"Requête en cours."};
 
     const excludes: Operation[]=this.excludeCheckModel
       .filter(checkbox => checkbox.selected)

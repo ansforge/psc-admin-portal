@@ -74,7 +74,7 @@ groups:
 
   - alert: pscload-continue
     expr: pscload_stage == 50
-    for: 2m
+    for: 20s
     labels:
       severity: continue
     annotations:
