@@ -120,7 +120,6 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     try {
       const jsonPs: JSON = this.editor.get();
       const hasChanged: boolean = JSON.stringify(this.response) !== JSON.stringify(jsonPs);
-      console.log('hasChanged', hasChanged);
       // if (this.canSave() && hasChanged) {
         // TODO LMU call service to save new JSON
         this.psApiService.updatePS(jsonPs).pipe(
