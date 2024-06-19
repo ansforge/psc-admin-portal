@@ -14,13 +14,22 @@
 /// limitations under the License.
 ///
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Subject, takeUntil} from 'rxjs';
-import {JsonPipe} from '@angular/common';
+import {JsonPipe, NgClass} from '@angular/common';
 import {QueryStatusEnum} from '../api/queryStatus.model';
-import {NgxJsonViewerModule} from 'ngx-json-viewer';
 import {PsApi} from '../api/psApi.service';
+import JSONEditor, {JSONEditorOptions, ParseError, SchemaValidationError} from 'jsoneditor';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -29,7 +38,7 @@ import {PsApi} from '../api/psApi.service';
     FormsModule,
     ReactiveFormsModule,
     JsonPipe,
-    NgxJsonViewerModule
+    NgClass,
   ],
   templateUrl: './interrogation-ps.component.html',
   styleUrl: './interrogation-ps.component.scss'
@@ -37,17 +46,26 @@ import {PsApi} from '../api/psApi.service';
 export class InterrogationPsComponent implements OnInit, OnDestroy {
   private ID_NAT_PS: string = 'idNatPS';
 
-  apiErrorMessage: string = '';
-  isInvalid: boolean = false;
-  shouldShowAlert: boolean = false;
+  @ViewChild('jsonEditorContainer', { static: false })
+  jsonEditorContainer!: ElementRef;
+  editor!: JSONEditor;
+
+  canSave: WritableSignal<boolean> = signal(false);
+
   formGroup: FormGroup;
+  apiErrorMessage: string = '';
+  isInvalidInput: boolean = false;
+  shouldShowAlert: boolean = false;
 
   unsub$: Subject<void> = new Subject<void>();
   response: any = null;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private cdr: ChangeDetectorRef,
+              private formBuilder: FormBuilder,
               private psApiService: PsApi,) {
-    this.formGroup = formBuilder.group({idNatPS: new FormControl('', [Validators.required])});
+    this.formGroup = formBuilder.group({
+      idNatPS: new FormControl('', [Validators.required])
+    });
   }
 
   ngOnInit(): void {
@@ -66,16 +84,22 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   }
 
   findPSByIDNat(): void {
-    this.isInvalid = this.formGroup.invalid;
-    this.shouldShowAlert = this.isInvalid;
+    this.isInvalidInput = this.formGroup.invalid;
+    this.shouldShowAlert = this.isInvalidInput;
     const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
 
-    if (!this.isInvalid) {
+    if (!this.isInvalidInput) {
       this.psApiService.getPSByIDNat(idNatPS).pipe(
         takeUntil(this.unsub$)
       ).subscribe((response) => {
         if (QueryStatusEnum.OK === response.status) {
-          this.response = { data: response.data };
+          this.response = response.data;
+          this.cdr.detectChanges();
+          if (!this.editor) {
+            this.initializeEditor();
+          } else {
+            this.editor.set(this.response);
+          }
         } else {
           this.apiErrorMessage = response.message ?? 'Une erreur est survenue';
           this.shouldShowAlert = true;
@@ -86,5 +110,30 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   hideAlert(): void {
     this.shouldShowAlert = false;
+  }
+
+  saveJsonPs(): void {
+    // TODO implement save
+  }
+
+  private initializeEditor(): void {
+    if (this.jsonEditorContainer && this.jsonEditorContainer.nativeElement) {
+      const options: JSONEditorOptions = {
+        mode: 'view',
+        modes: ['tree', 'code', 'form', 'view', 'text'],
+        mainMenuBar: true,
+        navigationBar: false,
+        search: false,
+        statusBar: false,
+        sortObjectKeys: false,
+        colorPicker: true,
+        enableTransform: false,
+        onValidationError: (errors: readonly(SchemaValidationError | ParseError)[]) => {
+          this.canSave.set(errors.length === 0);
+        },
+      };
+      this.editor = new JSONEditor(this.jsonEditorContainer.nativeElement, options);
+      this.editor.set(this.response);
+    }
   }
 }

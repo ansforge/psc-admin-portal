@@ -79,7 +79,7 @@ describe('InterrogationPsComponent', () => {
     component.formGroup.controls[component['ID_NAT_PS']].setValue('');
     component.findPSByIDNat();
 
-    expect(component.isInvalid).toBe(true);
+    expect(component.isInvalidInput).toBe(true);
     expect(component.shouldShowAlert).toBe(true);
   });
 

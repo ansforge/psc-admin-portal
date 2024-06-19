@@ -30,7 +30,7 @@
           </svg>
         </div>
 
-        @if (isInvalid) {
+        @if (isInvalidInput) {
           <p>Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer une recherche</p>
         } @else {
           <p>{{ apiErrorMessage }}</p>
@@ -44,8 +44,8 @@
       </div>
     }
 
-    <p class="h4 mt-6" [class.is-invalid]="isInvalid">ID National * </p>
-    <div class="input-group search-group w-50" [class.is-invalid]="isInvalid" [formGroup]="formGroup">
+    <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">ID National * </p>
+    <div class="input-group search-group w-50" [class.is-invalid]="isInvalidInput" [formGroup]="formGroup">
       <label for="idNatPS" class="sr-only">Recherche</label>
 
       <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS"
@@ -58,14 +58,20 @@
         Rechercher
       </button>
     </div>
-    @if (isInvalid) {
+    @if (isInvalidInput) {
       <p class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
     }
 
-    @if (response && !isInvalid) {
+    @if (response && !isInvalidInput) {
       <p class="h4 mt-6">Résultats de la recherche</p>
-      <div class="container search-result-container">
-        <ngx-json-viewer [json]="response"></ngx-json-viewer>
+      <div class="container d-flex flex-column">
+        <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2" [ngClass]="{'editor-error-border': shouldShowAlert}"></div>
+        @if (editor) {
+          <button type="button" class="btn btn--plain btn--primary m-auto"
+                  [disabled]="!canSave()"
+                  (click)="saveJsonPs()">Enregistrer les modifications
+          </button>
+        }
       </div>
     }
   </div>

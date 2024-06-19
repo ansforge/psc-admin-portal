@@ -36,7 +36,8 @@
               "src/style/print.css",
               "src/style/sec-psc.css",
               "src/style/bloc-global.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],
             "scripts": []
           },
@@ -46,12 +47,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "40kb"
                 }
               ],
               "outputHashing": "all"
