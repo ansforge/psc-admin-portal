@@ -84,6 +84,16 @@
             <exclude>**/*.ico</exclude>
             <exclude>**/*.json</exclude>
             <exclude>**/.gitkeep</exclude>
+            <!-- Treat certificate related files as binaries (which they are) -->
+            <!-- This should disappear if we remove these test resources -->
+            <exclude>**/*.key</exclude>
+            <exclude>**/*.pem</exclude>
+            <exclude>**/*.crt</exclude>
+            <exclude>**/*.p12</exclude>
+            <exclude>**/*.srl</exclude>
+            <exclude>**/*.jks</exclude>
+            <exclude>**/*.csr</exclude>
+            <!-- End of certificate test resource related exclusions -->
             <!-- CSV Test files with no possibility of a copyright header -->
             <exclude>src/test/resources/rass-*.txt</exclude>
           </excludes>
