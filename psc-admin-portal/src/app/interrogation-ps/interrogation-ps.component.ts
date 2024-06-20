@@ -33,6 +33,7 @@ import {PsApi} from '../api/psApi.service';
 import JSONEditor, {JSONEditorOptions, ParseError, SchemaValidationError} from 'jsoneditor';
 import {Router} from '@angular/router';
 import {QueryStatusPanelComponent} from '../shared/query-status-panel/query-status-panel.component';
+import {QueryResult} from '../api/queryResult.model';
 
 @Component({
   selector: 'app-interrogation-ps',
@@ -55,17 +56,15 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   jsonEditorContainer!: ElementRef;
   editor!: JSONEditor;
 
+  formGroup: FormGroup;
+  isInvalidInput: boolean = false;
+  queryStatus: QueryStatus | null = null;
+  response: any = null;
+
   canSave: WritableSignal<boolean> = signal(false);
   toggleAlertCSS: WritableSignal<QueryStatusEnum> = signal(QueryStatusEnum.PENDING);
 
-  formGroup: FormGroup;
-  apiErrorMessage: string = '';
-  isInvalidInput: boolean = false;
-
-  queryStatus: QueryStatus | null = null;
-
   unsub$: Subject<void> = new Subject<void>();
-  response: any = null;
 
   constructor(private cdr: ChangeDetectorRef,
               private formBuilder: FormBuilder,
@@ -119,13 +118,16 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   saveJsonPs(): void {
     if (this.canSave()) {
-      this.psApiService.updatePS(this.editor.get()).pipe(
+      const updatedPsJSON: JSON = this.editor.get();
+      this.psApiService.updatePS(updatedPsJSON).pipe(
         takeUntil(this.unsub$)
-      ).subscribe((response) => {
+      ).subscribe((response: QueryResult<any>) => {
         if (QueryStatusEnum.OK === response.status) {
-          this.handleAlert(QueryStatusEnum.OK, 'PS mis à jour avec succès');
+          this.response = updatedPsJSON;
+          this.canSave.set(false);
+          this.handleAlert(QueryStatusEnum.OK, response.message);
         } else {
-          this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
+          this.handleAlert(QueryStatusEnum.KO, response.message);
         }
       })
     }
@@ -133,7 +135,6 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   handleAlert(status: QueryStatusEnum, message: string): void {
     this.queryStatus = {status: status, message: message};
-    this.apiErrorMessage = QueryStatusEnum.KO === status ? message : '';
     this.toggleAlertCSS.set(status);
   }
 
@@ -160,20 +161,17 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
         search: false,
         statusBar: false,
         sortObjectKeys: false,
-        colorPicker: true,
         enableTransform: false,
+        enableSort: true,
         onValidationError: (errors: readonly(SchemaValidationError | ParseError)[]) => {
           if (errors.length > 0) {
             this.canSave.set(false);
           }
         },
         onChange: () => {
+          this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
           const hasChanged: boolean = JSON.stringify(this.response) !== JSON.stringify(this.editor.get());
-          if (hasChanged) {
-            this.canSave.set(true);
-          } else {
-            this.canSave.set(false);
-          }
+          hasChanged ? this.canSave.set(true) : this.canSave.set(false);
         }
       };
       this.editor = new JSONEditor(this.jsonEditorContainer.nativeElement, options);
@@ -181,7 +179,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private destroyEditor() {
+  private destroyEditor(): void {
     if (this.editor) {
       this.editor.destroy();
     }

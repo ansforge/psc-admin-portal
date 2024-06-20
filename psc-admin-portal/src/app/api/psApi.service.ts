@@ -16,12 +16,13 @@
 
 import { Observable, of } from "rxjs";
 import { Status, errorResponseToStatus} from "./status";
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import {QueryStatusEnum} from './queryStatus.model';
 import {errorResponseToQueryResult} from './queryResult';
+import {QueryResult} from './queryResult.model';
 
 @Injectable({providedIn: "root"})
 export class PsApi {
@@ -59,11 +60,8 @@ export class PsApi {
     );
   }
 
-  updatePS(jsonPS: JSON): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    return this.http.put<any>(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`, jsonPS, {headers}).pipe(
+  updatePS(jsonPS: JSON): Observable<QueryResult<any>> {
+    return this.http.put<JSON>(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`, jsonPS).pipe(
       map(() => {
         return {
           status: QueryStatusEnum.OK,

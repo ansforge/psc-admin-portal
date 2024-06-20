@@ -36,7 +36,7 @@
       <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
 
       <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
-             aria-labelledby="idNatPS" [attr.aria-invalid]="isInvalidInput"/>
+             aria-labelledby="idNatPS" aria-required="true" required [attr.aria-invalid]="isInvalidInput"/>
 
       <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
               (click)="findPSByIDNat()">
@@ -47,7 +47,7 @@
       </button>
     </div>
     @if (isInvalidInput) {
-      <p class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
+      <p id="requiredField" class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
     }
 
     @if (response && !isInvalidInput) {
