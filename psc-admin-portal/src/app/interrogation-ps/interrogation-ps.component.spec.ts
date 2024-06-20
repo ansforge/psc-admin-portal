@@ -23,14 +23,12 @@ import {of, Subject} from 'rxjs';
 import {QueryStatusEnum} from '../api/queryStatus.model';
 import {PsApi} from '../api/psApi.service';
 import {By} from '@angular/platform-browser';
-import {ElementRef, Renderer2} from '@angular/core';
-import {RouterTestingModule} from '@angular/router/testing';
+import {ElementRef} from '@angular/core';
 
 describe('InterrogationPsComponent', () => {
   let component: InterrogationPsComponent;
   let fixture: ComponentFixture<InterrogationPsComponent>;
   let psApiService: jasmine.SpyObj<PsApi>;
-  let mockRenderer2: jasmine.SpyObj<Renderer2>;
 
   const initialEditorJSON: JSON = {
     "idType": "8",
@@ -60,13 +58,11 @@ describe('InterrogationPsComponent', () => {
 
   beforeEach(async () => {
     const psApiSpy = jasmine.createSpyObj('PsApi', ['getPSByIDNat', 'updatePS']);
-    mockRenderer2 = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass']);
 
     await TestBed.configureTestingModule({
-      imports: [InterrogationPsComponent, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
+      imports: [InterrogationPsComponent, HttpClientTestingModule, ReactiveFormsModule],
       providers: [
         { provide: PsApi, useValue: psApiSpy },
-        {provide: Renderer2, useValue: mockRenderer2},
       ]
     })
     .compileComponents();

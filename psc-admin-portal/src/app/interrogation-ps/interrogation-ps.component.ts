@@ -20,7 +20,6 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  Renderer2,
   signal,
   ViewChild,
   WritableSignal
@@ -31,7 +30,6 @@ import {JsonPipe, NgClass} from '@angular/common';
 import {QueryStatus, QueryStatusEnum} from '../api/queryStatus.model';
 import {PsApi} from '../api/psApi.service';
 import JSONEditor, {JSONEditorOptions, ParseError, SchemaValidationError} from 'jsoneditor';
-import {Router} from '@angular/router';
 import {QueryStatusPanelComponent} from '../shared/query-status-panel/query-status-panel.component';
 import {QueryResult} from '../api/queryResult.model';
 
@@ -68,9 +66,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef,
               private formBuilder: FormBuilder,
-              private psApiService: PsApi,
-              private renderer: Renderer2,
-              private router: Router) {
+              private psApiService: PsApi) {
     this.formGroup = formBuilder.group({
       idNatPS: new FormControl('', [Validators.required])
     });
@@ -140,15 +136,6 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
 
   removeAlertCSS(): void {
     this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
-  }
-
-  navigateToHomePage(): void {
-    this.router.navigate(['/']);
-  }
-
-  scrollToTop(): void {
-    this.renderer.setProperty(document.body, 'scrollTop', 0);
-    this.renderer.setProperty(document.documentElement, 'scrollTop', 0);
   }
 
   private initializeEditor(): void {
