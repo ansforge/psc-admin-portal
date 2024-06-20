@@ -16,10 +16,11 @@
 
 import { TestBed } from '@angular/core/testing';
 import {PsApi} from './psApi.service';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {QueryStatusEnum} from './queryStatus.model';
 import {environment} from '../../environments/environment';
 import {HttpErrorResponse} from '@angular/common/http';
+import {QueryResult} from './queryResult.model';
 
 describe('PsApi', () => {
   let service: PsApi;
@@ -42,7 +43,7 @@ describe('PsApi', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return expected data on success', () => {
+  it('should fetch PS data on successful API call', () => {
     const idNatPS: string = '12345';
     const mockResponse = {
       "idType":"8"
@@ -79,7 +80,7 @@ describe('PsApi', () => {
     req.flush(mockResponse);
   });
 
-  it('should handle 410 error', () => {
+  it('should handle 410 error when fetching PS data by ID Nat', () => {
     const idNatPS = '12345';
     const mockErrorResponse = new HttpErrorResponse({
       status: 410,
@@ -98,5 +99,89 @@ describe('PsApi', () => {
     const req = httpMock.expectOne(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${idNatPS}`);
     expect(req.request.method).toBe('GET');
     req.flush({}, mockErrorResponse);
+  });
+
+  it('should return a successful response when PS is updated', () => {
+    const mockJsonPS: JSON = {
+      "idType": "8",
+      "id": "11111111111",
+      "nationalId": "811111111111",
+      "lastName": "FISCHER",
+      "firstNames": [
+        {
+          "firstName": "MARIE",
+          "order": 0
+        }
+      ],
+      "dateOfBirth": "27/01/1979",
+      "birthAddressCode": "67544",
+      "birthCountryCode": "99000",
+      "birthAddress": "WISSEMBUOURG",
+      "genderCode": "F",
+      "phone": "0033663065418",
+      "email": "MARIECH1@HOTMAIL.COM",
+      "salutationCode": "MME",
+      "professions": [],
+      "ids": [
+        "811111111111"
+      ],
+      "deactivated": null
+    } as unknown as JSON;
+    const mockResponse: QueryResult<any> = {
+      status: QueryStatusEnum.OK,
+      message: 'Mise à jour effectuée avec succès',
+    };
+
+    service.updatePS(mockJsonPS).subscribe((response: QueryResult<any>) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req: TestRequest = httpMock.expectOne(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(mockJsonPS);
+  });
+
+  it('should return a 410 error response when the PS is not found', () => {
+    const mockJsonPS: JSON = {
+      "idType": "8",
+      "id": "11111111111",
+      "nationalId": "811111111111",
+      "lastName": "FISCHER",
+      "firstNames": [
+        {
+          "firstName": "MARIE",
+          "order": 0
+        }
+      ],
+      "dateOfBirth": "27/01/1979",
+      "birthAddressCode": "67544",
+      "birthCountryCode": "99000",
+      "birthAddress": "WISSEMBUOURG",
+      "genderCode": "F",
+      "phone": "0033663065418",
+      "email": "MARIECH1@HOTMAIL.COM",
+      "salutationCode": "MME",
+      "professions": [],
+      "ids": [
+        "811111111111"
+      ],
+      "deactivated": null
+    } as unknown as JSON;
+    const mockErrorResponse: HttpErrorResponse = new HttpErrorResponse({
+      status: 410,
+      statusText: 'Gone',
+    });
+    const expectedResponse: QueryResult<any> = {
+      status: QueryStatusEnum.KO,
+      message: `Le PS n'a pas été trouvé.`,
+    };
+
+    service.updatePS(mockJsonPS).subscribe((response: QueryResult<any>) => {
+      expect(response).toEqual(expectedResponse);
+    });
+
+    const req: TestRequest = httpMock.expectOne(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(null, mockErrorResponse);
   });
 });

@@ -15,13 +15,14 @@
 ///
 
 import { Observable, of } from "rxjs";
-import { Status, errorResponseToStatus as errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Status, errorResponseToStatus} from "./status";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import {QueryStatusEnum} from './queryStatus.model';
 import {errorResponseToQueryResult} from './queryResult';
+import {QueryResult} from './queryResult.model';
 
 @Injectable({providedIn: "root"})
 export class PsApi {
@@ -52,6 +53,24 @@ export class PsApi {
       catchError((err: HttpErrorResponse) => {
         if (410 === err.status) {
           return of({status: QueryStatusEnum.KO, message: `Le PS avec l'id ${idNatPS} n'a pas été trouvé.`});
+        } else {
+          return errorResponseToQueryResult<void>(err);
+        }
+      })
+    );
+  }
+
+  updatePS(jsonPS: JSON): Observable<QueryResult<any>> {
+    return this.http.put<JSON>(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`, jsonPS).pipe(
+      map(() => {
+        return {
+          status: QueryStatusEnum.OK,
+          message: 'Mise à jour effectuée avec succès',
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        if (410 === err.status) {
+          return of({status: QueryStatusEnum.KO, message: `Le PS n'a pas été trouvé.`});
         } else {
           return errorResponseToQueryResult<void>(err);
         }

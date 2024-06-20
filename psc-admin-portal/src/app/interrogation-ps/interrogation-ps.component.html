@@ -15,55 +15,54 @@
     limitations under the License.
 
 -->
-<div class="form-box">
-  <legend class="form-box__title mb-1">Interrogation PS</legend>
-  <p class="mb-0" style="font-style: italic">
-    *Champ obligatoire
-  </p>
+<div class="container">
+  <div class="form-box">
+    <legend class="form-box__title mb-1">Interrogation PS</legend>
+    <p class="mb-0" style="font-style: italic">
+      *Champ obligatoire
+    </p>
 
-  @if (shouldShowAlert) {
-    <div class="o-alert o-alert--error" role="alert">
-      <div class="o-alert__icon">
-        <svg class="svg-icon svg-circle-cross" aria-hidden="true" focusable="false">
-          <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
+    @if (QueryStatusEnum.PENDING !== toggleAlertCSS()) {
+      <app-query-status-panel [queryStatus]="queryStatus"
+                              [errorMessage]="''"
+                              (alertClosed)="removeAlertCSS()">
+      </app-query-status-panel>
+    }
+
+    <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">ID National * </p>
+    <div class="input-group search-group w-50"
+         [class.is-invalid]="isInvalidInput"
+         [formGroup]="formGroup">
+      <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
+
+      <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
+             aria-labelledby="idNatPS" aria-required="true" required [attr.aria-invalid]="isInvalidInput"/>
+
+      <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
+              (click)="findPSByIDNat()">
+        <svg class="svg-icon svg-search" aria-hidden="true" focusable="false">
+          <use xlink:href="svg-icons/icon-sprite.svg#search"></use>
         </svg>
+        Rechercher
+      </button>
+    </div>
+    @if (isInvalidInput) {
+      <p id="requiredField" class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
+    }
+
+    @if (response && !isInvalidInput) {
+      <p class="h4 mt-6">Résultats de la recherche</p>
+      <div class="container d-flex flex-column">
+        <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2"
+             [ngClass]="{'editor-error-border': toggleAlertCSS() === QueryStatusEnum.KO, 'editor-success-border': toggleAlertCSS() === QueryStatusEnum.OK}"></div>
+        @if (editor) {
+          <button type="button" class="btn btn--plain btn--primary m-auto" aria-label="Enregistrer le JSON modifié"
+                  [attr.aria-disabled]="!canSave()"
+                  [disabled]="!canSave()"
+                  (click)="saveJsonPs()">Enregistrer les modifications
+          </button>
+        }
       </div>
-
-      @if (isInvalid) {
-        <p>Veuillez renseigner le champ «&nbsp;ID National&nbsp;» correctement avant de lancer une recherche</p>
-      } @else {
-        <p>{{ apiErrorMessage }}</p>
-      }
-
-      <button type="button" class="btn btn--close btn--icon-only" (click)="hideAlert()">
-        <svg class="svg-icon svg-close" aria-hidden="true" focusable="false">
-          <use xlink:href="svg-icons/icon-sprite.svg#close"></use>
-        </svg>
-        <span class="sr-only">Masquer ce message</span></button>
-    </div>
-  }
-
-  <p class="h4 mt-6" [class.is-invalid]="isInvalid">ID National * </p>
-  <div class="input-group search-group w-50" [class.is-invalid]="isInvalid" [formGroup]="formGroup">
-    <label for="idNatPS" class="sr-only">Recherche</label>
-
-    <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"/>
-
-    <button type="submit" class="btn btn--plain btn--primary btn--icon-before" (click)="findPSByIDNat()">
-      <svg class="svg-icon svg-search" aria-hidden="true" focusable="false">
-        <use xlink:href="svg-icons/icon-sprite.svg#search"></use>
-      </svg>
-      Rechercher
-    </button>
+    }
   </div>
-  @if (isInvalid) {
-    <p class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
-  }
-
-  @if (response && !shouldShowAlert) {
-    <p class="h4 mt-6">Résultats de la recherche</p>
-    <div class="container search-result-container">
-      <ngx-json-viewer [json]="response"></ngx-json-viewer>
-    </div>
-  }
 </div>
