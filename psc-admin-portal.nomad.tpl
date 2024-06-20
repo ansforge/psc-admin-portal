@@ -176,7 +176,7 @@ EOH
 
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
-        tags = ["urlprefix-$\u007BHOSTNAME\u007D/"]
+        tags = ["urlprefix-$\u007BHOSTNAME\u007D/ proto=tcp+sni"]
         port = "https"
         check {
           type = "http"
