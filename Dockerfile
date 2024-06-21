@@ -76,3 +76,4 @@ COPY --chown=root psc-admin-portal/src/style /usr/local/apache2/htdocs/style
 COPY --chown=root psc-admin-portal/src/svg-icons /usr/local/apache2/htdocs/svg-icons
 COPY --chown=root --from=builder /src/portal/dist/psc-admin-portal/browser /usr/local/apache2/htdocs/portal/ui
 COPY --chown=root --from=checker /.sourceCheck /
+COPY --chown=root server/pwd.sh /usr/local/sbin/pwd.sh
