@@ -13,3 +13,95 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
+.is-invalid {
+  color: #d20024;
+  border-color: #d20024;
+}
+
+.search-result-container {
+  overflow: scroll;
+  border: .1rem solid var(--input-border-color);
+  border-radius: 1.4rem 2.5rem 2.5rem 1.4rem;
+  max-height: 30em;
+  min-height: 20em;
+  padding: 10px;
+}
+
+#jsonEditorContainer {
+  height: 30em;
+}
+
+.editor-error-border {
+  ::ng-deep .jsoneditor {
+    border: .1rem solid #D20050 !important;
+  }
+}
+
+.editor-success-border {
+  ::ng-deep .jsoneditor {
+    border: .1rem solid #9AB938 !important;
+  }
+}
+
+:host ::ng-deep .jsoneditor {
+  border: .1rem solid var(--input-border-color);
+  border-radius: 1.4rem 2.5rem 2.5rem 1.4rem;
+  max-height: 30em;
+  min-height: 20em;
+  padding: 10px;
+
+  //scrollbar
+  --scrollbar-dimensions: 12px;
+  --scrollbar-thumb-color: #888;
+
+  ::-webkit-scrollbar {
+    width: var(--scrollbar-dimensions);
+    height: var(--scrollbar-dimensions);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 10px;
+  }
+
+  // main editor menu
+  .jsoneditor-menu {
+    background-color: #1D71B8;
+    border-bottom: 1px solid #1D71B8;
+    border-radius: 1.4rem 2.5rem 2.5rem 1.4rem;
+  }
+
+  // context menu
+  .jsoneditor-contextmenu .jsoneditor-menu {
+    background-color: white;
+    color: black;
+    opacity: 100%;
+    border: 1px solid #d3d3d3;
+  }
+
+  .jsoneditor-contextmenu .jsoneditor-menu button {
+    border-radius: 1.4rem 2.5rem 2.5rem 1.4rem;
+  }
+
+  .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:focus, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:hover {
+    color: white;
+    opacity: 100%;
+    background-color: #1d71b8;
+  }
+
+  .jsoneditor-menu > .jsoneditor-modes > button, .jsoneditor-menu > button {
+    opacity: 100%;
+  }
+
+  div.jsoneditor-outer.has-main-menu-bar {
+    padding-top: 40px;
+  }
+
+  // change string color
+  div.jsoneditor-value.jsoneditor-string,
+  .ace-jsoneditor .ace_string {
+    color: #4EC79C;
+  }
+}

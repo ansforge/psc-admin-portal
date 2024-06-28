@@ -25,6 +25,8 @@ if [ -z ${OLD_PWD} ]; then
   cd $SCRIPT_DIR
   SCRIPT_DIR=$(pwd)
   CODE_BASE_DIR=${SCRIPT_DIR}/../..
+  cd ${OLD_PWD}
 fi
 
 export API_PORT=8080
+export RASS_LOAD_PORT=8082

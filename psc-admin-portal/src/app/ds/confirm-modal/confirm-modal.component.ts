@@ -29,6 +29,8 @@ export class ConfirmModalComponent implements OnInit {
   @Input()
   contentText: string="Ceci est une boîte de confirmation";
   @Input()
+  confirmButtonText: string="Confirmer";
+  @Input()
   showEvent: Observable<void>|undefined;
   @Output("confirm")
   confirmEmitter: EventEmitter<void>=new EventEmitter();

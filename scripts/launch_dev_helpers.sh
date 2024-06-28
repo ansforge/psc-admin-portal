@@ -19,6 +19,8 @@
 # run from IDE with the necessary revers-proxy configuration to enable service call by
 # the angular front indevelopment mode.
 
+. $(dirname $0)/backend_setup.sh
+
 cd $(dirname $0)/..
 touch scripts/dev.cfg
 . scripts/dev.cfg
@@ -71,15 +73,35 @@ if [ $? -eq 0 ]; then
   fi
 
   if [ $(docker ps -a | grep "sec-psc-alertmanager" | wc -l) -eq 0 ]; then
+    sed -e "s|http://127.0.0.2:5001/|http://${DOCKER_GATEWAY}:${RASS_LOAD_PORT}/pscload/v2/process/continue|g" $(pwd)/scripts/alertmanager.yml > $(pwd)/target/alertmanager.yml
     sudo docker run \
       --detach \
       --publish ${DOCKER_GATEWAY}:9093:9093 \
       --name sec-psc-alertmanager \
+      -v $(pwd)/target/alertmanager.yml:/etc/alertmanager/alertmanager.yml \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
       --web.external-url=http://sec-psc.wom.dev.henix.fr/
   else
     sudo docker start sec-psc-alertmanager
+  fi
+
+  if [ ! -f $(pwd)/target/rass-archive-mock.zip ]; then
+    mkdir -p $(pwd)/target
+    touch $(pwd)/target/rass-archive-mock.txt
+    (cd $(pwd)/target/;zip rass-archive-mock.zip rass-archive-mock.txt)
+  fi
+
+  if [ $(docker ps -a | grep "sec-psc-dev-rass-mock" | wc -l) -eq 0 ]; then
+    sudo docker run \
+      --detach \
+      --publish ${HOST_ADDRESS}:9094:80 \
+      --name "sec-psc-dev-rass-mock" \
+      -v $(pwd)/target/rass-archive-mock.zip:/usr/local/apache2/htdocs/rass-archive-mock.zip \
+      -v $(pwd)/scripts/rass-mock/httpd.conf:/usr/local/apache2/conf/httpd.conf \
+      httpd:2.4.58-bookworm
+  else
+    sudo docker start sec-psc-dev-rass-mock
   fi
 
   sudo docker run \
