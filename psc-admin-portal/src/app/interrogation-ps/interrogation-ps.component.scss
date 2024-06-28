@@ -99,6 +99,10 @@
     padding-top: 40px;
   }
 
+  .jsoneditor-menu a.jsoneditor-poweredBy {
+    display: none;
+  }
+
   // change string color
   div.jsoneditor-value.jsoneditor-string,
   .ace-jsoneditor .ace_string {

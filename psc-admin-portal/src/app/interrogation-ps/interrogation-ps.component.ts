@@ -142,7 +142,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     if (this.jsonEditorContainer?.nativeElement) {
       const options: JSONEditorOptions = {
         mode: 'view',
-        modes: ['tree', 'code', 'form', 'view', 'text'],
+        modes: ['code', 'form', 'view'],
         mainMenuBar: true,
         navigationBar: false,
         search: false,
