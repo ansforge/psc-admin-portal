@@ -92,4 +92,6 @@ export class ChoixCsvCorrespondanceComponent {
   forgetStatus() {
     this.queryStatus = null;
   }
+
+  protected readonly CsvFileOperations = CsvFileOperations;
 }
