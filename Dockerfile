@@ -16,7 +16,7 @@
 
 # This first stage will package the portal angular application for use in this server.
 ARG BASE_DISTRO=bookworm
-FROM maven:3.9 as checker
+FROM maven:3.9 AS checker
 
 COPY . /src
 WORKDIR src
@@ -24,7 +24,7 @@ RUN mv license/check-pom.xml ./pom.xml
 RUN mvn -Dlicense.current.year=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y) license:check
 RUN touch /.sourceCheck
 
-FROM node:20.11.1-slim as builder
+FROM node:20.11.1-slim AS builder
 ARG BASE_DISTRO=bookworm
 
 RUN apt update
@@ -39,7 +39,7 @@ RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
 RUN ng build --base-href /portal/ui/
 
 # This stage will get the OIDC module package, install it to grab its files.
-FROM debian:${BASE_DISTRO} as oidc_installer
+FROM debian:${BASE_DISTRO} AS oidc_installer
 ARG BASE_DISTRO=bookworm
 ARG MOD_OIDC_VERSION=2.4.15.3
 ARG MOD_OIDC_PACKAGE_VERSION=${MOD_OIDC_VERSION}-1.${BASE_DISTRO}
