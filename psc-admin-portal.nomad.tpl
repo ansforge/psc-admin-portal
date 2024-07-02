@@ -68,6 +68,28 @@ job "psc-admin-portal" {
           source = "local/service-addresses.conf"
           readonly = true
         }
+
+        mount {
+          type = "bind"
+          target = "/etc/pwd"
+          source = "secrets/pwd"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.cert"
+          source = "secrets/sec-psc.cert"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.key"
+          source = "secrets/sec-psc.key"
+          readonly = false
+        }
+
       }
   
       resources {
@@ -89,6 +111,27 @@ EOH
         env = true
       }
 
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_keypass}}{{end}}
+EOH
+        destination = "secrets/pwd"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_certificate}}{{end}}
+EOH
+        destination = "secrets/sec-psc.cert"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_key}}{{end}}
+EOH
+        destination = "secrets/sec-psc.key"
+      }
+      
       template {
         data = <<EOH
 # For each variable, a guard is added 
