@@ -106,6 +106,8 @@
             <gitignore>SCRIPT_STYLE</gitignore>
             <conf.in>SCRIPT_STYLE</conf.in>
             <dockerignore>SCRIPT_STYLE</dockerignore>
+            <hcl>SLASHSTAR_STYLE</hcl>
+            <nomad.tpl>SLASHSTAR_STYLE</nomad.tpl>
           </mapping>
         </configuration>
         <executions>
