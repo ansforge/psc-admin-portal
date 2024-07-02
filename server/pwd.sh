@@ -15,4 +15,11 @@
 # limitations under the License.
 #
 
-echo ${SRV_TLS_KEY_PASSWORD}
+if [ -f /etc/pwd ]; then
+  chmod go-rwx /etc/pwd
+  cat /etc/pwd
+else
+  echo '*****************************************************' >&2
+  echo Missing the password file /etc/pwd, please provide it >&2
+  echo '*****************************************************' >&2
+fi
