@@ -19,7 +19,7 @@ ARG BASE_DISTRO=bookworm
 FROM maven:3.9 AS checker
 
 COPY . /src
-WORKDIR src
+WORKDIR /src
 RUN mv license/check-pom.xml ./pom.xml
 RUN mvn -Dlicense.current.year=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y) license:check
 RUN touch /.sourceCheck
