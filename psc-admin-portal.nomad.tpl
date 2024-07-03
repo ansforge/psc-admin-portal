@@ -22,7 +22,7 @@ job "psc-admin-portal" {
   vault {
     policies = ["psc-ecosystem"]
     change_mode = "signal"
-    change_signal = "SIGHUP"
+    change_signal = "SIGUSR1"
   }
   
   group "psc-admin-portal" {
@@ -118,7 +118,7 @@ EOH
 EOH
         destination = "secrets/pwd"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -127,7 +127,7 @@ EOH
 EOH
         destination = "secrets/sec-psc.cert"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -136,7 +136,7 @@ EOH
 EOH
         destination = "secrets/sec-psc.key"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -209,7 +209,7 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
 EOH
         destination = "local/service-addresses.conf"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -223,7 +223,7 @@ Require claim SubjectNameID:{{ $v }}
 EOH
         destination = "local/whitelist.conf"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
       }
 
       service {
