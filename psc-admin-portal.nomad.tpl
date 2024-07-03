@@ -107,6 +107,7 @@ CLIENT_ID={{.Data.data.client_id}}
 CLIENT_SECRET={{.Data.data.client_secret}}
 {{end}}
 EOH
+        change_mode="restart"
         destination = "secrets/front.env"
         env = true
       }
@@ -116,6 +117,8 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_keypass}}{{end}}
 EOH
         destination = "secrets/pwd"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
       
       template {
@@ -123,6 +126,8 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_certificate}}{{end}}
 EOH
         destination = "secrets/sec-psc.cert"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
       
       template {
@@ -130,6 +135,8 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_key}}{{end}}
 EOH
         destination = "secrets/sec-psc.key"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
       
       template {
@@ -215,6 +222,8 @@ Require claim SubjectNameID:{{ $v }}
 {{ end }}
 EOH
         destination = "local/whitelist.conf"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
 
       service {
