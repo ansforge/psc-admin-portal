@@ -68,6 +68,28 @@ job "psc-admin-portal" {
           source = "local/service-addresses.conf"
           readonly = true
         }
+
+        mount {
+          type = "bind"
+          target = "/etc/pwd"
+          source = "secrets/pwd"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.cert"
+          source = "secrets/sec-psc.cert"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.key"
+          source = "secrets/sec-psc.key"
+          readonly = false
+        }
+
       }
   
       resources {
@@ -79,7 +101,7 @@ job "psc-admin-portal" {
         data = <<EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}
 HOSTNAME={{.Data.data.hostname}}
-PROTOCOL={{.Data.data.protocol}}
+PROTOCOL=https
 PSC_HOST={{.Data.data.psc_host}}
 CLIENT_ID={{.Data.data.client_id}}
 CLIENT_SECRET={{.Data.data.client_secret}}
@@ -89,6 +111,27 @@ EOH
         env = true
       }
 
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_keypass}}{{end}}
+EOH
+        destination = "secrets/pwd"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_certificate}}{{end}}
+EOH
+        destination = "secrets/sec-psc.cert"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_key}}{{end}}
+EOH
+        destination = "secrets/sec-psc.key"
+      }
+      
       template {
         data = <<EOH
 # For each variable, a guard is added 
@@ -176,8 +219,8 @@ EOH
 
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
-        tags = ["urlprefix-$\u007BHOSTNAME\u007D/"]
-        port = "http"
+        tags = ["urlprefix-$\u007BHOSTNAME\u007D/ proto=tcp+sni"]
+        port = "https"
         check {
           type = "http"
           path = "/"

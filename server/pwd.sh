@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 #
@@ -14,25 +15,11 @@
 # limitations under the License.
 #
 
-LoadModule rewrite_module modules/mod_rewrite.so
-
-<IfFile conf/sec-psc/sec-psc.cert>
-  include conf/sec-psc/tls.conf
-</IfFile>
-
-<Directory "/usr/local/apache2/htdocs/portal/ui">
-LogLevel Debug rewrite:trace3
-RewriteEngine On
-# If an existing asset or directory is requested go to it as it is
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
-RewriteRule ^ - [L]
-
-# If the requested resource doesn't exist, use index.html
-RewriteRule ^ /portal/ui/index.html
-</Directory>
-
-include conf/sec-psc/oidc.conf
-ErrorDocument 401 /noHabilitation.html
-
-include conf/sec-psc/service-proxy.conf
+if [ -f /etc/pwd ]; then
+  chmod go-rwx /etc/pwd
+  cat /etc/pwd
+else
+  echo '*****************************************************' >&2
+  echo Missing the password file /etc/pwd, please provide it >&2
+  echo '*****************************************************' >&2
+fi
