@@ -141,6 +141,18 @@ EOH
       
       template {
         data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/service-addresses.data.conf
+EOH
+        destination = "local/service-addresses.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+      template {
+        data = <<EOH
 # For each variable, a guard is added 
 # so that configuration remains parseable even if services are not found in consul
 # The guard is a hack replacing non-existing variable value test 
@@ -207,7 +219,19 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
 </IfDefine>
 
 EOH
-        destination = "local/service-addresses.conf"
+        destination = "local/service-addresses.data.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+            template {
+        data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/whitelist.data.conf
+EOH
+        destination = "local/whitelist.conf"
         change_mode = "signal"
         change_signal = "SIGUSR1"
       }
@@ -221,7 +245,7 @@ Require claim SubjectNameID:{{ $v }}
 {{ end}}
 {{ end }}
 EOH
-        destination = "local/whitelist.conf"
+        destination = "local/whitelist.data.conf"
         change_mode = "signal"
         change_signal = "SIGUSR1"
       }
