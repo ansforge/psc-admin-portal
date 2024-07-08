@@ -22,7 +22,7 @@ job "psc-admin-portal" {
   vault {
     policies = ["psc-ecosystem"]
     change_mode = "signal"
-    change_signal = "SIGHUP"
+    change_signal = "SIGUSR1"
   }
   
   group "psc-admin-portal" {
@@ -107,6 +107,7 @@ CLIENT_ID={{.Data.data.client_id}}
 CLIENT_SECRET={{.Data.data.client_secret}}
 {{end}}
 EOH
+        change_mode="restart"
         destination = "secrets/front.env"
         env = true
       }
@@ -116,6 +117,8 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_keypass}}{{end}}
 EOH
         destination = "secrets/pwd"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -123,6 +126,8 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_certificate}}{{end}}
 EOH
         destination = "secrets/sec-psc.cert"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -130,6 +135,20 @@ EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_key}}{{end}}
 EOH
         destination = "secrets/sec-psc.key"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+      template {
+        data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/service-addresses.data.conf
+EOH
+        destination = "local/service-addresses.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -200,9 +219,21 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
 </IfDefine>
 
 EOH
-        destination = "local/service-addresses.conf"
+        destination = "local/service-addresses.data.conf"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
+      }
+      
+            template {
+        data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/whitelist.data.conf
+EOH
+        destination = "local/whitelist.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -214,7 +245,9 @@ Require claim SubjectNameID:{{ $v }}
 {{ end}}
 {{ end }}
 EOH
-        destination = "local/whitelist.conf"
+        destination = "local/whitelist.data.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
 
       service {
