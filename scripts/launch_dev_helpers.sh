@@ -81,7 +81,8 @@ if [ $? -eq 0 ]; then
       -v $(pwd)/target/alertmanager.yml:/etc/alertmanager/alertmanager.yml \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
-      --web.external-url=http://sec-psc.wom.dev.henix.fr/
+      --web.external-url=http://sec-psc.wom.dev.henix.fr/ \
+      --cluster.advertise-address=${DOCKER_GATEWAY}:9093
   else
     sudo docker start sec-psc-alertmanager
   fi
