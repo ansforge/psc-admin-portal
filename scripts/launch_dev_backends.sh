@@ -52,4 +52,8 @@ cd ${CODE_BASE_DIR}/psc-extract
 mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8083" &
 echo $! > ${SCRIPT_DIR}/extract.pid
 
+cd ${CODE_BASE_DIR}/psc-amar-connector/async-listener
+mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dserver.port=8084" &
+echo $! > ${SCRIPT_DIR}/amar.pid
+
 cd ${OLD_PWD}

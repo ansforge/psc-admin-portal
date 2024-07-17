@@ -16,14 +16,17 @@
 
 -->
 <div>
-  <label class="status" [class.OK]="psApiState.available">PS-Api state : {{psApiState.message}}</label>
+  <label class="status" [class.OK]="amarState.available">Amar Connector state : {{amarState.message}}</label>
 </div>
 <div>
-  <label class="status" [class.OK]="toggleState.available">Toggle state : {{toggleState.message}}</label>
+  <label class="status" [class.OK]="extractState.available">Extract state : {{extractState.message}}</label>
+</div>
+<div>
+  <label class="status" [class.OK]="psApiState.available">Ps-Api state : {{psApiState.message}}</label>
 </div>
 <div>
   <label class="status" [class.OK]="pscloadState.available">Pscload state : {{pscloadState.message}}</label>
 </div>
 <div>
-  <label class="status" [class.OK]="extractState.available">Extract state : {{extractState.message}}</label>
+  <label class="status" [class.OK]="toggleState.available">Toggle state : {{toggleState.message}}</label>
 </div>
