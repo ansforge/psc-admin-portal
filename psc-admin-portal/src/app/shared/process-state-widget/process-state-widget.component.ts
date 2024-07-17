@@ -15,11 +15,13 @@
 ///
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProcessState } from './process.model';
+import { ProcessState, processStateEnum } from './process.model';
 import { ProcessService } from './process.service';
 import { QueryResult } from '../../api/queryResult.model';
-import { Subscription, timer } from 'rxjs';
+import { Subscription, switchMap, timer } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { Extract } from '../../api/extract.service';
+import { AmarConnectorService } from '../../api/amar-connector.service';
 
 @Component({
   selector: 'app-process-state-widget',
@@ -29,35 +31,60 @@ import { environment } from '../../../environments/environment';
   styleUrl: './process-state-widget.component.scss'
 })
 export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
-  processState: ProcessState|null=null;
-  private updateSubscription: Subscription|null=null; 
-  
-  constructor(private procesService: ProcessService){}
-  
+  processState: ProcessState[]|null=null;
+  private updateSubscription: Subscription|null=null;
+
+  constructor(private processService: ProcessService,
+              private extractService: Extract,
+              private amarConnectorService: AmarConnectorService){}
+
   ngOnInit(): void {
-    
+
     this.updateSubscription=timer(0,environment.UPDATE_PERIOD)
       .subscribe(
         () => {
-          this.procesService
+          this.processService
             .getProcessState()
+            .pipe(
+              switchMap((state: QueryResult<ProcessState|null>) => this.extractService.getExtractGenerationState(state)),
+              switchMap((activeStates: ProcessState[]) => this.amarConnectorService.getMessageState(activeStates)),
+            )
             .subscribe(
-              (state: QueryResult<ProcessState|null>) => this.updateState(state)
+              (activeStates: ProcessState[]) => this.updateState(activeStates)
             );
         }
       );
   }
-  
-  private updateState(state: QueryResult<ProcessState|null>) {
-    if(state.body || state.body===null) {
-      this.processState = state.body
-    }
+
+  private updateState(activeStates: ProcessState[]): void {
+      this.processState = activeStates;
   }
-  
+
   ngOnDestroy(): void {
     if(this.updateSubscription!==null) {
       this.updateSubscription.unsubscribe();
       this.updateSubscription=null;
     }
   }
+
+  shouldStepBeChecked(stepProcessState: ProcessState): boolean {
+    if (this.processState !== null) {
+      const isNotRunning: boolean = !this.processState?.includes(stepProcessState);
+      const isRunningHigherState: boolean = this.processState.some((activeState: ProcessState) => activeState.numeroEtape > stepProcessState.numeroEtape);
+      const isNotRunningLowerState: boolean = this.processState.every((activeState: ProcessState) => activeState.numeroEtape >= stepProcessState.numeroEtape);
+      return isNotRunning && isRunningHigherState && isNotRunningLowerState;
+    } else {
+      return false;
+    }
+  }
+
+  isCurrentStep(stepNumber: number): boolean {
+    if (this.processState === null) {
+      return false;
+    } else {
+      return this.processState?.some((runningState: ProcessState) => runningState.numeroEtape === stepNumber);
+    }
+  }
+
+  protected readonly processStateEnum: ProcessState[] = processStateEnum;
 }

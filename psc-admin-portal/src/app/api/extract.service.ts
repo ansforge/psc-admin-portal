@@ -14,27 +14,48 @@
 /// limitations under the License.
 ///
 
-import { Observable, of, throwError } from "rxjs";
-import { Status, errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { catchError, map } from "rxjs/operators";
-import { Injectable } from "@angular/core";
+import {Observable} from "rxjs";
+import {Status, errorResponseToStatus} from "./status";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {catchError, map} from "rxjs/operators";
+import {Injectable} from "@angular/core";
+import {QueryResult} from './queryResult.model';
+import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 
 @Injectable({providedIn: "root"})
 export class Extract {
-  constructor(private http: HttpClient){}
-  
+  constructor(private http: HttpClient) {
+  }
+
   get status(): Observable<Status> {
     return this.http.get<string>(
-        `${environment.API_HOSTNAME}portal/service/pscextract/v1/check`,
-      {headers: {'Accept':'application/json'},responseType: 'text' as 'json'}
+      `${environment.API_HOSTNAME}portal/service/pscextract/v1/check`,
+      {headers: {'Accept': 'application/json'}, responseType: 'text' as 'json'}
     ).pipe(
       map(
-        (message: string) => new Status(true,message)
+        (message: string) => new Status(true, message)
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
+      )
+    );
+  }
+
+  getExtractGenerationState(state: QueryResult<ProcessState | null>): Observable<ProcessState[]> {
+    return this.http.get<boolean>(
+      `${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`
+    ).pipe(
+      map((isBusy: boolean) => {
+          const activeStates: ProcessState[] = [];
+          if (state.body !== null && state.body !== undefined) {
+            activeStates.push(state.body);
+          }
+          if (isBusy && !activeStates.includes(processStateEnum[5])) {
+            activeStates.push(processStateEnum[5]);
+          }
+          return activeStates;
+        }
       )
     );
   }

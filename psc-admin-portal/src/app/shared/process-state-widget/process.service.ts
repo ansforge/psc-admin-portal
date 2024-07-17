@@ -15,7 +15,7 @@
 ///
 
 import { Injectable } from "@angular/core";
-import { Observable, map, of, pipe } from "rxjs";
+import { Observable, map } from "rxjs";
 import { ProcessState, stateFromCode } from "./process.model";
 import { Pscload } from "../../api/pscload.service";
 import { QueryResult } from "../../api/queryResult.model";
@@ -24,10 +24,10 @@ import { QueryStatusEnum } from "../../api/queryStatus.model";
 
 @Injectable({providedIn: "root"})
 export class ProcessService {
-  
+
   constructor(private pscLoad: Pscload){}
-  
-  getProcessState(): Observable<QueryResult<ProcessState|null>> {
+
+  getProcessState(): Observable<QueryResult<ProcessState | null>> {
     return this.pscLoad
       .getPscLoadStatus()
       .pipe(
@@ -49,7 +49,7 @@ export class ProcessService {
                 status: QueryStatusEnum.OK,
                 message: 'Processus en cours',
                 body: processState
-              } as QueryResult<ProcessState | null>;;
+              } as QueryResult<ProcessState | null>;
             }
           } else {
             return {

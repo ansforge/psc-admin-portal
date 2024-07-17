@@ -20,6 +20,7 @@ import {Observable} from 'rxjs';
 import {errorResponseToStatus, Status} from './status';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
+import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,20 @@ export class AmarConnectorService {
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
+      )
+    );
+  }
+
+  getMessageState(activeStates: ProcessState[]): Observable<ProcessState[]> {
+    return this.http.get<boolean>(
+      `${environment.API_HOSTNAME}portal/service/psc-amar-connector/check-pending-messages`
+    ).pipe(
+      map((hasPendingMsg: boolean) => {
+          if (hasPendingMsg && !activeStates.includes(processStateEnum[6])) {
+            activeStates.push(processStateEnum[6]);
+          }
+          return activeStates;
+        }
       )
     );
   }
