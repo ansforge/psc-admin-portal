@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 #
@@ -14,11 +15,11 @@
 # limitations under the License.
 #
 
-ARG BASE_DISTRO=bookworm
-FROM httpd:2.4.58-$BASE_DISTRO
-
-COPY server/service-proxy.conf /usr/local/apache2/conf/sec-psc/
-COPY scripts/devhelpers.conf /usr/local/apache2/conf/sec-psc/
-RUN echo "include conf/sec-psc/service-proxy.conf" >> /usr/local/apache2/conf/httpd.conf
-RUN echo "include conf/sec-psc/devhelpers.conf" >> /usr/local/apache2/conf/httpd.conf
-
+if [ -f /etc/pwd ]; then
+  chmod go-rwx /etc/pwd
+  cat /etc/pwd
+else
+  echo '*****************************************************' >&2
+  echo Missing the password file /etc/pwd, please provide it >&2
+  echo '*****************************************************' >&2
+fi

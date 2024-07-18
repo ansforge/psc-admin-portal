@@ -18,3 +18,4 @@ psc-admin-portal/.angular
 psc-admin-portal/node_modules
 psc-admin-portal/coverage
 src/test/resources/rass-*.txt
+src/test/resources/TLS/*.*

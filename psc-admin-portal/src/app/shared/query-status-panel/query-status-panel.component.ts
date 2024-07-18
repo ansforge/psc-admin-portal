@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { QueryStatus, QueryStatusEnum } from '../../api/queryStatus.model';
 
 @Component({
@@ -28,8 +28,10 @@ export class QueryStatusPanelComponent {
   qs: typeof QueryStatusEnum=QueryStatusEnum;
   @Input() errorMessage: string='Erreur lors de la requête';
   @Input() queryStatus: QueryStatus|null=null;
-  
+  @Output() alertClosed: EventEmitter<void> = new EventEmitter<void>();
+
   forgetStatus() {
     this.queryStatus=null;
+    this.alertClosed.emit()
   }
 }

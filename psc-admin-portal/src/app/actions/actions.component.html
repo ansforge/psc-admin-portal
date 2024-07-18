@@ -15,49 +15,51 @@
     limitations under the License.
 
 -->
-<h1 class="lvl1 pt-2">Mes actions</h1>
-<div class="form-group">
-  <fieldset>
-    <div class="custom-radio-box">
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio"
-               class="custom-control-input"
-               name="actionRadioBox"
-               id="gestionProcessusBtn"
-               [routerLink]="[actionsOptions.GestionProcessus]"
-               routerLinkActive="checked"
-               (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionProcessus)"
-               [checked]="checked(actionsOptions.GestionProcessus)"
-        >
-        <label class="custom-control-label" for="gestionProcessusBtn">Gestion du processus</label>
-      </div>
+<div class="container border rounded bg-white">
+  <h1 class="lvl1 pt-2">Mes actions</h1>
+  <div class="form-group">
+    <fieldset>
+      <div class="custom-radio-box">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio"
+                 class="custom-control-input"
+                 name="actionRadioBox"
+                 id="gestionProcessusBtn"
+                 [routerLink]="[actionsOptions.GestionProcessus]"
+                 routerLinkActive="checked"
+                 (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionProcessus)"
+                 [checked]="checked(actionsOptions.GestionProcessus)"
+          >
+          <label class="custom-control-label" for="gestionProcessusBtn">Gestion du processus</label>
+        </div>
 
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio"
-               class="custom-control-input"
-               name="actionRadioBox"
-               id="gestionAlertesBtn"
-               [routerLink]="[actionsOptions.GestionAlertes]"
-               routerLinkActive="checked"
-               (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionAlertes)"
-               [checked]="checked(actionsOptions.GestionAlertes)"
-        >
-        <label class="custom-control-label" for="gestionAlertesBtn">Gestion des alertes</label>
-      </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio"
+                 class="custom-control-input"
+                 name="actionRadioBox"
+                 id="gestionAlertesBtn"
+                 [routerLink]="[actionsOptions.GestionAlertes]"
+                 routerLinkActive="checked"
+                 (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionAlertes)"
+                 [checked]="checked(actionsOptions.GestionAlertes)"
+          >
+          <label class="custom-control-label" for="gestionAlertesBtn">Gestion des alertes</label>
+        </div>
 
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio"
-               class="custom-control-input"
-               name="actionRadioBox"
-               id="gestionAutresIdBtn"
-               [routerLink]="[actionsOptions.GestionAutresId]"
-               routerLinkActive="checked"
-               (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionAutresId)"
-               [checked]="checked(actionsOptions.GestionAutresId)"
-        >
-        <label class="custom-control-label" for="gestionAutresIdBtn">Gestion des autres identifiants</label>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio"
+                 class="custom-control-input"
+                 name="actionRadioBox"
+                 id="gestionAutresIdBtn"
+                 [routerLink]="[actionsOptions.GestionAutresId]"
+                 routerLinkActive="checked"
+                 (isActiveChange)="onRouterLinkActive($event,actionsOptions.GestionAutresId)"
+                 [checked]="checked(actionsOptions.GestionAutresId)"
+          >
+          <label class="custom-control-label" for="gestionAutresIdBtn">Gestion des autres identifiants</label>
+        </div>
       </div>
-    </div>
-  </fieldset>
+    </fieldset>
+  </div>
+  <router-outlet/>
 </div>
-<router-outlet />
