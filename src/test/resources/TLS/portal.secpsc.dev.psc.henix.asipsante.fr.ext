@@ -3,4 +3,4 @@ basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 subjectAltName = @alt_names
 [alt_names]
-DNS.1 = portal.secpsc.dev.psc.heniportal.secpsc.dev.psc.henix.asipsante.fr
+DNS.1 = portal.secpsc.dev.psc.henix.asipsante.fr

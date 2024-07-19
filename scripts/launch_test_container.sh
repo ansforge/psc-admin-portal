@@ -55,16 +55,37 @@ fi
 
 sudo docker buildx build . -t sec-psc/portal
 
+if [ "${DEPLOY_TLS}" == "YES" ]; then
+  mkdir -p $(pwd)/target/TLS
+  cp $(pwd)/src/test/resources/TLS/portal.secpsc.dev.psc.henix.asipsante.fr.crt $(pwd)/target/TLS/sec-psc.cert
+  cp $(pwd)/src/test/resources/TLS/portal.secpsc.dev.psc.henix.asipsante.fr.key $(pwd)/target/TLS/sec-psc.key
+  echo password > $(pwd)/target/pwd
+  SSH_CONFIG=" --publish ${HOST_ADDRESS}:443:443 \
+               -v $(pwd)/src/test/resources/TLS/portal.secpsc.dev.psc.henix.asipsante.fr.crt:/usr/local/apache2/conf/sec-psc/sec-psc.cert \
+               -v $(pwd)/src/test/resources/TLS/portal.secpsc.dev.psc.henix.asipsante.fr.key:/usr/local/apache2/conf/sec-psc/sec-psc.key \
+               -e SRV_TLS_KEY_PASSWORD=password \
+               -v $(pwd)/target/pwd:/etc/pwd
+  "
+  HOSTNAME=portal.secpsc.dev.psc.henix.asipsante.fr
+  PROTOCOL=https
+else
+  echo "Starting the test server in default (http) mode."
+  echo "To test the TLS configuration, add DEPLOY_TLS=YES to scripts/dev.cfg."
+  HOSTNAME=sec-psc.wom.dev.henix.fr
+  PROTOCOL=http
+fi
+
 if [ $? -eq 0 ]; then
   sudo docker run \
      --publish ${HOST_ADDRESS}:80:80 \
-     --rm -e PROTOCOL=http \
-     -e HOSTNAME=sec-psc.wom.dev.henix.fr \
+     --rm -e PROTOCOL=${PROTOCOL} \
+     -e HOSTNAME=${HOSTNAME} \
      -e PSC_HOST=auth.bas.psc.esante.gouv.fr \
      -e CLIENT_ID=${CLIENT_ID} \
      -e CLIENT_SECRET=${CLIENT_SECRET} \
      -v $(pwd)/scripts/whitelist.conf:/usr/local/apache2/conf/sec-psc/whitelist.conf \
      -v $(pwd)/scripts/service-addresses.conf:/usr/local/apache2/conf/sec-psc/service-addresses.conf \
+     ${SSH_CONFIG} \
      --name "sec-psc-portal.test" \
      sec-psc/portal
 fi

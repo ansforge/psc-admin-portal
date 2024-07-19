@@ -22,7 +22,7 @@ job "psc-admin-portal" {
   vault {
     policies = ["psc-ecosystem"]
     change_mode = "signal"
-    change_signal = "SIGHUP"
+    change_signal = "SIGUSR1"
   }
   
   group "psc-admin-portal" {
@@ -68,6 +68,28 @@ job "psc-admin-portal" {
           source = "local/service-addresses.conf"
           readonly = true
         }
+
+        mount {
+          type = "bind"
+          target = "/etc/pwd"
+          source = "secrets/pwd"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.cert"
+          source = "secrets/sec-psc.cert"
+          readonly = false
+        }
+        
+        mount {
+          type = "bind"
+          target = "/usr/local/apache2/conf/sec-psc/sec-psc.key"
+          source = "secrets/sec-psc.key"
+          readonly = false
+        }
+
       }
   
       resources {
@@ -79,16 +101,56 @@ job "psc-admin-portal" {
         data = <<EOH
 {{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}
 HOSTNAME={{.Data.data.hostname}}
-PROTOCOL={{.Data.data.protocol}}
+PROTOCOL=https
 PSC_HOST={{.Data.data.psc_host}}
 CLIENT_ID={{.Data.data.client_id}}
 CLIENT_SECRET={{.Data.data.client_secret}}
 {{end}}
 EOH
+        change_mode="restart"
         destination = "secrets/front.env"
         env = true
       }
 
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_keypass}}{{end}}
+EOH
+        destination = "secrets/pwd"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_certificate}}{{end}}
+EOH
+        destination = "secrets/sec-psc.cert"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+      template {
+        data = <<EOH
+{{ with secret "psc-ecosystem/${nomad_namespace}/admin-portal"}}{{.Data.data.srv_tls_key}}{{end}}
+EOH
+        destination = "secrets/sec-psc.key"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
+      template {
+        data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/service-addresses.data.conf
+EOH
+        destination = "local/service-addresses.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
+      }
+      
       template {
         data = <<EOH
 # For each variable, a guard is added 
@@ -157,9 +219,21 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
 </IfDefine>
 
 EOH
-        destination = "local/service-addresses.conf"
+        destination = "local/service-addresses.data.conf"
         change_mode = "signal"
-        change_signal = "SIGHUP"
+        change_signal = "SIGUSR1"
+      }
+      
+            template {
+        data = <<EOH
+# This will be bind_mounted, while the real data will be included so that httpd
+# sees the new content when graceful-reloaded
+
+include /local/whitelist.data.conf
+EOH
+        destination = "local/whitelist.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
       
       template {
@@ -171,13 +245,15 @@ Require claim SubjectNameID:{{ $v }}
 {{ end}}
 {{ end }}
 EOH
-        destination = "local/whitelist.conf"
+        destination = "local/whitelist.data.conf"
+        change_mode = "signal"
+        change_signal = "SIGUSR1"
       }
 
       service {
         name = "$\u007BNOMAD_NAMESPACE\u007D-$\u007BNOMAD_JOB_NAME\u007D"
-        tags = ["urlprefix-$\u007BHOSTNAME\u007D/"]
-        port = "http"
+        tags = ["urlprefix-$\u007BHOSTNAME\u007D/ proto=tcp+sni"]
+        port = "https"
         check {
           type = "http"
           path = "/"
