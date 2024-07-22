@@ -18,7 +18,7 @@
 <div class="container">
   <div class="form-box">
     <legend class="form-box__title mb-1">Interrogation PS</legend>
-    <p class="mb-0" style="font-style: italic">
+    <p class="mb-0 italics">
       *Champ obligatoire
     </p>
 
@@ -47,7 +47,7 @@
       </button>
     </div>
     @if (isInvalidInput) {
-      <p id="requiredField" class="is-invalid" style="font-style: italic">Ce champ est obligatoire</p>
+      <p id="requiredField" class="is-invalid italics">Ce champ est obligatoire</p>
     }
 
     @if (response && !isInvalidInput) {

@@ -28,19 +28,19 @@
   </h4>
   <div class="form-group row">
     <div class="input-group col-sm-10 upload">
-      <input 
-        class="form-control with-danger-addon" 
-        id="archiveInput" 
+      <input
+        class="form-control with-danger-addon"
+        id="archiveInput"
         value="{{correspondance?.name}}"
-        
+
       >
-      <input 
-        #fileInput 
-        (change)="selectFile($event)" 
-        accept=".csv" 
-        class="form-control with-danger-addon FileUpload" 
-        id="archiveFile" 
-        onclick="this.value=null" 
+      <input
+        #fileInput
+        (change)="selectFile($event)"
+        accept=".csv"
+        class="form-control with-danger-addon FileUpload"
+        id="archiveFile"
+        onclick="this.value=null"
         type="file"
       >
     </div>
@@ -49,7 +49,7 @@
   <div class="form-group row">
     <div class="input-group col-sm-10 src-dest-row">
       <ul>
-        <li>Source (colonne de gauche ) = identifiant secondaire qui sera ajout</li>
+        <li>Source (colonne de gauche ) = identifiant secondaire qui sera {{CsvFileOperations.INSERT === operation ? 'ajouté' : 'supprimé'}}</li>
         <li>Destination (colonne de droite) = identifiant principal</li>
       </ul>
     </div>

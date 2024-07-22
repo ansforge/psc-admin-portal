@@ -29,6 +29,10 @@ h3 {
   color: #369AEE;
 }
 
+.italics {
+  font-style: italic;
+}
+
 .svg-icon {
   margin-left: 1rem;
   margin-right: 0.5rem;

@@ -16,6 +16,7 @@
 
 import { Component } from '@angular/core';
 import { ChoixCsvCorrespondanceComponent } from './choix-csv-correspondance/choix-csv-correspondance.component';
+import {CsvFileOperations} from '../../api/toggle.service';
 
 @Component({
   selector: 'app-toggle',
@@ -26,4 +27,5 @@ import { ChoixCsvCorrespondanceComponent } from './choix-csv-correspondance/choi
 })
 export class GestionAutresIdComponent {
 
+    protected readonly CsvOperationsModel = CsvFileOperations;
 }
