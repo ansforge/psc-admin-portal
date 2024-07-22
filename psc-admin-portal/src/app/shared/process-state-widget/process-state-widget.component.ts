@@ -17,11 +17,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProcessState, processStateEnum } from './process.model';
 import { ProcessService } from './process.service';
-import { QueryResult } from '../../api/queryResult.model';
-import { Subscription, switchMap, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Extract } from '../../api/extract.service';
-import { AmarConnectorService } from '../../api/amar-connector.service';
 
 @Component({
   selector: 'app-process-state-widget',
@@ -34,9 +31,7 @@ export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
   processState: ProcessState[]|null=null;
   private updateSubscription: Subscription|null=null;
 
-  constructor(private processService: ProcessService,
-              private extractService: Extract,
-              private amarConnectorService: AmarConnectorService){}
+  constructor(private processService: ProcessService){}
 
   ngOnInit(): void {
 
@@ -45,10 +40,6 @@ export class ProcessStateWidgetComponent implements OnInit, OnDestroy {
         () => {
           this.processService
             .getProcessState()
-            .pipe(
-              switchMap((state: QueryResult<ProcessState|null>) => this.extractService.getExtractGenerationState(state)),
-              switchMap((activeStates: ProcessState[]) => this.amarConnectorService.getMessageState(activeStates)),
-            )
             .subscribe(
               (activeStates: ProcessState[]) => this.updateState(activeStates)
             );

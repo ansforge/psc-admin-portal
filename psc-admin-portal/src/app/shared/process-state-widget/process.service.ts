@@ -14,51 +14,58 @@
 /// limitations under the License.
 ///
 
-import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
-import { ProcessState, stateFromCode } from "./process.model";
-import { Pscload } from "../../api/pscload.service";
-import { QueryResult } from "../../api/queryResult.model";
-import { PscLoadStatus } from "../../api/pscload.model";
-import { QueryStatusEnum } from "../../api/queryStatus.model";
+import {Injectable} from "@angular/core";
+import {Observable, map, switchMap} from "rxjs";
+import {ProcessState, stateFromCode} from "./process.model";
+import {Pscload} from "../../api/pscload.service";
+import {QueryResult} from "../../api/queryResult.model";
+import {PscLoadStatus} from "../../api/pscload.model";
+import {QueryStatusEnum} from "../../api/queryStatus.model";
+import {Extract} from '../../api/extract.service';
+import {AmarConnectorService} from '../../api/amar-connector.service';
 
 @Injectable({providedIn: "root"})
 export class ProcessService {
 
-  constructor(private pscLoad: Pscload){}
+  constructor(private pscLoad: Pscload,
+              private extractService: Extract,
+              private amarConnectorService: AmarConnectorService) {
+  }
 
-  getProcessState(): Observable<QueryResult<ProcessState | null>> {
+  getProcessState(): Observable<ProcessState[]> {
     return this.pscLoad
       .getPscLoadStatus()
       .pipe(
-      map(
-        (res: QueryResult<PscLoadStatus|null>) => {
-          if(res.status===QueryStatusEnum.OK) {
-            const pscloadStatus = res.body as PscLoadStatus|null;
-            if(pscloadStatus===null) {
-              const body: null=null;
-              return {
-                status: QueryStatusEnum.OK,
-                message: 'Pas de processus en cours',
-                body:  body
-              };
+        map(
+          (res: QueryResult<PscLoadStatus | null>) => {
+            if (res.status === QueryStatusEnum.OK) {
+              const pscloadStatus = res.body as PscLoadStatus | null;
+              if (pscloadStatus === null) {
+                const body: null = null;
+                return {
+                  status: QueryStatusEnum.OK,
+                  message: 'Pas de processus en cours',
+                  body: body
+                };
+              } else {
+                const state = pscloadStatus.state;
+                const processState: ProcessState = stateFromCode(state)
+                return {
+                  status: QueryStatusEnum.OK,
+                  message: 'Processus en cours',
+                  body: processState
+                } as QueryResult<ProcessState | null>;
+              }
             } else {
-              const state = pscloadStatus.state;
-              const processState: ProcessState = stateFromCode(state)
               return {
-                status: QueryStatusEnum.OK,
-                message: 'Processus en cours',
-                body: processState
+                status: QueryStatusEnum.KO,
+                message: res.message
               } as QueryResult<ProcessState | null>;
             }
-          } else {
-            return {
-              status: QueryStatusEnum.KO,
-              message: res.message
-            } as QueryResult<ProcessState | null>;
           }
-        }
-      )
-    );
+        ),
+        switchMap((state: QueryResult<ProcessState | null>) => this.extractService.getExtractGenerationState(state)),
+        switchMap((activeStates: ProcessState[]) => this.amarConnectorService.getMessageState(activeStates)),
+      );
   }
 }
