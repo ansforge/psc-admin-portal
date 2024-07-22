@@ -16,11 +16,11 @@
 
 -->
 <div class="o-stepper">
-    <span class="sr-only">Processus, étape {{processState?processState.numeroEtape:0}} sur 6</span>
+    <span class="sr-only">Processus, étape {{processState && processState.length > 0 ? processState?.[0]?.numeroEtape: 0}} sur 6</span>
     <ol>
-      <li 
-        [class.o-stepper--checked]="processState && processState.numeroEtape>1"
-        [class.o-stepper--current]="processState && processState.numeroEtape===1"
+      <li
+        [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[1])"
+        [class.o-stepper--current]="isCurrentStep(processStateEnum[1].numeroEtape)"
       >
             <a href="#">
                 <span class="o-stepper__indicator" aria-hidden="true">1</span>
@@ -28,9 +28,9 @@
                 <span class="o-stepper__name">Charger le RASS</span>
             </a>
         </li>
-        <li 
-          [class.o-stepper--checked]="processState && processState.numeroEtape>2"
-          [class.o-stepper--current]="processState && processState.numeroEtape===2"
+        <li
+          [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[2])"
+          [class.o-stepper--current]="isCurrentStep(processStateEnum[2].numeroEtape)"
         >
             <a href="#">
                 <span class="o-stepper__indicator" aria-hidden="true">2</span>
@@ -39,32 +39,32 @@
             </a>
         </li>
         <li
-          [class.o-stepper--checked]="processState && processState.numeroEtape>3"
-          [class.o-stepper--current]="processState && processState.numeroEtape===3"
+          [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[3])"
+          [class.o-stepper--current]="isCurrentStep(processStateEnum[3].numeroEtape)"
         >
             <span class="o-stepper__indicator" aria-hidden="true">3</span>
             <span class="o-stepper__number">Étape 3</span>
             <span class="o-stepper__name">Lever des alertes (éventuellement)</span>
         </li>
         <li
-          [class.o-stepper--checked]="processState && processState.numeroEtape>4"
-          [class.o-stepper--current]="processState && processState.numeroEtape===4"
+          [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[4])"
+          [class.o-stepper--current]="isCurrentStep(processStateEnum[4].numeroEtape)"
         >
             <span class="o-stepper__indicator" aria-hidden="true">4</span>
             <span class="o-stepper__number">Étape 4</span>
             <span class="o-stepper__name">Enregistrer les PS en base</span>
         </li>
         <li
-          [class.o-stepper--checked]="processState && processState.numeroEtape>5"
-          [class.o-stepper--current]="processState && processState.numeroEtape===5"
+          [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[5])"
+          [class.o-stepper--current]="isCurrentStep(processStateEnum[5].numeroEtape)"
         >
             <span class="o-stepper__indicator" aria-hidden="true">5</span>
             <span class="o-stepper__number">Étape 5</span>
             <span class="o-stepper__name">Générer le fichier sécurisé</span>
         </li>
         <li
-          [class.o-stepper--checked]="processState && processState.numeroEtape>6"
-          [class.o-stepper--current]="processState && processState.numeroEtape===6"
+          [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[6])"
+          [class.o-stepper--current]="isCurrentStep(processStateEnum[6].numeroEtape)"
         >
             <span class="o-stepper__indicator" aria-hidden="true">6</span>
             <span class="o-stepper__number">Étape 6</span>

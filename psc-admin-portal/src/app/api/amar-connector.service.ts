@@ -14,23 +14,25 @@
 /// limitations under the License.
 ///
 
-import {Observable} from "rxjs";
-import {Status, errorResponseToStatus} from "./status";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {catchError, map} from "rxjs/operators";
-import {Injectable} from "@angular/core";
-import {QueryResult} from './queryResult.model';
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {errorResponseToStatus, Status} from './status';
+import {environment} from '../../environments/environment';
+import {catchError, map} from 'rxjs/operators';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 
-@Injectable({providedIn: "root"})
-export class Extract {
+@Injectable({
+  providedIn: 'root'
+})
+export class AmarConnectorService {
+
   constructor(private http: HttpClient) {
   }
 
   get status(): Observable<Status> {
     return this.http.get<string>(
-      `${environment.API_HOSTNAME}portal/service/pscextract/v1/check`,
+      `${environment.API_HOSTNAME}portal/service/psc-amar-connector/check`,
       {headers: {'Accept': 'application/json'}, responseType: 'text' as 'json'}
     ).pipe(
       map(
@@ -42,21 +44,18 @@ export class Extract {
     );
   }
 
-  getExtractGenerationState(state: QueryResult<ProcessState | null>): Observable<ProcessState[]> {
+  getMessageState(activeStates: ProcessState[]): Observable<ProcessState[]> {
     return this.http.get<boolean>(
-      `${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`
+      `${environment.API_HOSTNAME}portal/service/psc-amar-connector/check-pending-messages`
     ).pipe(
-      map((isBusy: boolean) => {
-          const activeStates: ProcessState[] = [];
-          if (state.body !== null && state.body !== undefined) {
-            activeStates.push(state.body);
-          }
-          if (isBusy && !activeStates.includes(processStateEnum[5])) {
-            activeStates.push(processStateEnum[5]);
+      map((hasPendingMsg: boolean) => {
+          if (hasPendingMsg && !activeStates.includes(processStateEnum[6])) {
+            activeStates.push(processStateEnum[6]);
           }
           return activeStates;
         }
       )
     );
   }
+
 }
