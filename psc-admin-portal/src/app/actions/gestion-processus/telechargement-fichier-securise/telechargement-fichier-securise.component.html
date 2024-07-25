@@ -1,0 +1,17 @@
+<h3 class="pt-2">Téléchargement du fichier sécurisé</h3>
+<app-query-status-panel
+  [queryStatus]="executionStatus" errorMessage=" Échec du téléchargement de l'extrait. {{errorMessage}}"></app-query-status-panel>
+<div class="form-group bg-gray-100 rounded-md">
+  <div class="row">
+    <p>Télécharger le fichier sécurisé</p>
+  </div>
+  <div class="row" style="justify-content: space-evenly">
+    <div class="input-group col-sm-auto executes-row row" style="width: auto">
+        <button type="button" class="btn btn--ghost btn--primary justify-content-center m-auto" (click)="downloadFile()">Télécharger l'extrait</button>
+    </div>
+    <div class="input-group col-sm-auto executes-row row" style="width: auto">
+      <button type="button" class="btn btn--ghost btn--primary justify-content-center m-auto" (click)="downloadFile(true)">Télécharger l'extrait de test</button>
+    </div>
+  </div>
+</div>
+
