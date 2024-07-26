@@ -1,0 +1,18 @@
+<h3 class="pt-2">Génération d'un fichier sécurisé</h3>
+<app-query-status-panel
+  [queryStatus]="executionStatus" errorMessage="{{statusMessage}}"></app-query-status-panel>
+<div class="form-group bg-gray-100 rounded-md">
+  <div class="row">
+    <p>
+      Produit un nouveau fichier d'extraction sécurisé à partir de la base de données
+      <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
+        <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
+      </svg>
+    </p>
+  </div>
+  <div class="row" style="justify-content: space-evenly">
+    <div class="input-group col-sm-auto executes-row row" style="width: auto">
+      <button type="button" class="btn btn--ghost btn--primary justify-content-center m-auto" (click)="generateFile()">Générer</button>
+    </div>
+  </div>
+</div>
