@@ -21,10 +21,12 @@ import {QueryResult} from './queryResult.model';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 import {QueryStatusEnum} from './queryStatus.model';
 import {environment} from '../../environments/environment';
+import {HttpErrorResponse} from '@angular/common/http';
 
 describe('ExtractService', () => {
   let service: Extract;
   let httpMock: HttpTestingController;
+  const baseApiUrl: string = `${environment.API_HOSTNAME}portal/service/pscextract/v1`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -89,8 +91,47 @@ describe('ExtractService', () => {
       expect(states).toEqual(expectedActiveStates);
     });
 
-    const req = httpMock.expectOne(`${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`);
+    const req = httpMock.expectOne(`${baseApiUrl}/busy-check`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   }
+
+  it('should return OK status and message on file generation success', () => {
+    const mockResponse: QueryResult<any> = {
+      status: QueryStatusEnum.OK,
+      message: 'Le fichier a été généré correctement.'
+    };
+
+    service.generateSecureFile().subscribe((result) => {
+      expect(result).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush({}, { status: 200, statusText: 'OK' });
+  });
+
+  it('should return KO status and error message on file generation failure', () => {
+    const mockErrorResponse: HttpErrorResponse = new HttpErrorResponse({
+      status: 502,
+      statusText: 'Ok',
+    });
+
+    const mockResponse: QueryResult<any> = {
+      status: QueryStatusEnum.KO,
+      message: 'Http failure response for /portal/service/pscextract/v1/generate-extract: 502 Ok'
+    };
+
+
+    service.generateSecureFile().subscribe((result) => {
+      expect(result).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush({message: '502 Ok'}, mockErrorResponse);
+  });
+
 })
