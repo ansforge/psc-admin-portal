@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import {Observable} from "rxjs";
+import {BehaviorSubject, finalize, Observable, of} from "rxjs";
 import {Status, errorResponseToStatus} from "./status";
 import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
@@ -22,15 +22,57 @@ import {catchError, map} from "rxjs/operators";
 import {Injectable} from "@angular/core";
 import {QueryResult} from './queryResult.model';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
-import {QueryStatusEnum} from './queryStatus.model';
 import {errorResponseToQueryResult} from './queryResult';
+import {QueryStatusEnum} from './queryStatus.model';
+
+enum ActionType {
+  NONE,
+  RUNNING_PROCESS,
+  RUNNING_SEPARATE_ACTION,
+}
+
+interface ServiceState {
+  isBusy: boolean;
+  actionType: ActionType;
+}
 
 @Injectable({providedIn: "root"})
 export class Extract {
+
+  private serviceStateSubject: BehaviorSubject<ServiceState> = new BehaviorSubject<ServiceState>({
+    isBusy: false,
+    actionType: ActionType.NONE
+  });
+
   constructor(private http: HttpClient) {
   }
 
+  private updateServiceState(isBusy: boolean, actionType: ActionType): void {
+    this.serviceStateSubject.next({isBusy, actionType});
+  }
+
+  private resetServiceState(): void {
+    this.serviceStateSubject.next({isBusy: false, actionType: ActionType.NONE});
+  }
+
+  private resetServiceStateIfServerIsDone(): void {
+    this.http.get<boolean>(
+      `${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`
+    ).pipe(
+      map((serverStillBusy: boolean) => {
+        if (serverStillBusy) {
+          setTimeout(() => {
+            this.resetServiceState();
+          }, 2000);
+        } else {
+          this.resetServiceState();
+        }
+      })
+    ).subscribe();
+  }
+
   get status(): Observable<Status> {
+    this.updateServiceState(true, ActionType.RUNNING_SEPARATE_ACTION);
     return this.http.get<string>(
       `${environment.API_HOSTNAME}portal/service/pscextract/v1/check`,
       {headers: {'Accept': 'application/json'}, responseType: 'text' as 'json'}
@@ -38,6 +80,9 @@ export class Extract {
       map(
         (message: string) => new Status(true, message)
       ),
+      finalize(() => {
+        this.resetServiceState();
+      }),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
       )
@@ -45,18 +90,45 @@ export class Extract {
   }
 
   getExtractGenerationState(state: QueryResult<ProcessState | null>): Observable<ProcessState[]> {
-    return this.http.get<boolean>(
-      `${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`
-    ).pipe(
-      map((isBusy: boolean) => {
-          const activeStates: ProcessState[] = [];
-          if (state.body !== null && state.body !== undefined) {
-            activeStates.push(state.body);
+    const activeStates: ProcessState[] = [];
+    if (state.body !== null && state.body !== undefined) {
+      activeStates.push(state.body);
+    }
+
+    if (this.serviceStateSubject.getValue().actionType !== ActionType.RUNNING_SEPARATE_ACTION) {
+      this.updateServiceState(true, ActionType.RUNNING_PROCESS);
+      return this.http.get<boolean>(
+        `${environment.API_HOSTNAME}portal/service/pscextract/v1/busy-check`
+      ).pipe(
+        map((isServerBusy: boolean) => {
+            if (isServerBusy && !activeStates.includes(processStateEnum[5])) {
+              activeStates.push(processStateEnum[5]);
+            }
+            return activeStates;
           }
-          if (isBusy && !activeStates.includes(processStateEnum[5])) {
-            activeStates.push(processStateEnum[5]);
-          }
-          return activeStates;
+        ),
+        finalize(() => this.resetServiceState())
+      );
+    } else {
+      return of(activeStates);
+    }
+  }
+
+  generateSecureFile() {
+    this.updateServiceState(true, ActionType.RUNNING_SEPARATE_ACTION);
+    return this.http.post<any>(`${environment.API_HOSTNAME}portal/service/pscextract/v1/generate-extract`, null, {observe: 'response'}).pipe(
+      map(() => {
+        return {
+          status: QueryStatusEnum.OK,
+          message: 'Le fichier a été généré correctement.',
+        } as QueryResult<any>;
+      }),
+      finalize(() => {
+        this.resetServiceStateIfServerIsDone();
+      }),
+      catchError(
+        (err: HttpErrorResponse) => {
+          return errorResponseToQueryResult<any>(err);
         }
       )
     );

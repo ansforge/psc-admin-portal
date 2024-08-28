@@ -15,16 +15,21 @@
     limitations under the License.
 
 -->
-<div class="form-box">
-    <legend class="form-box__title">Gestion du processus</legend>
+<h3 class="pt-2">Génération d'un fichier sécurisé</h3>
+<app-query-status-panel
+  [queryStatus]="executionStatus" errorMessage="{{statusMessage}}"></app-query-status-panel>
+<div class="form-group bg-gray-100 rounded-md">
+  <div class="row">
     <p>
+      Produit un nouveau fichier d'extraction sécurisé à partir de la base de données
       <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
         <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
       </svg>
-     La soumission entraîne l'envoi d'un e-mail
     </p>
-    <app-etat-processus></app-etat-processus>
-    <app-execution-complete-processus></app-execution-complete-processus>
-    <app-generation-extract-securise></app-generation-extract-securise>
-    <app-telechargement-fichier-securise></app-telechargement-fichier-securise>
+  </div>
+  <div class="row" style="justify-content: space-evenly">
+    <div class="input-group col-sm-auto executes-row row" style="width: auto">
+      <button type="button" class="btn btn--ghost btn--primary justify-content-center m-auto" (click)="generateFile()">Générer</button>
+    </div>
+  </div>
 </div>
