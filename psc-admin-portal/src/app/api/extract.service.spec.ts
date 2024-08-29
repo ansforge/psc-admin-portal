@@ -15,13 +15,13 @@
 ///
 
 import {Extract} from './extract.service';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {QueryResult} from './queryResult.model';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 import {QueryStatusEnum} from './queryStatus.model';
 import {environment} from '../../environments/environment';
-import {HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 describe('ExtractService', () => {
   let service: Extract;
@@ -87,11 +87,11 @@ describe('ExtractService', () => {
   });
 
   function callGetExtractGenerationStateAndExpect(mockState: QueryResult<ProcessState | null>, expectedActiveStates: ProcessState[], mockResponse: boolean) {
-    service.getExtractGenerationState(mockState).subscribe((states: ProcessState[]) => {
+    service.getExtractGenerationState(mockState).subscribe((states: ProcessState[]): void => {
       expect(states).toEqual(expectedActiveStates);
     });
 
-    const req = httpMock.expectOne(`${baseApiUrl}/busy-check`);
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/busy-check`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   }
@@ -102,11 +102,11 @@ describe('ExtractService', () => {
       message: 'Le fichier a été généré correctement.'
     };
 
-    service.generateSecureFile().subscribe((result) => {
+    service.generateSecureFile().subscribe((result: QueryResult<any>): void => {
       expect(result).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
     expect(req.request.method).toBe('POST');
 
     req.flush({}, { status: 200, statusText: 'OK' });
@@ -124,14 +124,77 @@ describe('ExtractService', () => {
     };
 
 
-    service.generateSecureFile().subscribe((result) => {
+    service.generateSecureFile().subscribe((result: QueryResult<any>): void => {
       expect(result).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/generate-extract`);
     expect(req.request.method).toBe('POST');
 
     req.flush({message: '502 Ok'}, mockErrorResponse);
+  });
+
+  it('should return correct result when HTTP request is successful', () => {
+    const mockBlob: Blob = new Blob(['test data'], { type: 'application/zip' });
+    const mockResponse: HttpResponse<Blob> = new HttpResponse({
+      body: mockBlob,
+      headers: new HttpHeaders({
+        'Content-Disposition': 'attachment; filename="testfile.zip"'
+      }),
+      status: 200,
+      statusText: 'OK'
+    });
+
+    service.downloadExtract(`${baseApiUrl}/download`).subscribe((result: QueryResult<any>): void => {
+      expect(result).toEqual({
+        status: QueryStatusEnum.OK,
+        message: 'Téléchargement réussi',
+        body: { blob: mockBlob, filename: 'testfile.zip' }
+      });
+    });
+
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/download`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse.body, { headers: mockResponse.headers });
+  });
+
+  it('should return correct result when HTTP request is successful but Content-Disposition has no filename', () => {
+    const mockBlob: Blob = new Blob(['test data'], { type: 'application/zip' });
+    const mockResponse: HttpResponse<Blob> = new HttpResponse({
+      body: mockBlob,
+      headers: new HttpHeaders({}),
+      status: 200,
+      statusText: 'OK'
+    });
+
+    service.downloadExtract(`${baseApiUrl}/download`).subscribe((result: QueryResult<any>): void => {
+      expect(result).toEqual({
+        status: QueryStatusEnum.OK,
+        message: 'Téléchargement réussi',
+        body: { blob: mockBlob, filename: 'Extraction_Pro_sante_connect.zip' }
+      });
+    });
+
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/download`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse.body, { headers: mockResponse.headers });
+  });
+
+  it('should return an error result when HTTP request fails', () => {
+    const mockError: ErrorEvent = new ErrorEvent('Network error', {
+      message: 'Something went wrong'
+    });
+
+    service.downloadExtract(`${baseApiUrl}/download`).subscribe((result: QueryResult<any>): void => {
+      expect(result).toEqual({
+        status: QueryStatusEnum.KO,
+        message: 'Erreur technique non-identifiée.'
+      });
+    });
+
+    const req: TestRequest = httpMock.expectOne(`${baseApiUrl}/download`);
+    expect(req.request.method).toBe('GET');
+    req.error(mockError);
   });
 
 })

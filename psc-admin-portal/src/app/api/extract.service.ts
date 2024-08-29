@@ -144,7 +144,7 @@ export class Extract {
           const contentDisposition: string|null = response.headers.get('Content-Disposition');
           let filename: string = 'Extraction_Pro_sante_connect.zip';
           if (contentDisposition) {
-            const matches: RegExpMatchArray|null = /filename=([^;\r\n]+)/.exec(contentDisposition);
+            const matches: RegExpMatchArray|null = /filename=["']?([^";\r\n]*)["']?/.exec(contentDisposition);
             if (matches?.[1]) {
               filename = matches[1];
             }
