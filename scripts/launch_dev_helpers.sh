@@ -33,7 +33,7 @@ echo "Running service reverse-proxy and mongodb on the ${HOST_ADDRESS} interface
 if [ ! -f scripts/service-addresses.conf ]; then
   cp scripts/service-addresses.conf.in scripts/service-addresses.conf
 elif [ ! $(grep Define scripts/service-addresses.conf.in| wc -l) -eq $(grep Define scripts/service-addresses.conf| wc -l) ]; then
-  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number or Defines. You need to check." >&2
+  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number of Defines. You need to check." >&2
   exit 2;
 fi
 
