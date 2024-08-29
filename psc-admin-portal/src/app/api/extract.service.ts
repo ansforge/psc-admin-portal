@@ -16,7 +16,7 @@
 
 import {BehaviorSubject, finalize, Observable, of} from "rxjs";
 import {Status, errorResponseToStatus} from "./status";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {catchError, map} from "rxjs/operators";
 import {Injectable} from "@angular/core";
@@ -130,6 +130,40 @@ export class Extract {
         (err: HttpErrorResponse) => {
           return errorResponseToQueryResult<any>(err);
         }
+      )
+    );
+  }
+
+  downloadExtract(url: string): Observable<QueryResult<any>> {
+    return this.http.get(url, {
+      responseType: 'blob',
+      observe: 'response'
+    }).pipe(
+      map((response: HttpResponse<Blob|null>) => {
+        if (response.body != null) {
+          const contentDisposition: string|null = response.headers.get('Content-Disposition');
+          let filename: string = 'Extraction_Pro_sante_connect.zip';
+          if (contentDisposition) {
+            const matches: RegExpMatchArray|null = /filename=["']?([^";\r\n]*)["']?/.exec(contentDisposition);
+            if (matches?.[1]) {
+              filename = matches[1];
+            }
+          }
+          return {
+            status: QueryStatusEnum.OK,
+            message: 'Téléchargement réussi',
+            body: {blob: response.body, filename},
+          }
+        } else {
+          return {
+            status: QueryStatusEnum.KO,
+            message: 'Téléchargement impossible',
+            body: null,
+          }
+        }
+      }),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult<any>(err)
       )
     );
   }
