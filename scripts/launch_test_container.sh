@@ -75,6 +75,13 @@ else
   PROTOCOL=http
 fi
 
+if [ ! -f scripts/service-addresses.conf ]; then
+  cp scripts/service-addresses.conf.in scripts/service-addresses.conf
+elif [ ! $(grep Define scripts/service-addresses.conf.in| wc -l) -eq $(grep Define scripts/service-addresses.conf| wc -l) ]; then
+  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number of Defines. You need to check." >&2
+  exit 2;
+fi
+
 if [ $? -eq 0 ]; then
   sudo docker run \
      --publish ${HOST_ADDRESS}:80:80 \
