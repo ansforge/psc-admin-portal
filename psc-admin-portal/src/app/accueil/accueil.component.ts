@@ -15,11 +15,15 @@
 ///
 
 import { Component } from '@angular/core';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './accueil.component.html',
   styleUrl: './accueil.component.scss'
 })
