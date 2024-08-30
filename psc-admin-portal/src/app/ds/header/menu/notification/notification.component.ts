@@ -20,6 +20,7 @@ import {AlertManager} from '../../../../api/alertmanager.service';
 import {interval, Subject, switchMap, takeUntil} from 'rxjs';
 import {environment} from '../../../../../environments/environment.dev';
 import {QueryResult} from '../../../../api/queryResult.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-notification',
@@ -33,7 +34,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   $hasNotifications: WritableSignal<boolean> = signal<boolean>(false);
 
-  constructor(private alertManager: AlertManager) {
+  constructor(private alertManager: AlertManager, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,5 +53,9 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsub$.next();
     this.unsub$.complete();
+  }
+
+  navigateToAlertManager() {
+    this.router.navigate(['/actions/gestionAlertes']);
   }
 }
