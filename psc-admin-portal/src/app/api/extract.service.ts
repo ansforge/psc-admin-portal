@@ -23,7 +23,8 @@ import {Injectable} from "@angular/core";
 import {QueryResult} from './queryResult.model';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
 import {errorResponseToQueryResult} from './queryResult';
-import {QueryStatusEnum} from './queryStatus.model';
+import {QueryStatus, QueryStatusEnum} from './queryStatus.model';
+import {ASYNCHRONOUS_LAUNCH_SUCCESS_MSG} from './toggle.service';
 
 enum ActionType {
   NONE,
@@ -164,6 +165,22 @@ export class Extract {
       }),
       catchError(
         (err: HttpErrorResponse) => errorResponseToQueryResult<any>(err)
+      )
+    );
+  }
+
+  uploadTestFile(data: Blob): Observable<QueryStatus> {
+    const testFile: FormData = new FormData();
+    testFile.append('testFile', data);
+    return this.http.post<void>(
+      `${environment.API_HOSTNAME}portal/service/pscextract/v1/upload/test`,
+      testFile
+    ).pipe(
+      map(
+        () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
+      ),
+      catchError(
+        (err: HttpErrorResponse) => errorResponseToQueryResult<void>(err)
       )
     );
   }

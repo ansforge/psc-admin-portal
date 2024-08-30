@@ -21,6 +21,7 @@ import {GenerationExtractSecuriseComponent} from './generation-extract-securise/
 import {
   TelechargementFichierSecuriseComponent
 } from './telechargement-fichier-securise/telechargement-fichier-securise.component';
+import {TeleversementFichierTestComponent} from './televersement-fichier-test/televersement-fichier-test.component';
 
 @Component({
   selector: 'app-gestion-processus',
@@ -29,7 +30,8 @@ import {
     ExecutionCompleteProcessusComponent,
     EtatProcessusComponent,
     GenerationExtractSecuriseComponent,
-    TelechargementFichierSecuriseComponent
+    TelechargementFichierSecuriseComponent,
+    TeleversementFichierTestComponent
   ],
   templateUrl: './gestion-processus.component.html',
   styleUrl: './gestion-processus.component.scss'
