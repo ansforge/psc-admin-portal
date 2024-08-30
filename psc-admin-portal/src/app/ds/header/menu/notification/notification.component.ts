@@ -14,16 +14,43 @@
 /// limitations under the License.
 ///
 
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {AlertManager} from '../../../../api/alertmanager.service';
+import {interval, Subject, switchMap, takeUntil} from 'rxjs';
+import {environment} from '../../../../../environments/environment.dev';
+import {QueryResult} from '../../../../api/queryResult.model';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [CommonModule],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss'
 })
-export class NotificationComponent {
-  hasNotifications: boolean = true;
+export class NotificationComponent implements OnInit, OnDestroy {
+  readonly unsub$: Subject<void> = new Subject<void>();
+
+  $hasNotifications: WritableSignal<boolean> = signal<boolean>(false);
+
+  constructor(private alertManager: AlertManager) {
+  }
+
+  ngOnInit(): void {
+    interval(environment.UPDATE_PERIOD).pipe(
+      takeUntil(this.unsub$),
+      switchMap(() => this.alertManager.hasLoaderAlerts())
+    ).subscribe((result: QueryResult<boolean>) => {
+      if (result.body) {
+        this.$hasNotifications.set(result.body);
+      } else {
+        this.$hasNotifications.set(false);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsub$.next();
+    this.unsub$.complete();
+  }
 }

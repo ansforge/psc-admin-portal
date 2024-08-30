@@ -18,11 +18,12 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule],
       providers: [
       {
         provide: ActivatedRoute,
