@@ -32,11 +32,12 @@ import {Extract} from '../../../api/extract.service';
   styleUrl: './televersement-fichier-test.component.scss'
 })
 export class TeleversementFichierTestComponent {
-  @Input() title: string='Importer un fichier de test';
-  fichierTest: {name?: string,data: File|null}|null=null;
+  @Input()
+  title: string = 'Importer un fichier de test';
+  fichierTest: {name?: string,data: File|null}|null = null;
   readonly qs: typeof QueryStatusEnum=QueryStatusEnum;
 
-  queryStatus: QueryStatus|null=null;
+  queryStatus: QueryStatus|null = null;
 
   constructor(
     private extractService: Extract

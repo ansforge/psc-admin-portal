@@ -180,7 +180,7 @@ export class Extract {
         () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
       ),
       catchError(
-        (err: HttpErrorResponse) => errorResponseToQueryResult<void>(err)
+        (err: HttpErrorResponse) => of({status: QueryStatusEnum.KO, message: err.message} as QueryStatus)
       )
     );
   }

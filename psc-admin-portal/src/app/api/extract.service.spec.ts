@@ -19,9 +19,10 @@ import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angu
 import {TestBed} from '@angular/core/testing';
 import {QueryResult} from './queryResult.model';
 import {ProcessState, processStateEnum} from '../shared/process-state-widget/process.model';
-import {QueryStatusEnum} from './queryStatus.model';
+import {QueryStatus, QueryStatusEnum} from './queryStatus.model';
 import {environment} from '../../environments/environment';
 import {HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ASYNCHRONOUS_LAUNCH_SUCCESS_MSG} from './toggle.service';
 
 describe('ExtractService', () => {
   let service: Extract;
@@ -134,7 +135,7 @@ describe('ExtractService', () => {
     req.flush({message: '502 Ok'}, mockErrorResponse);
   });
 
-  it('should return correct result when HTTP request is successful', () => {
+  it('should return correct result when HTTP download request is successful', () => {
     const mockBlob: Blob = new Blob(['test data'], { type: 'application/zip' });
     const mockResponse: HttpResponse<Blob> = new HttpResponse({
       body: mockBlob,
@@ -158,7 +159,7 @@ describe('ExtractService', () => {
     req.flush(mockResponse.body, { headers: mockResponse.headers });
   });
 
-  it('should return correct result when HTTP request is successful but Content-Disposition has no filename', () => {
+  it('should return correct result when HTTP download request is successful but Content-Disposition has no filename', () => {
     const mockBlob: Blob = new Blob(['test data'], { type: 'application/zip' });
     const mockResponse: HttpResponse<Blob> = new HttpResponse({
       body: mockBlob,
@@ -180,7 +181,7 @@ describe('ExtractService', () => {
     req.flush(mockResponse.body, { headers: mockResponse.headers });
   });
 
-  it('should return an error result when HTTP request fails', () => {
+  it('should return an error result when HTTP download request fails', () => {
     const mockError: ErrorEvent = new ErrorEvent('Network error', {
       message: 'Something went wrong'
     });
@@ -197,4 +198,48 @@ describe('ExtractService', () => {
     req.error(mockError);
   });
 
+  it('should send upload request with test file to server', () => {
+    const mockFile: File = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    const expectedUrl: string = `${environment.API_HOSTNAME}portal/service/pscextract/v1/upload/test`;
+    const expectedResponse: QueryStatus = {
+      status: QueryStatusEnum.OK,
+      message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG,
+    };
+
+    service.uploadTestFile(mockFile).subscribe((result: QueryStatus) => {
+      expect(result).toEqual(expectedResponse);
+    });
+
+    const req: TestRequest = httpMock.expectOne(expectedUrl);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body instanceof FormData).toBeTrue();
+
+    const formData: FormData = req.request.body as FormData;
+    expect(formData.has('testFile')).toBeTrue();
+
+    const fileEntry = formData.get('testFile');
+    expect(fileEntry instanceof File).toBeTrue();
+    expect(fileEntry).toEqual(mockFile);
+
+    req.flush(null);
+  });
+
+  it('should handle testfile upload error response and return the error status', () => {
+    const mockBlob: Blob = new Blob(['test content'], { type: 'text/plain' });
+    const expectedUrl: string = `${environment.API_HOSTNAME}portal/service/pscextract/v1/upload/test`;
+    const mockErrorResponse: QueryResult<any> = {
+      status: QueryStatusEnum.KO,
+      message: 'Http failure response for /portal/service/pscextract/v1/upload/test: 502 Bad Gateway'
+    };
+
+    service.uploadTestFile(mockBlob).subscribe((status: QueryStatus): void => {
+      expect(status).toEqual(mockErrorResponse);
+    });
+
+    const req = httpMock.expectOne(expectedUrl);
+    expect(req.request.method).toBe('POST');
+
+    req.flush({ message: '502 Bad Gateway' },
+      { status: 502, statusText: 'Bad Gateway' });
+  });
 })
