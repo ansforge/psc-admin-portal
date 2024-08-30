@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { Observable, of, throwError } from "rxjs";
+import { Observable } from "rxjs";
 import { Status, errorResponseToStatus } from "./status";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
@@ -38,14 +38,14 @@ export const idTypeEnum: IdType[]=[
   {value: 6, displayName: 'Cabinet RPPS/Rang', code: 'CAB_RPPS'},
   {value: 8, displayName: 'RPPS', code: 'RPPS'},
   {value: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
-] 
+]
 
-const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
+export const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
 
 @Injectable({providedIn: "root"})
 export class Toggle {
   constructor(private http: HttpClient){}
-  
+
   get status(): Observable<Status> {
     return this.http.get<string>(
         `${environment.API_HOSTNAME}portal/service/toggle/v1/check`,
@@ -59,7 +59,7 @@ export class Toggle {
       )
     );
   }
-  
+
   addOtherIds(source: IdType, destination: IdType, list: Blob): Observable<QueryStatus> {
     const toggleFile = new FormData();
     toggleFile.append('toggleFile',list);
