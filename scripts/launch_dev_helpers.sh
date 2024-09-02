@@ -60,7 +60,7 @@ if [ $? -eq 0 ]; then
   if [ $(docker ps -a | grep "sec-psc-prometheus" | wc -l) -eq 0 ]; then
     sudo docker run \
       --detach \
-      --publish ${HOST_ADDRESS}:9090:9090 \
+      --publish ${DOCKER_GATEWAY}:9090:9090 \
       --name sec-psc-prometheus \
       -v $(pwd)/scripts/prometheus.yml:/prometheus.yml \
       -v $(pwd)/scripts/prometheus-rules.yml:/rules.yml \
