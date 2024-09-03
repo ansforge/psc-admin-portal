@@ -105,6 +105,29 @@ if [ $? -eq 0 ]; then
     sudo docker start sec-psc-dev-rass-mock
   fi
 
+  if [ $(docker ps -a | grep "sec-psc-elasticsearch" | wc -l) -eq 0 ]; then
+    sudo docker run \
+      --detach \
+      --publish ${DOCKER_GATEWAY}:9095:9200 \
+      -e discovery.type=single-node \
+      --name "sec-psc-elasticsearch" \
+      library/elasticsearch:7.14.2
+  else
+    sudo docker start sec-psc-elasticsearch
+  fi
+
+  if [ $(docker ps -a | grep "sec-psc-kibana" | wc -l) -eq 0 ]; then
+    sed -e "s/172\.17\.0\.1/${DOCKER_GATEWAY}/g" $(pwd)/scripts/kibana.yml > $(pwd)/target/kibana.yml
+    sudo docker run \
+      --detach \
+      --publish ${DOCKER_GATEWAY}:9096:5601 \
+      -v $(pwd)/target/kibana.yml:/opt/kibana/config/kibana.yml \
+      --name "sec-psc-kibana" \
+      library/kibana:7.14.2
+  else
+    sudo docker start sec-psc-kibana
+  fi
+
   sudo docker run \
      --publish ${HOST_ADDRESS}:80:80 \
      --rm \

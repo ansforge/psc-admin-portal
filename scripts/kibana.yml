@@ -1,0 +1,7 @@
+server.name: kibana
+server.basePath: "/portal/tool/kibana"
+server.rewriteBasePath: true
+server.publicBaseUrl: http:///portal/tool/kibana
+elasticsearch.hosts: [ "http://172.17.0.1:9095" ]
+server.host: "0.0.0.0"
+xpack.monitoring.ui.container.elasticsearch.enabled: false
