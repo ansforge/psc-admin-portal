@@ -20,3 +20,9 @@ label.status {
 div>label.status.OK {
   color: green;
 }
+
+a[class*=btn--icon]:not(.btn) .svg-icon {
+  position: unset;
+}
+
+

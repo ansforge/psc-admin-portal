@@ -15,20 +15,54 @@
     limitations under the License.
 
 -->
-<div class="container border rounded bg-white">
-  <div>
-    <label class="status" [class.OK]="amarState.available">Amar Connector state : {{ amarState.message }}</label>
-  </div>
-  <div>
-    <label class="status" [class.OK]="extractState.available">Extract state : {{ extractState.message }}</label>
-  </div>
-  <div>
-    <label class="status" [class.OK]="psApiState.available">Ps-Api state : {{ psApiState.message }}</label>
-  </div>
-  <div>
-    <label class="status" [class.OK]="pscloadState.available">Pscload state : {{ pscloadState.message }}</label>
-  </div>
-  <div>
-    <label class="status" [class.OK]="toggleState.available">Toggle state : {{ toggleState.message }}</label>
+<div class="container">
+  <div class="form-box">
+    <legend class="form-box__title">Suivi des exécutions</legend>
+
+    <h3 class="pt-2">État des composants</h3>
+    <div class="container border rounded bg-white">
+      <div>
+        <label class="status" [class.OK]="amarState.available">Amar Listener state : {{ amarState.message }}</label>
+      </div>
+      <div>
+        <label class="status" [class.OK]="extractState.available">Extract state : {{ extractState.message }}</label>
+      </div>
+      <div>
+        <label class="status" [class.OK]="psApiState.available">Ps-Api state : {{ psApiState.message }}</label>
+      </div>
+      <div>
+        <label class="status" [class.OK]="pscloadState.available">Pscload state : {{ pscloadState.message }}</label>
+      </div>
+      <div>
+        <label class="status" [class.OK]="toggleState.available">Toggle state : {{ toggleState.message }}</label>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <p>
+        <a href="/portal/tool/kibana" target="_blank" class="btn--icon-before external-link">
+          <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use>
+          </svg>
+          Lien vers Kibana
+        </a>
+      </p>
+      <p>
+        <a href="/portal/tool/prometheus" target="_blank" class="btn--icon-before external-link">
+          <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use>
+          </svg>
+          Lien vers Prometheus
+        </a>
+      </p>
+      <p>
+        <a href="/portal/tool/rabbitmq" target="_blank" class="btn--icon-before external-link">
+          <svg class="svg-icon svg-angle-right" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#angle-right"></use>
+          </svg>
+          Lien vers RabbitMQ
+        </a>
+      </p>
+    </div>
   </div>
 </div>
