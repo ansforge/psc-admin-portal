@@ -17,9 +17,7 @@
 import { Routes } from '@angular/router';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ActionsComponent } from './actions/actions.component';
-import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
-import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
 import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
 import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
 import { actionRoutes } from './actions/actions.routes';
@@ -31,8 +29,6 @@ export const routes: Routes = [
   path:MenuOption.Actions,component:ActionsComponent,
   children:actionRoutes
 },
-{path:MenuOption.FilesAttente,component:FilesAttenteComponent},
 {path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
-{path:MenuOption.RapportExecution,component:RapportExecutionComponent},
 {path:MenuOption.EtatComposants,component:EtatComposantsComponent}
 ];
