@@ -53,7 +53,7 @@ if [ $(grep -v '#' scripts/whitelist.conf | wc -l) -eq 0 ]; then
    exit 2
 fi
 
-sudo docker buildx build . -t sec-psc/portal
+sudo docker buildx build . -t sec-psc/portal || exit 2
 
 if [ "${DEPLOY_TLS}" == "YES" ]; then
   mkdir -p $(pwd)/target/TLS
