@@ -21,20 +21,30 @@
 
     <h3 class="pt-2">État des composants</h3>
     <div class="container border rounded bg-white">
-      <div>
-        <label class="status" [class.OK]="amarState.available">Amar Listener state : {{ amarState.message }}</label>
+      <div class="three-col-grid">
+        <div class="radiator-btn" [class.OK]="amarState.available"></div>
+        <label>Amar Listener</label>
+        <label class="status" [class.OK]="amarState.available">{{ amarState.message }}</label>
       </div>
-      <div>
-        <label class="status" [class.OK]="extractState.available">Extract state : {{ extractState.message }}</label>
+      <div class="three-col-grid">
+        <div class="radiator-btn" [class.OK]="extractState.available"></div>
+        <label>Extract</label>
+        <label class="status" [class.OK]="extractState.available">{{ extractState.message }}</label>
       </div>
-      <div>
-        <label class="status" [class.OK]="psApiState.available">Ps-Api state : {{ psApiState.message }}</label>
+      <div class="three-col-grid">
+        <div class="radiator-btn" [class.OK]="psApiState.available"></div>
+        <label>Ps-Api</label>
+        <label class="status" [class.OK]="psApiState.available">{{ psApiState.message }}</label>
       </div>
-      <div>
-        <label class="status" [class.OK]="pscloadState.available">Pscload state : {{ pscloadState.message }}</label>
+      <div class="three-col-grid">
+        <div class="radiator-btn" [class.OK]="pscloadState.available"></div>
+        <label>Pscload</label>
+        <label class="status" [class.OK]="pscloadState.available">{{ pscloadState.message }}</label>
       </div>
-      <div>
-        <label class="status" [class.OK]="toggleState.available">Toggle state : {{ toggleState.message }}</label>
+      <div class="three-col-grid">
+        <div class="radiator-btn" [class.OK]="toggleState.available"></div>
+        <label>Toggle</label>
+        <label class="status" [class.OK]="toggleState.available">{{ toggleState.message }}</label>
       </div>
     </div>
 
