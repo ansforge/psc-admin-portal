@@ -59,6 +59,6 @@ export class AppComponent implements OnInit {
   }
 
   isHomePage(): boolean {
-    return this.currentPage === '/';
+    return this.currentPage === '/' || this.currentPage.includes('/?ts=');
   }
 }
