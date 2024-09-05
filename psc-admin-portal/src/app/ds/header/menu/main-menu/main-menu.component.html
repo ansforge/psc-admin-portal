@@ -20,8 +20,8 @@
   <nav role="navigation" aria-label="Menu principal">
     <ul class="navbar-nav nav-lvl--1">
       <li class="nav-item common-nav-item">
-        <a [routerLink]="[menu.Accueil]" 
-           routerLinkActive="visible" 
+        <a [routerLink]="[menu.Accueil]"
+           routerLinkActive="visible"
            [routerLinkActiveOptions]="{
              paths: 'exact',
              queryParams: 'ignored',
@@ -30,25 +30,25 @@
              }"
            class="nav-link collapsible">Accueil</a>
         <a [routerLink]="[menu.Actions]"
-           routerLinkActive="visible" 
+           routerLinkActive="visible"
            class="nav-link collapsible">Actions</a>
-        <a [routerLink]="[menu.FilesAttente]" 
-           routerLinkActive="visible" 
+        <a [routerLink]="[menu.FilesAttente]"
+           routerLinkActive="visible"
            class="nav-link collapsible">Files d'attente</a>
-        <a [routerLink]="[menu.InterrogationPs]" 
+        <a [routerLink]="[menu.InterrogationPs]"
            routerLinkActive="visible"
            class="nav-link collapsible">Interrogation PS</a>
-        <a [routerLink]="[menu.RapportExecution]" 
+        <a [routerLink]="[menu.RapportExecution]"
            routerLinkActive="visible"
            class="nav-link collapsible">Rapport d'exécution</a>
-        <a [routerLink]="[menu.EtatComposants]"
+        <a [routerLink]="[menu.SuiviExecutions]"
            routerLinkActive="visible"
-           class="nav-link collapsible">État des composants</a>
+           class="nav-link collapsible">Suivi des exécutions</a>
       </li>
       <li class="nav-item common-nav-item">
-        <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse" 
-                data-target="#nav1simple-nav-collapse-submenu--2" 
-                aria-controls="nav1simple-nav-collapse-submenu--2" 
+        <button (click)="onToggle($event)" class="nav-link" type="button" data-toggle="collapse"
+                data-target="#nav1simple-nav-collapse-submenu--2"
+                aria-controls="nav1simple-nav-collapse-submenu--2"
                 [attr.aria-expanded]="expanded">Menu</button>
         <div class="collapse nav-collapse" [class.show]="expanded" id="nav1simple-nav-collapse-submenu--2" data-parent="#menuPrincipal">
           <div class="nav-collapse-inner">
@@ -66,7 +66,7 @@
                 <a [routerLink]="[menu.RapportExecution]" class="nav-link">Rapport d'exécution</a>
               </li>
               <li class="nav-item common-nav-item">
-                <a [routerLink]="[menu.EtatComposants]" class="nav-link">État des composants</a>
+                <a [routerLink]="[menu.SuiviExecutions]" class="nav-link">Suivi des exécutions</a>
               </li>
             </ul>
           </div>

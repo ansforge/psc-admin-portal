@@ -20,5 +20,5 @@ export enum MenuOption {
   FilesAttente     = 'filesAttente',
   InterrogationPs  = 'interrogationPs',
   RapportExecution = 'rapportExecution',
-  EtatComposants   = 'etatComposants'
+  SuiviExecutions   = 'suiviExecutions',
 }
