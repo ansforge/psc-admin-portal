@@ -18,7 +18,7 @@ import { Routes } from '@angular/router';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ActionsComponent } from './actions/actions.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
-import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
+import { SuiviDesExecutionsComponent } from './suivi-des-executions/suivi-des-executions.component';
 import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
 import { actionRoutes } from './actions/actions.routes';
 
@@ -30,5 +30,5 @@ export const routes: Routes = [
   children:actionRoutes
 },
 {path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
-{path:MenuOption.EtatComposants,component:EtatComposantsComponent}
+{path:MenuOption.SuiviExecutions,component:SuiviDesExecutionsComponent}
 ];

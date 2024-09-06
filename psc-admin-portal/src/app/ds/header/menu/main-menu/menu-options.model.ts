@@ -18,5 +18,5 @@ export enum MenuOption {
   Accueil          = '',
   Actions          = 'actions',
   InterrogationPs  = 'interrogationPs',
-  EtatComposants   = 'etatComposants'
+  SuiviExecutions   = 'suiviExecutions',
 }
