@@ -129,6 +129,21 @@ if [ $? -eq 0 ]; then
     sudo docker start sec-psc-kibana
   fi
 
+  if [ $(docker ps -a | grep "sec-psc-rabbit-mq" | wc -l) -eq 0 ]; then
+    sudo docker run \
+      --detach \
+      --publish ${DOCKER_GATEWAY}:9097:15672 \
+      -e "RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management path_prefix \"/portal/tool/rabbitmq\"" \
+      -e "RABBITMQ_DEFAULT_USER=admin" \
+      -e "RABBITMQ_DEFAULT_PASS=admin" \
+      -e PUBLIC_HOSTNAME="sec-psc.wom.dev.henix.fr" \
+      -v $(pwd)/scripts/rabbit-mq/20-management.conf:/etc/rabbitmq/conf.d/20-management.conf \
+      --name "sec-psc-rabbit-mq" \
+      rabbitmq:3.8-management
+  else
+    sudo docker start sec-psc-kibana
+  fi
+
   sudo docker run \
      --publish ${HOST_ADDRESS}:80:80 \
      --rm \
