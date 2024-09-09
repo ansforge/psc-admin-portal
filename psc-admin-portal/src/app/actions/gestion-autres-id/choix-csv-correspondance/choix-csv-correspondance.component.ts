@@ -17,7 +17,7 @@
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
-import { Toggle, IdType, idTypeEnum } from '../../../api/toggle.service';
+import { Toggle, IdType, idTypeEnum, CsvFileOperations } from '../../../api/toggle.service';
 import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 
 @Component({
@@ -28,66 +28,70 @@ import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/qu
   styleUrl: './choix-csv-correspondance.component.scss'
 })
 export class ChoixCsvCorrespondanceComponent {
-  @Input() title: string='Choix csv correspondance';
-  correspondance: {name?: string,data: File|null}|null=null;
-  readonly qs: typeof QueryStatusEnum=QueryStatusEnum;
-  
-  source: IdType|null=null;
-  destination: IdType|null=null;
-  
-  queryStatus: QueryStatus|null=null;
-  
+  @Input() title: string = 'Choix csv correspondance';
+  @Input() operation!: CsvFileOperations;
+  correspondance: { name?: string, data: File | null } | null = null;
+  readonly qs: typeof QueryStatusEnum = QueryStatusEnum;
+
+  source: IdType | null = null;
+  destination: IdType | null = null;
+
+  queryStatus: QueryStatus | null = null;
+
   constructor(
     private toggleApi: Toggle
-  ){}
-  
+  ) {
+  }
+
   selectFile(event: Event): void {
     const fileSelector: HTMLInputElement = event.currentTarget as HTMLInputElement
     const files: FileList = fileSelector.files as FileList;
-    if(files && files.length > 0) {
+    if (files && files.length > 0) {
       this.correspondance = {
         name: files.item(0)?.name,
         data: files.item(0)
       };
     }
   }
-  
+
   send(): void {
-    if(this.source && this.destination && this.correspondance?.data) {
-      this.queryStatus={status: QueryStatusEnum.PENDING,message: "Requête soumise."};
-      this.toggleApi.addOtherIds(this.source, this.destination, this.correspondance?.data).subscribe(
-        (status: QueryStatus) => this.queryStatus=status
+    if (this.source && this.destination && this.correspondance?.data) {
+      this.queryStatus = {status: QueryStatusEnum.PENDING, message: "Requête soumise."};
+      this.toggleApi.handleOtherIds(this.source, this.destination, this.correspondance?.data, this.operation).subscribe(
+        (status: QueryStatus) => this.queryStatus = status
       );
     } else {
-      this.queryStatus={status: QueryStatusEnum.KO, message: "Illegal state : missing data."}
+      this.queryStatus = {status: QueryStatusEnum.KO, message: "Illegal state : missing data."}
     }
   }
-  
-  get destinationOptions(): IdType[]{
+
+  get destinationOptions(): IdType[] {
     return idTypeEnum;
   }
-  
-  get sourceOptions(): IdType[]{
+
+  get sourceOptions(): IdType[] {
     return idTypeEnum;
   }
-  
-  
+
+
   destinationChange(event: IdType) {
-    this.destination=event;
+    this.destination = event;
   }
-  
-  
+
+
   sourceChange(event: IdType) {
-    this.source=event;
+    this.source = event;
   }
-  
+
   uploadReady(): boolean {
-    return this.correspondance!==null 
-            && this.source!==null
-            && this.destination!==null;
+    return this.correspondance !== null
+      && this.source !== null
+      && this.destination !== null;
   }
-  
+
   forgetStatus() {
-    this.queryStatus=null;
+    this.queryStatus = null;
   }
+
+  protected readonly CsvFileOperations = CsvFileOperations;
 }

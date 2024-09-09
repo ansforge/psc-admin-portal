@@ -17,7 +17,7 @@
 -->
 <div class="form-box">
     <legend class="form-box__title">Gestion des autres identifiants</legend>
-    <p>
+    <p class="italics">
       <svg aria-hidden="true" class="svg-icon svg-mail" focusable="false">
         <use xlink:href="svg-icons/icon-sprite.svg#mail "></use>
       </svg>
@@ -26,6 +26,13 @@
     <div>
       <app-choix-csv-correspondance
         title="Ajouter d'autres identifiants"
+        [operation]="CsvOperationsModel.INSERT"
       ></app-choix-csv-correspondance>
     </div>
+  <div class="mt-6">
+    <app-choix-csv-correspondance
+      title="Suppression d'autres identifiants"
+      [operation]="CsvOperationsModel.DELETE"
+    ></app-choix-csv-correspondance>
+  </div>
 </div>

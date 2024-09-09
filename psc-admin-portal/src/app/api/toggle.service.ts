@@ -14,24 +14,24 @@
 /// limitations under the License.
 ///
 
-import { Observable } from "rxjs";
-import { Status, errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { catchError, map } from "rxjs/operators";
-import { Injectable } from "@angular/core";
-import { QueryStatus, QueryStatusEnum } from "./queryStatus.model";
-import { errorResponseToQueryResult } from "./queryResult";
+import {Observable} from "rxjs";
+import {Status, errorResponseToStatus} from "./status";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {catchError, map} from "rxjs/operators";
+import {Injectable} from "@angular/core";
+import {QueryStatus, QueryStatusEnum} from "./queryStatus.model";
+import {errorResponseToQueryResult} from "./queryResult";
 
 export interface IdType {
-  readonly value:  number|''; //May be empty
+  readonly value: number | ''; //May be empty
   readonly displayName: string;
   readonly code: string;
 }
 
-export const idTypeEnum: IdType[]=[
-  {value: 0, displayName: 'ADELI',code: 'ADELI'},
-  {value: 1, displayName: 'Cabinet ADELI/Rang',code: 'CAB_ADELI'},
+export const idTypeEnum: IdType[] = [
+  {value: 0, displayName: 'ADELI', code: 'ADELI'},
+  {value: 1, displayName: 'Cabinet ADELI/Rang', code: 'CAB_ADELI'},
   {value: 2, displayName: 'DRASS(SIRIUS)', code: 'DRASS'},
   {value: 3, displayName: 'FINESS/Rang', code: 'FINESS'},
   {value: 4, displayName: 'SIREN/Rang', code: 'SIREN'},
@@ -40,7 +40,12 @@ export const idTypeEnum: IdType[]=[
   {value: 9, displayName: 'Etudiant', code: 'ETUDIANT'}
 ]
 
-export const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG="L’opération a démarré avec succès.";
+export enum CsvFileOperations {
+  INSERT = 'insert',
+  DELETE = 'delete'
+}
+
+export const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG: string = "L’opération a démarré avec succès.";
 
 @Injectable({providedIn: "root"})
 export class Toggle {
@@ -48,11 +53,11 @@ export class Toggle {
 
   get status(): Observable<Status> {
     return this.http.get<string>(
-        `${environment.API_HOSTNAME}portal/service/toggle/v1/check`,
-      {headers: {'Accept':'text/plain'},responseType: 'text' as 'json'}
+      `${environment.API_HOSTNAME}portal/service/toggle/v1/check`,
+      {headers: {'Accept': 'text/plain'}, responseType: 'text' as 'json'}
     ).pipe(
       map(
-        (message: string) => new Status(true,message)
+        (message: string) => new Status(true, message)
       ),
       catchError(
         (err: HttpErrorResponse) => errorResponseToStatus(err)
@@ -60,15 +65,20 @@ export class Toggle {
     );
   }
 
-  addOtherIds(source: IdType, destination: IdType, list: Blob): Observable<QueryStatus> {
-    const toggleFile = new FormData();
-    toggleFile.append('toggleFile',list);
-    toggleFile.append('from',''+source.code);
-    toggleFile.append('to',''+destination.code);
-    return this.http.post<void>(
-      `${environment.API_HOSTNAME}portal/service/toggle/v1/toggle`,
-      toggleFile
-    ).pipe(
+  handleOtherIds(source: IdType, destination: IdType, list: Blob, operation: CsvFileOperations): Observable<QueryStatus> {
+    let url: string;
+    const toggleFile: FormData = new FormData();
+    toggleFile.append('toggleFile', list);
+    toggleFile.append('from', '' + source.code);
+    toggleFile.append('to', '' + destination.code);
+
+    if (CsvFileOperations.INSERT === operation) {
+      url = `${environment.API_HOSTNAME}portal/service/toggle/v1/toggle`
+    } else {
+      url = `${environment.API_HOSTNAME}portal/service/toggle/v1/remove`;
+    }
+
+    return this.http.post<void>(url, toggleFile).pipe(
       map(
         () => ({status: QueryStatusEnum.OK, message: ASYNCHRONOUS_LAUNCH_SUCCESS_MSG})
       ),
