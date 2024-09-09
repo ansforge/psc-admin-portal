@@ -230,6 +230,18 @@ Define TEST_KIBANA_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}
   Define KIBANA_PORT 00
 </IfDefine>
 
+Define PROMETHEUS_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define TEST_PROMETHEUS_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+<IfDefine TEST_PROMETHEUS_ADDRESS>
+  Define PROMETHEUS_ADDRESS unknown
+</IfDefine>
+
+Define PROMETHEUS_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define TEST_PROMETHEUS_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+<IfDefine TEST_PROMETHEUS_PORT>
+  Define PROMETHEUS_PORT 00
+</IfDefine>
+
 EOH
         destination = "local/service-addresses.data.conf"
         change_mode = "signal"

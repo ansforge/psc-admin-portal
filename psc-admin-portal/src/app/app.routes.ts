@@ -20,7 +20,7 @@ import { ActionsComponent } from './actions/actions.component';
 import { FilesAttenteComponent } from './files-attente/files-attente.component';
 import { InterrogationPsComponent } from './interrogation-ps/interrogation-ps.component';
 import { RapportExecutionComponent } from './rapport-execution/rapport-execution.component';
-import { EtatComposantsComponent } from './etat-composants/etat-composants.component';
+import { SuiviDesExecutionsComponent } from './suivi-des-executions/suivi-des-executions.component';
 import { MenuOption } from './ds/header/menu/main-menu/menu-options.model';
 import { actionRoutes } from './actions/actions.routes';
 
@@ -34,5 +34,5 @@ export const routes: Routes = [
 {path:MenuOption.FilesAttente,component:FilesAttenteComponent},
 {path:MenuOption.InterrogationPs,component:InterrogationPsComponent},
 {path:MenuOption.RapportExecution,component:RapportExecutionComponent},
-{path:MenuOption.EtatComposants,component:EtatComposantsComponent}
+{path:MenuOption.SuiviExecutions,component:SuiviDesExecutionsComponent}
 ];

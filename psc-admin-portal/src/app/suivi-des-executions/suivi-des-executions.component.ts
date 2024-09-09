@@ -26,10 +26,10 @@ import {AmarConnectorService} from '../api/amar-connector.service';
   selector: 'app-etat-composants',
   standalone: true,
   imports: [],
-  templateUrl: './etat-composants.component.html',
-  styleUrl: './etat-composants.component.scss'
+  templateUrl: './suivi-des-executions.component.html',
+  styleUrl: './suivi-des-executions.component.scss'
 })
-export class EtatComposantsComponent implements OnInit{
+export class SuiviDesExecutionsComponent implements OnInit{
   psApiState: Status=Status.unknown;
   toggleState: Status=Status.unknown;
   pscloadState: Status=Status.unknown;
