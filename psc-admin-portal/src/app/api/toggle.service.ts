@@ -45,7 +45,7 @@ export enum CsvFileOperations {
   DELETE = 'delete'
 }
 
-const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG: string = "L’opération a démarré avec succès.";
+export const ASYNCHRONOUS_LAUNCH_SUCCESS_MSG: string = "L’opération a démarré avec succès.";
 
 @Injectable({providedIn: "root"})
 export class Toggle {
