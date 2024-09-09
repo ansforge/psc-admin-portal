@@ -67,7 +67,7 @@ export class Toggle {
 
   handleOtherIds(source: IdType, destination: IdType, list: Blob, operation: CsvFileOperations): Observable<QueryStatus> {
     let url: string;
-    const toggleFile = new FormData();
+    const toggleFile: FormData = new FormData();
     toggleFile.append('toggleFile', list);
     toggleFile.append('from', '' + source.code);
     toggleFile.append('to', '' + destination.code);
