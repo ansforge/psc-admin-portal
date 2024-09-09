@@ -16,9 +16,11 @@
 
 -->
 <li class="nav-right-item collapse-wrapper common-nav-item">
-  <button type="button" class="btn btn--icon-only btn-icon--header">
+  <button type="button" class="btn btn--icon-only btn-icon--header" (click)="navigateToAlertManager()">
     <svg class="svg-icon svg-mail" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#notification"></use></svg>
-    <span *ngIf="hasNotifications" class="mail-counter"></span>
+    @if ($hasNotifications()) {
+      <span class="mail-counter"></span>
+    }
     <span class="title-responsive">Notifications</span>
   </button>
 </li>

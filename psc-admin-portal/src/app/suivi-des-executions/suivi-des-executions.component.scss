@@ -13,11 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-.bg-gray-700 {
-  background-color: #697097;
+label.status {
+  color: #D20024;
 }
 
-article {
-  height: 40rem;
+div>label.status.OK {
+  color: #9AB938;
 }
+
+.radiator-btn {
+  border-radius: 50%;
+  background-color: #D20024;
+  width: 20px;
+  height: 20px;
+  border: #969CBB solid 1.3px;
+  transition: background-color 0.3s ease;
+}
+
+.three-col-grid {
+  display: grid;
+  grid-template-columns: 0.5fr 2.5fr 2.5fr;
+  align-items: center;
+  padding: 5px;
+}
+
+.three-col-grid > label {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+div.radiator-btn.OK {
+  background-color: #9AB938;
+}
+
+a[class*=btn--icon]:not(.btn) .svg-icon {
+  position: unset;
+}
+
+

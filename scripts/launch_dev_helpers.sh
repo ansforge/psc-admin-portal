@@ -33,7 +33,7 @@ echo "Running service reverse-proxy and mongodb on the ${HOST_ADDRESS} interface
 if [ ! -f scripts/service-addresses.conf ]; then
   cp scripts/service-addresses.conf.in scripts/service-addresses.conf
 elif [ ! $(grep Define scripts/service-addresses.conf.in| wc -l) -eq $(grep Define scripts/service-addresses.conf| wc -l) ]; then
-  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number or Defines. You need to check." >&2
+  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number of Defines. You need to check." >&2
   exit 2;
 fi
 
@@ -58,11 +58,12 @@ if [ $? -eq 0 ]; then
   fi
 
   if [ $(docker ps -a | grep "sec-psc-prometheus" | wc -l) -eq 0 ]; then
+    sed -e "s/172\.17\.0\.1/${DOCKER_GATEWAY}/g" scripts/prometheus.yml > $(pwd)/target/prometheus.yml
     sudo docker run \
       --detach \
-      --publish ${HOST_ADDRESS}:9090:9090 \
+      --publish ${DOCKER_GATEWAY}:9090:9090 \
       --name sec-psc-prometheus \
-      -v $(pwd)/scripts/prometheus.yml:/prometheus.yml \
+      -v $(pwd)/target/prometheus.yml:/prometheus.yml \
       -v $(pwd)/scripts/prometheus-rules.yml:/rules.yml \
       prom/prometheus:v2.51.0 \
       --web.listen-address=0.0.0.0:9090 \
@@ -81,7 +82,8 @@ if [ $? -eq 0 ]; then
       -v $(pwd)/target/alertmanager.yml:/etc/alertmanager/alertmanager.yml \
       prom/alertmanager:v0.27.0 \
       --config.file=/etc/alertmanager/alertmanager.yml \
-      --web.external-url=http://sec-psc.wom.dev.henix.fr/
+      --web.external-url=http://sec-psc.wom.dev.henix.fr/ \
+      --cluster.advertise-address=${DOCKER_GATEWAY}:9093
   else
     sudo docker start sec-psc-alertmanager
   fi

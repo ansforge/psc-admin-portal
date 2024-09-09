@@ -36,6 +36,8 @@
               "src/style/print.css",
               "src/style/sec-psc.css",
               "src/style/bloc-global.css",
+              "src/style/bloc-m-remontee-service.css",
+              "src/style/bloc-o-remontees-services.css",
               "src/styles.scss",
               "node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],

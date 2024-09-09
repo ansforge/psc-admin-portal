@@ -16,22 +16,22 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EtatComposantsComponent } from './etat-composants.component';
+import { SuiviDesExecutionsComponent } from './suivi-des-executions.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 
-describe('EtatComposantsComponent', () => {
-  let component: EtatComposantsComponent;
-  let fixture: ComponentFixture<EtatComposantsComponent>;
+describe('SuiviDesExecutionsComponent', () => {
+  let component: SuiviDesExecutionsComponent;
+  let fixture: ComponentFixture<SuiviDesExecutionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EtatComposantsComponent, HttpClientTestingModule]
+      imports: [SuiviDesExecutionsComponent, HttpClientTestingModule]
     })
     .compileComponents();
     TestBed.inject(HttpClient);
-    
-    fixture = TestBed.createComponent(EtatComposantsComponent);
+
+    fixture = TestBed.createComponent(SuiviDesExecutionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

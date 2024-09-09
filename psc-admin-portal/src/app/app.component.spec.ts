@@ -14,15 +14,23 @@
 /// limitations under the License.
 ///
 
-import { TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import {of, Subject} from 'rxjs';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let eventsSubject: Subject<NavigationEnd>;
+
   beforeEach(async () => {
+    eventsSubject = new Subject<NavigationEnd>();
+
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule, RouterTestingModule],
       providers: [
       {
         provide: ActivatedRoute,
@@ -31,21 +39,58 @@ describe('AppComponent', () => {
             [{path: ''}]
           ])
         }
-      }
+      },
+        {
+          provide: Router,
+          useValue: {
+            events: eventsSubject.asObservable(),
+            navigateByUrl: () => {},
+            createUrlTree: () => ({}),
+            serializeUrl: () => ''
+          }
+        }
       ]
     }).compileComponents();
+
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    // const fixture = TestBed.createComponent(AppComponent);
+    // const app = fixture.componentInstance;
+    expect(component).toBeTruthy();
   });
 
   it('should render header', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    // const fixture = TestBed.createComponent(AppComponent);
+    // fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('header')?.textContent).toBeTruthy();
   });
+
+  it('isHomePage should return true if the current address is "/"', fakeAsync(() => {
+    eventsSubject.next(new NavigationEnd(1, '/', '/'));
+    tick();
+    fixture.detectChanges();
+    expect(component.isHomePage()).toBeTrue();
+  }));
+
+  it('isHomePage should return true if the current page is "/?ts=timestamp"', fakeAsync(() => {
+    eventsSubject.next(new NavigationEnd(1, '/?ts=123456789', '/'));
+    tick();
+    fixture.detectChanges();
+    expect(component.isHomePage()).toBeTrue();
+  }));
+
+  it('isHomePage should return false if the current page is not "/" or "/?ts=timestamp"', fakeAsync(() => {
+    eventsSubject.next(new NavigationEnd(1, '/other-page', '/'));
+    tick();
+    fixture.detectChanges();
+    expect(component.isHomePage()).toBeFalse();
+  }));
 });

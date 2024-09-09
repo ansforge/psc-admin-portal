@@ -53,7 +53,7 @@ if [ $(grep -v '#' scripts/whitelist.conf | wc -l) -eq 0 ]; then
    exit 2
 fi
 
-sudo docker buildx build . -t sec-psc/portal
+sudo docker buildx build . -t sec-psc/portal || exit 2
 
 if [ "${DEPLOY_TLS}" == "YES" ]; then
   mkdir -p $(pwd)/target/TLS
@@ -73,6 +73,13 @@ else
   echo "To test the TLS configuration, add DEPLOY_TLS=YES to scripts/dev.cfg."
   HOSTNAME=sec-psc.wom.dev.henix.fr
   PROTOCOL=http
+fi
+
+if [ ! -f scripts/service-addresses.conf ]; then
+  cp scripts/service-addresses.conf.in scripts/service-addresses.conf
+elif [ ! $(grep Define scripts/service-addresses.conf.in| wc -l) -eq $(grep Define scripts/service-addresses.conf| wc -l) ]; then
+  echo "The service-addresses.conf and service-addresses.conf.in do not have the same number of Defines. You need to check." >&2
+  exit 2;
 fi
 
 if [ $? -eq 0 ]; then

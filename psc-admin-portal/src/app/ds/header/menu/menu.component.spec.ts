@@ -19,6 +19,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MenuComponent } from './menu.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -26,7 +27,7 @@ describe('MenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuComponent],
+      imports: [MenuComponent, HttpClientTestingModule],
       providers: [
       {
         provide: ActivatedRoute,
@@ -39,7 +40,7 @@ describe('MenuComponent', () => {
       ]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

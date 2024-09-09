@@ -17,11 +17,22 @@
 import { Component } from '@angular/core';
 import { ExecutionCompleteProcessusComponent } from './execution-complete-processus/execution-complete-processus.component';
 import { EtatProcessusComponent } from './etat-processus/etat-processus.component';
+import {GenerationExtractSecuriseComponent} from './generation-extract-securise/generation-extract-securise.component';
+import {
+  TelechargementFichierSecuriseComponent
+} from './telechargement-fichier-securise/telechargement-fichier-securise.component';
+import {TeleversementFichierTestComponent} from './televersement-fichier-test/televersement-fichier-test.component';
 
 @Component({
   selector: 'app-gestion-processus',
   standalone: true,
-  imports: [ExecutionCompleteProcessusComponent,EtatProcessusComponent],
+  imports: [
+    ExecutionCompleteProcessusComponent,
+    EtatProcessusComponent,
+    GenerationExtractSecuriseComponent,
+    TelechargementFichierSecuriseComponent,
+    TeleversementFichierTestComponent
+  ],
   templateUrl: './gestion-processus.component.html',
   styleUrl: './gestion-processus.component.scss'
 })

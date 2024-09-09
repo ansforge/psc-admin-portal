@@ -20,25 +20,28 @@ import { PsApi } from '../api/psApi.service';
 import { Pscload } from '../api/pscload.service';
 import { Extract } from '../api/extract.service';
 import { Status } from '../api/status';
+import {AmarConnectorService} from '../api/amar-connector.service';
 
 @Component({
   selector: 'app-etat-composants',
   standalone: true,
   imports: [],
-  templateUrl: './etat-composants.component.html',
-  styleUrl: './etat-composants.component.scss'
+  templateUrl: './suivi-des-executions.component.html',
+  styleUrl: './suivi-des-executions.component.scss'
 })
-export class EtatComposantsComponent implements OnInit{
+export class SuiviDesExecutionsComponent implements OnInit{
   psApiState: Status=Status.unknown;
   toggleState: Status=Status.unknown;
   pscloadState: Status=Status.unknown;
   extractState: Status=Status.unknown;
-  
+  amarState: Status=Status.unknown;
+
   constructor(
     private toggle: Toggle,
     private psApi: PsApi,
     private pscload: Pscload,
-    private extract: Extract
+    private extract: Extract,
+    private amar: AmarConnectorService
   ){}
   ngOnInit(): void {
     this.toggle.status
@@ -63,6 +66,12 @@ export class EtatComposantsComponent implements OnInit{
       .subscribe(
         {
           next: (status: Status) => this.extractState=status
+        }
+      );
+    this.amar.status
+      .subscribe(
+        {
+          next: (status: Status) => this.amarState=status
         }
       );
   }
