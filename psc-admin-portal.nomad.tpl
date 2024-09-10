@@ -218,40 +218,52 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
   Define ALERT_MANAGER_PORT 00
 </IfDefine>
 
-Define KIBANA_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_KIBANA_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define KIBANA_ADDRESS {{ range service "${nomad_namespace}-kibana" }}{{.Address}}{{ end }}
+Define TEST_KIBANA_ADDRESS{{ range service "${nomad_namespace}-kibana" }}{{.Address}}{{ end }}
 <IfDefine TEST_KIBANA_ADDRESS>
   Define KIBANA_ADDRESS unknown
 </IfDefine>
 
-Define KIBANA_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_KIBANA_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define KIBANA_PORT {{ range service "${nomad_namespace}-kibana" }}{{.Port}}{{ end }}
+Define TEST_KIBANA_PORT{{ range service "${nomad_namespace}-kibana" }}{{.Port}}{{ end }}
 <IfDefine TEST_KIBANA_PORT>
   Define KIBANA_PORT 00
 </IfDefine>
 
-Define PROMETHEUS_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_PROMETHEUS_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define PROMETHEUS_ADDRESS {{ range service "${nomad_namespace}-psc-prometheus" }}{{.Address}}{{ end }}
+Define TEST_PROMETHEUS_ADDRESS{{ range service "${nomad_namespace}-psc-prometheus" }}{{.Address}}{{ end }}
 <IfDefine TEST_PROMETHEUS_ADDRESS>
   Define PROMETHEUS_ADDRESS unknown
 </IfDefine>
 
-Define PROMETHEUS_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_PROMETHEUS_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define PROMETHEUS_PORT {{ range service "${nomad_namespace}-psc-prometheus" }}{{.Port}}{{ end }}
+Define TEST_PROMETHEUS_PORT{{ range service "${nomad_namespace}-psc-prometheus" }}{{.Port}}{{ end }}
 <IfDefine TEST_PROMETHEUS_PORT>
   Define PROMETHEUS_PORT 00
 </IfDefine>
 
-Define RABBIT_MQ_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_RABBIT_MQ_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define RABBIT_MQ_ADDRESS {{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Address}}{{ end }}
+Define TEST_RABBIT_MQ_ADDRESS{{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Address}}{{ end }}
 <IfDefine TEST_RABBIT_MQ_ADDRESS>
   Define RABBIT_MQ_ADDRESS 00
 </IfDefine>
 
-Define RABBIT_MQ_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_RABBIT_MQ_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define RABBIT_MQ_PORT {{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Port}}{{ end }}
+Define TEST_RABBIT_MQ_PORT{{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Port}}{{ end }}
 <IfDefine TEST_RABBIT_MQ_PORT>
   Define RABBIT_MQ_PORT 00
+</IfDefine>
+
+Define AMAR_CONNECTOR_ADDRESS {{ range service "${nomad_namespace}-async-listener" }}{{.Address}}{{ end }}
+Define TEST_AMAR_CONNECTOR_ADDRESS{{ range service "${nomad_namespace}-async-listener" }}{{.Address}}{{ end }}
+<IfDefine TEST_AMAR_CONNECTOR_ADDRESS>
+  Define AMAR_CONNECTOR_ADDRESS 00
+</IfDefine>
+
+Define AMAR_CONNECTOR_PORT {{ range service "${nomad_namespace}-async-listener" }}{{.Port}}{{ end }}
+Define TEST_AMAR_CONNECTOR_PORT{{ range service "${nomad_namespace}-async-listener" }}{{.Port}}{{ end }}
+<IfDefine TEST_AMAR_CONNECTOR_PORT>
+  Define AMAR_CONNECTOR_PORT 00
 </IfDefine>
 
 EOH
