@@ -218,14 +218,14 @@ Define TEST_ALERT_MANAGER_PORT{{ range service "${nomad_namespace}-psc-alertmana
   Define ALERT_MANAGER_PORT 00
 </IfDefine>
 
-Define KIBANA_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_KIBANA_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define KIBANA_ADDRESS {{ range service "${nomad_namespace}-kibana" }}{{.Address}}{{ end }}
+Define TEST_KIBANA_ADDRESS{{ range service "${nomad_namespace}-kibana" }}{{.Address}}{{ end }}
 <IfDefine TEST_KIBANA_ADDRESS>
   Define KIBANA_ADDRESS unknown
 </IfDefine>
 
-Define KIBANA_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_KIBANA_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define KIBANA_PORT {{ range service "${nomad_namespace}-kibana" }}{{.Port}}{{ end }}
+Define TEST_KIBANA_PORT{{ range service "${nomad_namespace}-kibana" }}{{.Port}}{{ end }}
 <IfDefine TEST_KIBANA_PORT>
   Define KIBANA_PORT 00
 </IfDefine>
