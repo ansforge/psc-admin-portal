@@ -242,14 +242,14 @@ Define TEST_PROMETHEUS_PORT{{ range service "${nomad_namespace}-psc-prometheus" 
   Define PROMETHEUS_PORT 00
 </IfDefine>
 
-Define RABBIT_MQ_ADDRESS {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_RABBIT_MQ_ADDRESS{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define RABBIT_MQ_ADDRESS {{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Address}}{{ end }}
+Define TEST_RABBIT_MQ_ADDRESS{{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Address}}{{ end }}
 <IfDefine TEST_RABBIT_MQ_ADDRESS>
   Define RABBIT_MQ_ADDRESS 00
 </IfDefine>
 
-Define RABBIT_MQ_PORT {{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
-Define TEST_RABBIT_MQ_PORT{{ range service "${nomad_namespace}-psc-alertmanager" }}{{.Address}}{{ end }}
+Define RABBIT_MQ_PORT {{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Port}}{{ end }}
+Define TEST_RABBIT_MQ_PORT{{ range service "${nomad_namespace}-psc-rabbitmq-management" }}{{.Port}}{{ end }}
 <IfDefine TEST_RABBIT_MQ_PORT>
   Define RABBIT_MQ_PORT 00
 </IfDefine>
