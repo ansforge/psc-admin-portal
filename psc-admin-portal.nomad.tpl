@@ -254,6 +254,18 @@ Define TEST_RABBIT_MQ_PORT{{ range service "${nomad_namespace}-psc-rabbitmq-mana
   Define RABBIT_MQ_PORT 00
 </IfDefine>
 
+Define AMAR_CONNECTOR_ADDRESS {{ range service "${nomad_namespace}-async-listener" }}{{.Address}}{{ end }}
+Define TEST_AMAR_CONNECTOR_ADDRESS{{ range service "${nomad_namespace}-async-listener" }}{{.Address}}{{ end }}
+<IfDefine TEST_AMAR_CONNECTOR_ADDRESS>
+  Define AMAR_CONNECTOR_ADDRESS 00
+</IfDefine>
+
+Define AMAR_CONNECTOR_PORT {{ range service "${nomad_namespace}-async-listener" }}{{.Port}}{{ end }}
+Define TEST_AMAR_CONNECTOR_PORT{{ range service "${nomad_namespace}-async-listener" }}{{.Port}}{{ end }}
+<IfDefine TEST_AMAR_CONNECTOR_PORT>
+  Define AMAR_CONNECTOR_PORT 00
+</IfDefine>
+
 EOH
         destination = "local/service-addresses.data.conf"
         change_mode = "signal"
