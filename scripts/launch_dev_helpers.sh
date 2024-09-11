@@ -67,6 +67,8 @@ if [ $? -eq 0 ]; then
       -v $(pwd)/scripts/prometheus-rules.yml:/rules.yml \
       prom/prometheus:v2.51.0 \
       --web.listen-address=0.0.0.0:9090 \
+      --web.external-url=https://sec-psc.wom.dev.henix.fr/portal/tool/prometheus \
+      --web.route-prefix=/portal/tool/prometheus \
       --log.level=debug \
       --config.file=/prometheus.yml
   else
