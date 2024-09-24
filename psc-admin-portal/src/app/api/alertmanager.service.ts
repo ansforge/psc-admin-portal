@@ -45,7 +45,7 @@ export class AlertManager {
   
   hasLoaderAlerts(): Observable<QueryResult<boolean>> {
     return this.http.get<any[]>(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     ).pipe(
       map(
         (alerts: any[]) => {
