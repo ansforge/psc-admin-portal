@@ -50,7 +50,7 @@ describe('InformationDiffComponent', () => {
   
   it('should show alerts when some exist', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush([ALERT_MOCK_1]);
     
@@ -62,7 +62,7 @@ describe('InformationDiffComponent', () => {
   
   it('should show get diff when some alerts exist', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush([ALERT_MOCK_1]);
     
@@ -76,7 +76,7 @@ describe('InformationDiffComponent', () => {
   
   it('should show green no alert when no alert exists', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush([]);
     
@@ -88,7 +88,7 @@ describe('InformationDiffComponent', () => {
   
   it('should NOT show get diff when no alert exists', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush([]);
     
@@ -100,7 +100,7 @@ describe('InformationDiffComponent', () => {
   
   it('should show error panel if alert service unavailable', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
     
@@ -112,7 +112,7 @@ describe('InformationDiffComponent', () => {
   
   it('should show error panel if alert service unavailable', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
     
@@ -124,7 +124,7 @@ describe('InformationDiffComponent', () => {
   
   it('no diff button if alert service unavailable', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush('Proxy error', {status: 503, statusText:'503 - not available'});
     
@@ -139,7 +139,7 @@ describe('InformationDiffComponent', () => {
   
   it('When diff downloaded, save as csv', () => {
     const req=httpTestingController.expectOne(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     req.flush([ALERT_MOCK_1]);
     
