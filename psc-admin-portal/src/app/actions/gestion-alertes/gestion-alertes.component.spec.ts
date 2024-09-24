@@ -49,7 +49,7 @@ describe('GestionAlertesComponent', () => {
   
   it('should display traitement alertes if there are alerts', () => {
     const reqs = httpTestingController.match(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     
     expect(reqs.length).toBeGreaterThanOrEqual(1);
@@ -65,7 +65,7 @@ describe('GestionAlertesComponent', () => {
   
   it('should not display traitement alertes if there is no alert', () => {
     const reqs = httpTestingController.match(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=web.hook`
+      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     );
     
     expect(reqs.length).toBeGreaterThanOrEqual(1);
