@@ -20,6 +20,7 @@ import { QueryStatus, QueryStatusEnum } from '../../../api/queryStatus.model';
 import { QueryStatusPanelComponent } from '../../../shared/query-status-panel/query-status-panel.component';
 import { Pscload } from '../../../api/pscload.service';
 import { ConfirmModalComponent } from '../../../ds/confirm-modal/confirm-modal.component';
+import {QueryResult} from '../../../api/queryResult.model';
 
 @Component({
   selector: 'app-execution-complete-processus',
@@ -33,9 +34,9 @@ export class ExecutionCompleteProcessusComponent {
   supprimerExtraction: RemoveRassExtract=RemoveRassExtract.NO;
   executionStatus: QueryStatus|null=null;
   removeWarningExecution: EventEmitter<void> = new EventEmitter();
-  
+
   constructor(private loader: Pscload){}
-  
+
   askExecuter() {
     if(this.supprimerExtraction===RemoveRassExtract.YES) {
       this.removeWarningExecution.next();
@@ -43,16 +44,26 @@ export class ExecutionCompleteProcessusComponent {
       this.executer();
     }
   }
-  
+
   executer(): void {
+    let executionStatus: QueryStatus = {status: QueryStatusEnum.PENDING, message: 'Requête d\'exécution envoyée'};
+
     if(this.supprimerExtraction===RemoveRassExtract.YES) {
-      
+      this.loader.removeRassExtract().subscribe((result: QueryResult<any>): void => {
+        if (result.status === QueryStatusEnum.OK) {
+          this.executerProcessusComplet({status: QueryStatusEnum.PENDING, message: 'L\'extraction RASS a bien été supprimée. ' + executionStatus.message});
+        } else {
+          this.executionStatus = {status: QueryStatusEnum.KO, message: 'L\'extraction RASS n\'a pas pu être supprimée.'};
+        }
+      });
+    } else {
+      this.executerProcessusComplet(executionStatus);
     }
-    this.executionStatus={status:QueryStatusEnum.PENDING,message:"Requête d'exécution envoyée"};
-    this.loader.executerProcessusComplet()
-        .subscribe(
-          (status: QueryStatus) => this.executionStatus=status
-        );
+  }
+
+  private executerProcessusComplet(executionStatus: QueryStatus) {
+    this.executionStatus=executionStatus;
+    this.loader.executerProcessusComplet().subscribe((status: QueryStatus) => this.executionStatus=status);
   }
 }
 enum RemoveRassExtract {
