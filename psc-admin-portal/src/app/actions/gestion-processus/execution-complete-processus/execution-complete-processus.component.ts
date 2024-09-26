@@ -51,9 +51,9 @@ export class ExecutionCompleteProcessusComponent {
     if(this.supprimerExtraction===RemoveRassExtract.YES) {
       this.loader.removeRassExtract().subscribe((result: QueryResult<any>): void => {
         if (result.status === QueryStatusEnum.OK) {
-          this.executerProcessusComplet({status: QueryStatusEnum.PENDING, message: 'L\'extraction RASS a bien été supprimée. ' + executionStatus.message});
+          this.executerProcessusComplet({status: QueryStatusEnum.PENDING, message: result.message + executionStatus.message});
         } else {
-          this.executionStatus = {status: QueryStatusEnum.KO, message: 'L\'extraction RASS n\'a pas pu être supprimée.'};
+          this.executionStatus = {status: QueryStatusEnum.KO, message: result.message};
         }
       });
     } else {

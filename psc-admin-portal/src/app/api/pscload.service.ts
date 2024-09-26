@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { Observable } from "rxjs";
+import {Observable, of} from "rxjs";
 import { Status, errorResponseToStatus } from "./status";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
@@ -129,8 +129,14 @@ export class Pscload {
   removeRassExtract() {
     return this.http.delete<void>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/clear-files`).pipe(
-      map(() => ({status: QueryStatusEnum.OK,message: 'Rass file successfully deleted'})),
-      catchError((err: HttpErrorResponse) => errorResponseToQueryResult(err))
+      map(() => ({status: QueryStatusEnum.OK, message: 'L\'extraction RASS a bien été supprimée. '})),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 409) {
+          return of({status: QueryStatusEnum.KO, message: 'Suppression impossible lorsqu\'un processus est en cours. Réessayez plus tard' });
+        } else {
+          return errorResponseToQueryResult(err);
+        }
+      })
     );
   }
 }
