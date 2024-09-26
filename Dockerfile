@@ -41,7 +41,7 @@ RUN ng build --base-href /portal/ui/
 # This stage will get the OIDC module package, install it to grab its files.
 FROM debian:${BASE_DISTRO} AS oidc_installer
 ARG BASE_DISTRO=bookworm
-ARG MOD_OIDC_VERSION=2.4.15.3
+ARG MOD_OIDC_VERSION=2.4.16.3
 ARG MOD_OIDC_PACKAGE_VERSION=${MOD_OIDC_VERSION}-1.${BASE_DISTRO}
 ARG OIDC_BASE_URL=https://github.com/OpenIDC/mod_auth_openidc/releases/download
 ARG MOD_PACKAGE_NAME=libapache2-mod-auth-openidc_${MOD_OIDC_PACKAGE_VERSION}_amd64.deb
