@@ -80,7 +80,7 @@ export class ExecutionCompleteProcessusComponent implements OnDestroy {
     );
   }
 }
-enum RemoveRassExtract {
+export enum RemoveRassExtract {
   YES='Oui',
   NO='Non'
 }
