@@ -14,9 +14,9 @@
 /// limitations under the License.
 ///
 
-import { Observable, of, throwError } from "rxjs";
+import {Observable, of} from "rxjs";
 import { Status, errorResponseToStatus } from "./status";
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
@@ -28,7 +28,7 @@ import { errorResponseToQueryResult } from "./queryResult";
 @Injectable({providedIn: "root"})
 export class Pscload {
   constructor(private http: HttpClient){}
-  
+
   get status(): Observable<Status> {
     return this.http.get<string>(
         `${environment.API_HOSTNAME}portal/service/pscload/v2/check`,
@@ -42,7 +42,7 @@ export class Pscload {
       )
     );
   }
-  
+
   executerProcessusComplet(): Observable<QueryStatus>{
     return this.http.post<void>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/full-run`,''
@@ -55,7 +55,7 @@ export class Pscload {
       )
     );
   }
-  
+
   getPscLoadStatus(details: boolean=false): Observable<QueryResult<PscLoadStatus|null>> {
     return this.http.get<PscLoadStatus[]>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=${details}`
@@ -78,11 +78,11 @@ export class Pscload {
         }
       ),
       catchError(
-        (err: HttpErrorResponse) => errorResponseToQueryResult<PscLoadStatus>(err)        
+        (err: HttpErrorResponse) => errorResponseToQueryResult<PscLoadStatus>(err)
       )
     );
   }
-  
+
   getDiff(): Observable<QueryResult<PsDiff>> {
     return this.http.get<PscLoadStatus[]>(
       `${environment.API_HOSTNAME}portal/service/pscload/v2/process/info?details=true`,
@@ -110,7 +110,7 @@ export class Pscload {
       )
     );
   }
-  
+
   forceContinue(excludes: Operation[] = []): Observable<QueryStatus> {
     const excludeParm=excludes.map( (op: Operation) => op.code );
     return this.http.post<void>(
@@ -123,6 +123,20 @@ export class Pscload {
       catchError(
         (err: HttpErrorResponse) => errorResponseToQueryResult(err)
       )
+    );
+  }
+
+  removeRassExtract() {
+    return this.http.delete<void>(
+      `${environment.API_HOSTNAME}portal/service/pscload/v2/process/clear-files`).pipe(
+      map(() => ({status: QueryStatusEnum.OK, message: 'L\'extraction RASS a bien été supprimée. '})),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 409) {
+          return of({status: QueryStatusEnum.KO, message: 'Suppression impossible lorsqu\'un processus est en cours. Réessayez plus tard' });
+        } else {
+          return errorResponseToQueryResult(err);
+        }
+      })
     );
   }
 }
