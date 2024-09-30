@@ -18,58 +18,69 @@
 <h3>Information sur le diff</h3>
 
 <div class="form-group bg-gray-100 rounded-md">
-  
-@if(alertes) {  
-@if(psDiffError) {
-  <div class="form-group row center-col">
-      <div [class.o-alert--error]="true" class="o-alert" role="status">
-        <div class="o-alert__icon">
-          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use></svg>
-        </div>  
-        <p>Erreur lors de la récupération du diff</p>
-        <p>{{psDiffError}}</p>
-        <button type="button" class="btn btn--close btn--icon-only" (click)="forgetPsDiffError()">
-          <svg class="svg-icon svg-close" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#close"></use></svg>
-          <span class="sr-only">Masquer ce message</span>
+
+  @if (alertes) {
+    @if (psDiffError) {
+      <div class="form-group row center-col">
+        <div [class.o-alert--error]="true" class="o-alert" role="status">
+          <div class="o-alert__icon">
+            <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false">
+              <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
+            </svg>
+          </div>
+          <p>Erreur lors de la récupération du diff</p>
+          <p>{{ psDiffError }}</p>
+          <button type="button" class="btn btn--close btn--icon-only" (click)="forgetPsDiffError()">
+            <svg class="svg-icon svg-close" aria-hidden="true" focusable="false">
+              <use xlink:href="svg-icons/icon-sprite.svg#close"></use>
+            </svg>
+            <span class="sr-only">Masquer ce message</span>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="form-group row center-col">
+        <div class="o-alert o-alert--warning" role="status">
+          <div class="o-alert__icon">
+            <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false">
+              <use xlink:href="svg-icons/icon-sprite.svg#warning"></use>
+            </svg>
+          </div>
+          <p>Une alerte a été détectée.</p>
+        </div>
+      </div>
+    }
+    <div class="form-group row center-col">
+      <div class="input-group col-sm-10 center-col">
+        <button
+          type="button"
+          class="btn btn--ghost btn--default"
+          (click)="onGetDiff()">Consulter le diff
         </button>
       </div>
-  </div>
-} @else {
-  <div class="form-group row center-col">
-      <div class="o-alert o-alert--warning" role="status">
-        <div class="o-alert__icon">
-          <svg class="svg-icon svg-icon-warning" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#warning"></use></svg>
-        </div>  
-        <p>Une alerte a été détectée.</p>
-      </div>
-  </div>
-}
-  <div class="form-group row center-col">
-    <div class="input-group col-sm-10 center-col">
-      <button 
-        type="button" 
-        class="btn btn--ghost btn--default"
-        (click)="onGetDiff()">Consulter le diff</button>
     </div>
-  </div>
-} @else if(alertResult.status===status.KO) {
-  <div class="form-group row center-col">
+  } @else if (alertResult.status === status.KO) {
+    <div class="form-group row center-col">
       <div [class.o-alert--error]="true" class="o-alert" role="status">
         <div class="o-alert__icon">
-          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use></svg>
-        </div>  
+          <svg class="svg-icon svg-icon-error" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#circle-cross"></use>
+          </svg>
+        </div>
         <p>Erreur à la vérification des alertes</p>
-        <p>{{alertResult.message}}</p>
+        <p>{{ alertResult.message }}</p>
       </div>
-  </div>
-} @else {
-     <div class="form-group row center-col">
+    </div>
+  } @else {
+    <div class="form-group row center-col">
       <div class="o-alert o-alert--success" role="status">
         <div class="o-alert__icon">
-          <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false"><use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use></svg>
-        </div>  
+          <svg class="svg-icon svg-circle-check" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#circle-check"></use>
+          </svg>
+        </div>
         <p>Aucune alerte</p>
       </div>
-  </div>
-}
+    </div>
+  }
 </div>

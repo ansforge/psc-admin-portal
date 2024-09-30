@@ -14,12 +14,13 @@
 /// limitations under the License.
 ///
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { InformationDiffComponent } from './information-diff/information-diff.component';
 import { AlertManager } from '../../api/alertmanager.service';
 import { QueryResult } from '../../api/queryResult.model';
 import { QueryStatusEnum } from '../../api/queryStatus.model';
 import { TraitementAlertesComponent } from './traitement-alertes/traitement-alertes.component';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-gestion-alertes',
@@ -28,18 +29,27 @@ import { TraitementAlertesComponent } from './traitement-alertes/traitement-aler
   templateUrl: './gestion-alertes.component.html',
   styleUrl: './gestion-alertes.component.scss'
 })
-export class GestionAlertesComponent implements OnInit {
+export class GestionAlertesComponent implements OnInit, OnDestroy {
+  readonly unsub$: Subject<void> = new Subject<void>();
+
   status: typeof QueryStatusEnum=QueryStatusEnum;
   hasAlerts: boolean=false;
-  
+
   constructor(private alertApi: AlertManager){}
   ngOnInit(): void {
-    this.alertApi.hasLoaderAlerts().subscribe(
+    this.alertApi.alertUpdates.pipe(
+      takeUntil(this.unsub$)
+    ).subscribe(
       (res: QueryResult<boolean>) => {
         if(res.body!==undefined){
           this.hasAlerts=res.body
         }
       }
     );
+  }
+
+  ngOnDestroy(): void{
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }
