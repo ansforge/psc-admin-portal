@@ -16,9 +16,9 @@
 
 import {ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 
-import { NotificationComponent } from './notification.component';
+import {NotificationComponent } from './notification.component';
 import {AlertManager} from '../../../../api/alertmanager.service';
-import {of} from 'rxjs';
+import {Subject} from 'rxjs';
 import {QueryResult} from '../../../../api/queryResult.model';
 import {QueryStatusEnum} from '../../../../api/queryStatus.model';
 import {environment} from '../../../../../environments/environment.dev';
@@ -28,13 +28,23 @@ describe('NotificationComponent', () => {
   let component: NotificationComponent;
   let fixture: ComponentFixture<NotificationComponent>;
   let alertManagerService: jasmine.SpyObj<AlertManager>;
+  let alertUpdatesSubject: Subject<QueryResult<boolean>>;
+
+  const mockTrueQueryResult: QueryResult<boolean> = {message: '', status: QueryStatusEnum.OK, body: true };
+  const mockFalseQueryResult: QueryResult<boolean> = {message: '', status: QueryStatusEnum.OK, body: false };
 
   beforeEach(async () => {
-    const alertManagerSpy = jasmine.createSpyObj('AlertManagerService', ['hasLoaderAlerts']);
+    alertManagerService = jasmine.createSpyObj('AlertManager', ['hasLoaderAlerts']);
+
+    alertUpdatesSubject = new Subject<QueryResult<boolean>>();
+
+    Object.defineProperty(alertManagerService, 'alertUpdates', {
+      get: () => alertUpdatesSubject.asObservable(),
+    });
 
     await TestBed.configureTestingModule({
       imports: [NotificationComponent, HttpClientTestingModule],
-      providers: [{ provide: AlertManager, useValue: alertManagerSpy }]
+      providers: [{ provide: AlertManager, useValue: alertManagerService }]
     })
     .compileComponents();
 
@@ -49,22 +59,14 @@ describe('NotificationComponent', () => {
   });
 
   it('should call hasLoaderAlerts and update $hasNotifications based on response', fakeAsync(() => {
-    let mockQueryResult: QueryResult<boolean> = {message: '', status: QueryStatusEnum.OK, body: true };
-    alertManagerService.hasLoaderAlerts.and.returnValue(of(mockQueryResult));
-
     component.ngOnInit();
 
+    alertUpdatesSubject.next(mockTrueQueryResult)
     tick(environment.UPDATE_PERIOD);
-
-    expect(alertManagerService.hasLoaderAlerts).toHaveBeenCalled();
     expect(component.$hasNotifications()).toBe(true);
 
-    mockQueryResult = {message: '', status: QueryStatusEnum.OK, body: false };
-    alertManagerService.hasLoaderAlerts.and.returnValue(of(mockQueryResult));
-
+    alertUpdatesSubject.next(mockFalseQueryResult);
     tick(environment.UPDATE_PERIOD);
-
-    expect(alertManagerService.hasLoaderAlerts).toHaveBeenCalledTimes(2);
     expect(component.$hasNotifications()).toBe(false);
 
     component.ngOnDestroy();
@@ -72,19 +74,20 @@ describe('NotificationComponent', () => {
   }));
 
   it('should stop polling when unsub$ emits', fakeAsync(() => {
-    let mockQueryResult: QueryResult<boolean> = {message: '', status: QueryStatusEnum.OK, body: true };
-    alertManagerService.hasLoaderAlerts.and.returnValue(of(mockQueryResult));
+    alertUpdatesSubject.next({message: '', status: QueryStatusEnum.OK, body: true });
 
     component.ngOnInit();
 
     tick(environment.UPDATE_PERIOD);
-    expect(alertManagerService.hasLoaderAlerts).toHaveBeenCalled();
+    expect(component.$hasNotifications()).toBe(true);
+
+    alertUpdatesSubject.next({message: '', status: QueryStatusEnum.OK, body: false });
 
     component.unsub$.next();
     component.unsub$.complete();
 
     tick(environment.UPDATE_PERIOD);
-    expect(alertManagerService.hasLoaderAlerts).toHaveBeenCalledTimes(1);
+    expect(component.$hasNotifications()).toBe(false);
 
     component.ngOnDestroy();
     flush();

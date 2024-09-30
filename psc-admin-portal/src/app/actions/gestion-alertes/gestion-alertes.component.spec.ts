@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 
 import { GestionAlertesComponent } from './gestion-alertes.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -31,10 +31,10 @@ describe('GestionAlertesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GestionAlertesComponent,HttpClientTestingModule]
+      imports: [GestionAlertesComponent, HttpClientTestingModule]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(GestionAlertesComponent);
     httpClient=TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -46,37 +46,41 @@ describe('GestionAlertesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
-  it('should display traitement alertes if there are alerts', () => {
-    const reqs = httpTestingController.match(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
-    );
-    
-    expect(reqs.length).toBeGreaterThanOrEqual(1);
-    
-    for(let req of reqs) {
-      req.flush([ALERT_MOCK_1]);
-    }
-    
-    fixture.detectChanges();
-    
-    expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeTruthy();
-  });
-  
-  it('should not display traitement alertes if there is no alert', () => {
-    const reqs = httpTestingController.match(
-      `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
-    );
-    
-    expect(reqs.length).toBeGreaterThanOrEqual(1);
-    
-    for(let req of reqs) {
-      req.flush([]);
-    }
-    
-    fixture.detectChanges();
-    
-    expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeFalsy();
-  });
-  
+
+  it('should display traitement alertes if there are alerts', fakeAsync(() => {
+    fixture.whenStable().then(() => {
+      const reqs = httpTestingController.match(
+        `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
+      );
+
+      expect(reqs.length).toBeGreaterThanOrEqual(1);
+
+      for(let req of reqs) {
+        req.flush([ALERT_MOCK_1]);
+      }
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeTruthy();
+    })
+
+  }));
+
+  it('should not display traitement alertes if there is no alert', fakeAsync(() => {
+    fixture.whenStable().then(() => {
+      const reqs = httpTestingController.match(
+        `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
+      );
+
+      expect(reqs.length).toBeGreaterThanOrEqual(1);
+
+      for (let req of reqs) {
+        req.flush([]);
+      }
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('app-traitement-alertes'))).toBeFalsy();
+    });
+  }));
 });
