@@ -16,13 +16,13 @@
 
 /*
  *  Copyright (c) 2020 - 2024 Henix, henix.fr
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@
  */
 
 import { Injectable } from "@angular/core";
-import { Observable, catchError, map, of } from "rxjs";
+import {Observable, catchError, map, interval, switchMap, shareReplay} from "rxjs";
 import { QueryResult } from "./queryResult.model";
 import { QueryStatusEnum } from "./queryStatus.model";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
@@ -40,10 +40,19 @@ import { errorResponseToQueryResult } from "./queryResult";
 
 @Injectable({providedIn: "root"})
 export class AlertManager {
-  
+
+  private alertUpdates$: Observable<QueryResult<boolean>> = interval(environment.UPDATE_PERIOD).pipe(
+    switchMap(() => this.hasLoaderAlerts()),
+    shareReplay(1)
+  );
+
+  get alertUpdates(): Observable<QueryResult<boolean>> {
+    return this.alertUpdates$;
+  }
+
   constructor(private http: HttpClient){}
-  
-  hasLoaderAlerts(): Observable<QueryResult<boolean>> {
+
+  private hasLoaderAlerts(): Observable<QueryResult<boolean>> {
     return this.http.get<any[]>(
       `${environment.API_HOSTNAME}portal/service/alertmanager/api/v2/alerts?receiver=email-notifications`
     ).pipe(

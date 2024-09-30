@@ -14,13 +14,14 @@
 /// limitations under the License.
 ///
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { AlertManager } from '../../../api/alertmanager.service';
 import { QueryResult } from '../../../api/queryResult.model';
 import { QueryStatusEnum } from '../../../api/queryStatus.model';
 import { Pscload } from '../../../api/pscload.service';
 import { PsDiff } from '../../../api/pscload.model';
 import FileSaver from 'file-saver';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-information-diff',
@@ -29,31 +30,37 @@ import FileSaver from 'file-saver';
   templateUrl: './information-diff.component.html',
   styleUrl: './information-diff.component.scss'
 })
-export class InformationDiffComponent implements OnInit{
+export class InformationDiffComponent implements OnInit, OnDestroy {
+  readonly unsub$: Subject<void> = new Subject<void>();
+
   status: typeof QueryStatusEnum=QueryStatusEnum
   alertResult: QueryResult<boolean>={status: QueryStatusEnum.PENDING,message:""};
   psDiffError: string|null=null;
-  
+
   constructor(
     private alertApi: AlertManager,
     private loaderApi: Pscload
   ){}
-  
+
   ngOnInit(): void {
-    this.alertApi.hasLoaderAlerts()
-    .subscribe(
-      (result: QueryResult<boolean>) => this.alertResult=result
-    );
+    this.alertApi.alertUpdates.pipe(
+      takeUntil(this.unsub$)
+    ).subscribe((result: QueryResult<boolean>) => this.alertResult=result);
   }
-  
+
+  ngOnDestroy(): void{
+    this.unsub$.next();
+    this.unsub$.complete();
+  }
+
   get alertes(): boolean|null {
     return this.alertResult?.body|| false;
   }
-  
+
   forgetPsDiffError(): void {
     this.psDiffError=null;
   }
-  
+
   onGetDiff(): void {
     this.loaderApi.getDiff().subscribe(
       (res: QueryResult<PsDiff>) => {
@@ -71,18 +78,18 @@ export class InformationDiffComponent implements OnInit{
             csvContent+=this.tupleFormat(tuple)+"\n";
             tuple=[created.pop(),updated.pop(),deleted.pop()];
           }
-          
+
           const diffBlob=new Blob([csvContent],{type: "application/csv"});
           FileSaver.saveAs(diffBlob, `pscload_diff_${new Date().valueOf()}.csv`);
         }
       }
     );
   }
-  
+
   private tupleFormat(tuple: nullableString[]): string {
     return `${this.dataFormat(tuple[0])};${this.dataFormat(tuple[1])};${this.dataFormat(tuple[2])}`;
   }
-  
+
   private dataFormat(value: nullableString): string {
     return value?`"${value}"`:"";
   }
