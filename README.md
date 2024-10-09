@@ -123,3 +123,7 @@ After launching development processes (see [above](#runInDev)), processes may be
     1.  Launch the process
     1.  Deleting 2000 PS will trigger an alert (which can be bypassed from the gestion des alertes action pane)
 
+## Qualification
+
+To test the process in qualification (cloud) environments, 
+make sure the qualification environment can access rwa github resources and see [the rass-loader qualification procedure](https://github.com/ansforge/psc-rass-loader?tab=readme-ov-file#qualification).
