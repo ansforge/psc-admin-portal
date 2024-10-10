@@ -143,7 +143,7 @@ if [ $? -eq 0 ]; then
       --name "sec-psc-rabbit-mq" \
       rabbitmq:3.8-management
   else
-    sudo docker start sec-psc-kibana
+    sudo docker start sec-psc-rabbit-mq
   fi
 
   sudo docker run \
