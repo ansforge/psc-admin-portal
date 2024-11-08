@@ -23,6 +23,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development
 
+### Distribution history
+
+This ecosystem uses many independant components, some of which live an independant life in distinct repositories.
+For each release of `psc-admin-portal`, [the psc-components' distribution  history](https://github.com/ansforge/psc-components/blob/main/DISTRIBUTION.md) 
+file will need to be updated with the new version, so that we can keep track of compatible component versions, 
+and go back to a previous working distribution if need be.
+
 ### License header check
 
 The license header check gets performed as part of each container build. If the check fails,
@@ -126,4 +133,4 @@ After launching development processes (see [above](#runInDev)), processes may be
 ## Qualification
 
 To test the process in qualification (cloud) environments, 
-make sure the qualification environment can access rwa github resources and see [the rass-loader qualification procedure](https://github.com/ansforge/psc-rass-loader?tab=readme-ov-file#qualification).
+make sure the qualification environment can access raw github resources and see [the rass-loader qualification procedure](https://github.com/ansforge/psc-rass-loader?tab=readme-ov-file#qualification).
