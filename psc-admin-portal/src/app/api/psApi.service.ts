@@ -42,7 +42,8 @@ export class PsApi {
   }
 
   getPSByIDNat(idNatPS: string): Observable<any> {
-    return this.http.get(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${idNatPS}`).pipe(
+    var encodedIdNatPS = encodeURIComponent(idNatPS);
+    return this.http.get(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${encodedIdNatPS}`).pipe(
       map(response => {
         return {
           status: QueryStatusEnum.OK,
