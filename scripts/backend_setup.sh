@@ -28,5 +28,7 @@ if [ -z ${OLD_PWD} ]; then
   cd ${OLD_PWD}
 fi
 
+. ${SCRIPT_DIR}/dev.cfg
+
 export API_PORT=8080
 export RASS_LOAD_PORT=8082
