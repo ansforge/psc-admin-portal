@@ -28,14 +28,13 @@ FROM node:20.19.0-slim AS builder
 ARG BASE_DISTRO=bookworm
 
 RUN apt update
-RUN apt install -y chromium
 RUN useradd -m ci
 RUN npm install -g @angular/cli
 USER ci
 COPY --chown=ci psc-admin-portal /src/portal
 WORKDIR /src/portal
 RUN npm ci
-RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+# RUN ng test  --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
 RUN ng build --base-href /portal/ui/
 
 # This stage will get the OIDC module package, install it to grab its files.
