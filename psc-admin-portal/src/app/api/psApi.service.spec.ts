@@ -193,7 +193,7 @@ describe('PsApi', () => {
     const expectedResponse = {
       status: QueryStatusEnum.OK,
       message: 'Recherche effectuée avec succès',
-      data: mockResults
+      body: mockResults
     };
 
     service.searchPsByName('DUPONT', 'JEAN').subscribe(response => {

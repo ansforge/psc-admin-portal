@@ -122,25 +122,25 @@ describe('InterrogationPsComponent', () => {
   });
 
   it('should call getPSByIDNat if form is valid', () => {
-    const mockResponse = { status: QueryStatusEnum.OK, data: {} };
+    const mockResponse = { status: QueryStatusEnum.OK, body: {} };
     psApiService.getPSByIDNat.and.returnValue(of(mockResponse));
 
     component.formGroup.controls[component['ID_NAT_PS']].setValue('validID');
     component.findPSByIDNat();
 
-    expect(psApiService.getPSByIDNat).toHaveBeenCalledWith('validID');
+    expect(psApiService.getPSByIDNat).toHaveBeenCalledWith('validID', false);
   });
 
   it('should set response if getPSByIDNat API response status is OK', () => {
     spyOn(component as any, 'initializeEditor').and.callThrough();
-    const mockResponse = { status: QueryStatusEnum.OK, data: { key: 'value' } };
+    const mockResponse = { status: QueryStatusEnum.OK, body: { key: 'value' } };
     psApiService.getPSByIDNat.and.returnValue(of(mockResponse));
 
     component.formGroup.controls[component['ID_NAT_PS']].setValue('validID');
     component.findPSByIDNat();
 
-    expect(psApiService.getPSByIDNat).toHaveBeenCalledWith('validID');
-    expect(component.response).toEqual(mockResponse.data);
+    expect(psApiService.getPSByIDNat).toHaveBeenCalledWith('validID', false);
+    expect(component.response).toEqual(mockResponse.body);
     expect(component['initializeEditor']).toHaveBeenCalled();
   });
 
@@ -293,7 +293,7 @@ describe('InterrogationPsComponent', () => {
   it('should call searchPsByName and populate nameResults on success', () => {
     const mockResults = [{nationalId: '811111111111', companyNames: ['Cabinet Dupont']}];
     psApiService.searchPsByName = jasmine.createSpy('searchPsByName').and.returnValue(
-      of({status: QueryStatusEnum.OK, data: mockResults})
+      of({status: QueryStatusEnum.OK, body: mockResults})
     );
     component.formGroup.get('lastName')!.setValue('DUPONT');
 
@@ -306,7 +306,7 @@ describe('InterrogationPsComponent', () => {
 
   it('should show KO alert when searchPsByName returns empty array', () => {
     psApiService.searchPsByName = jasmine.createSpy('searchPsByName').and.returnValue(
-      of({status: QueryStatusEnum.OK, data: []})
+      of({status: QueryStatusEnum.OK, body: []})
     );
     spyOn(component, 'handleAlert').and.callThrough();
     component.formGroup.get('lastName')!.setValue('INCONNU');
