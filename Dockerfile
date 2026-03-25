@@ -24,7 +24,7 @@ RUN mv license/check-pom.xml ./pom.xml
 RUN mvn -Dlicense.current.year=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y) license:check
 RUN touch /.sourceCheck
 
-FROM node:20.11.1-slim AS builder
+FROM node:20.19.0-slim AS builder
 ARG BASE_DISTRO=bookworm
 
 RUN apt update
