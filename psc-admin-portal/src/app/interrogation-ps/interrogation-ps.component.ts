@@ -48,6 +48,8 @@ import {QueryResult} from '../api/queryResult.model';
 })
 export class InterrogationPsComponent implements OnInit, OnDestroy {
   private ID_NAT_PS: string = 'idNatPS';
+  private LAST_NAME: string = 'lastName';
+  private FIRST_NAMES: string = 'firstNames';
   private ERROR_OCCURRED: string = 'Une erreur est survenue';
 
   @ViewChild('jsonEditorContainer', {static: false})
@@ -55,12 +57,16 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   editor!: JSONEditor;
 
   formGroup: FormGroup;
+  searchMode: 'idnat' | 'name' = 'idnat';
+  includeDeactivated: boolean = false;
   isInvalidInput: boolean = false;
   queryStatus: QueryStatus | null = null;
   response: any = null;
+  nameResults: {nationalId: string, companyNames: string[]}[] | null = null;
 
   canSave: WritableSignal<boolean> = signal(false);
   toggleAlertCSS: WritableSignal<QueryStatusEnum> = signal(QueryStatusEnum.PENDING);
+  confirmAction: 'deactivate' | 'force-delete' | null = null;
 
   unsub$: Subject<void> = new Subject<void>();
 
@@ -68,7 +74,9 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private psApiService: PsApi) {
     this.formGroup = formBuilder.group({
-      idNatPS: new FormControl('', [Validators.required])
+      idNatPS: new FormControl('', [Validators.required]),
+      lastName: new FormControl(''),
+      firstNames: new FormControl('')
     });
   }
 
@@ -88,16 +96,26 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
     this.unsub$.complete();
   }
 
+  onSearchModeChange(): void {
+    this.isInvalidInput = false;
+    this.queryStatus = null;
+    this.response = null;
+    this.nameResults = null;
+    this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
+    this.destroyEditor();
+    this.formGroup.reset();
+  }
+
   findPSByIDNat(): void {
     this.destroyEditor();
     this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
-    this.isInvalidInput = this.formGroup.invalid;
+    this.isInvalidInput = this.formGroup.get(this.ID_NAT_PS)?.invalid ?? true;
 
     if (this.isInvalidInput) {
       this.handleAlert(QueryStatusEnum.KO, 'Veuillez renseigner le champ « ID National » correctement avant de lancer une recherche')
     } else {
       const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
-      this.psApiService.getPSByIDNat(idNatPS).pipe(
+      this.psApiService.getPSByIDNat(idNatPS, this.includeDeactivated).pipe(
         takeUntil(this.unsub$)
       ).subscribe((response) => {
         if (QueryStatusEnum.OK === response.status) {
@@ -107,6 +125,73 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
         } else {
           this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
           this.response = null;
+        }
+      });
+    }
+  }
+
+  searchByName(): void {
+    this.toggleAlertCSS.set(QueryStatusEnum.PENDING);
+    const lastName = this.formGroup.get(this.LAST_NAME)?.value?.trim();
+    const firstNames = this.formGroup.get(this.FIRST_NAMES)?.value?.trim();
+
+    if (!lastName && !firstNames) {
+      this.isInvalidInput = true;
+      this.handleAlert(QueryStatusEnum.KO, 'Veuillez renseigner au moins un champ (nom ou prénom) avant de lancer une recherche');
+      return;
+    }
+
+    this.isInvalidInput = false;
+    this.nameResults = null;
+    this.psApiService.searchPsByName(lastName || undefined, firstNames || undefined).pipe(
+      takeUntil(this.unsub$)
+    ).subscribe((response) => {
+      if (QueryStatusEnum.OK === response.status) {
+        this.nameResults = response.body ?? [];
+        if (this.nameResults!.length === 0) {
+          this.handleAlert(QueryStatusEnum.KO, 'Aucun PS trouvé pour ces critères');
+        }
+      } else {
+        this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
+        this.nameResults = null;
+      }
+    });
+  }
+
+  openConfirm(action: 'deactivate' | 'force-delete'): void {
+    this.confirmAction = action;
+  }
+
+  cancelConfirm(): void {
+    this.confirmAction = null;
+  }
+
+  confirmAndExecute(): void {
+    if (!this.confirmAction) return;
+    const idNatPS = this.formGroup.get(this.ID_NAT_PS)?.value;
+    const action = this.confirmAction;
+    this.confirmAction = null;
+
+    if (action === 'deactivate') {
+      this.psApiService.deactivatePS(idNatPS).pipe(
+        takeUntil(this.unsub$)
+      ).subscribe(response => {
+        if (QueryStatusEnum.OK === response.status) {
+          this.handleAlert(QueryStatusEnum.OK, response.message ?? 'PS désactivé avec succès');
+          this.findPSByIDNat();
+        } else {
+          this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
+        }
+      });
+    } else {
+      this.psApiService.forceDeletePS(idNatPS).pipe(
+        takeUntil(this.unsub$)
+      ).subscribe(response => {
+        if (QueryStatusEnum.OK === response.status) {
+          this.handleAlert(QueryStatusEnum.OK, response.message ?? 'PS supprimé définitivement');
+          this.findPSByIDNat();
+        } else {
+          this.handleAlert(QueryStatusEnum.KO, response.message ?? this.ERROR_OCCURRED);
         }
       });
     }

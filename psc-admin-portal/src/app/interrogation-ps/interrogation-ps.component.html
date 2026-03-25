@@ -18,9 +18,15 @@
 <div class="container">
   <div class="form-box">
     <legend class="form-box__title mb-1">Interrogation PS</legend>
-    <p class="mb-0 italics">
-      *Champ obligatoire
-    </p>
+
+    <div class="mb-4">
+      <label for="searchMode" class="h4">Mode de recherche</label>
+      <select id="searchMode" class="form-control w-50 mt-1"
+              [(ngModel)]="searchMode" (ngModelChange)="onSearchModeChange()">
+        <option value="idnat">Recherche par ID National</option>
+        <option value="name">Recherche par nom / prénom</option>
+      </select>
+    </div>
 
     @if (QueryStatusEnum.PENDING !== toggleAlertCSS()) {
       <app-query-status-panel [queryStatus]="queryStatus"
@@ -29,40 +35,125 @@
       </app-query-status-panel>
     }
 
-    <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">ID National * </p>
-    <div class="input-group search-group w-50"
-         [class.is-invalid]="isInvalidInput"
-         [formGroup]="formGroup">
-      <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
+    @if (searchMode === 'idnat') {
+      <p class="mb-0 italics">*Champ obligatoire</p>
+      <div class="form-check mt-3 mb-2">
+        <input class="form-check-input" type="checkbox" id="includeDeactivated"
+               [(ngModel)]="includeDeactivated"/>
+        <label class="form-check-label" for="includeDeactivated">
+          Voir aussi les identités désactivées
+        </label>
+      </div>
+      <p class="h4 mt-2" [class.is-invalid]="isInvalidInput">ID National * </p>
+      <div class="input-group search-group w-50"
+           [class.is-invalid]="isInvalidInput"
+           [formGroup]="formGroup">
+        <label for="idNatPS" class="sr-only" aria-label="Recherche par id national">Recherche</label>
+        <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
+               aria-labelledby="idNatPS" aria-required="true" required [attr.aria-invalid]="isInvalidInput"/>
+        <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
+                (click)="findPSByIDNat()">
+          <svg class="svg-icon svg-search" aria-hidden="true" focusable="false">
+            <use xlink:href="svg-icons/icon-sprite.svg#search"></use>
+          </svg>
+          Rechercher
+        </button>
+      </div>
+      @if (isInvalidInput) {
+        <p id="requiredField" class="is-invalid italics">Ce champ est obligatoire</p>
+      }
+      @if (response && !isInvalidInput) {
+        <p class="h4 mt-6">Résultats de la recherche</p>
+        <div class="container d-flex flex-column">
+          <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2"
+               [ngClass]="{'editor-error-border': toggleAlertCSS() === QueryStatusEnum.KO, 'editor-success-border': toggleAlertCSS() === QueryStatusEnum.OK}"></div>
+          @if (editor) {
+            <button type="button" class="btn btn--plain btn--primary m-auto" aria-label="Enregistrer le JSON modifié"
+                    [attr.aria-disabled]="!canSave()"
+                    [disabled]="!canSave()"
+                    (click)="saveJsonPs()">Enregistrer les modifications
+            </button>
+          }
+        </div>        <div class="ps-actions mt-4">
+          <button type="button" class="btn btn--plain btn--deactivate" aria-label="Désactiver ce PS"
+                  (click)="openConfirm('deactivate')">
+            Désactiver ce PS
+          </button>
+          <button type="button" class="btn btn--plain btn--delete" aria-label="Supprimer définitivement ce PS"
+                  (click)="openConfirm('force-delete')">
+            Supprimer définitivement
+          </button>
+        </div>
+      }
 
-      <input class="form-control" formControlName="idNatPS" type="search" placeholder="ID national d'un PS" id="idNatPS"
-             aria-labelledby="idNatPS" aria-required="true" required [attr.aria-invalid]="isInvalidInput"/>
+      @if (confirmAction) {
+        <div class="confirm-overlay" (click)="cancelConfirm()">
+          <div class="confirm-dialog" (click)="$event.stopPropagation()">
+            @if (confirmAction === 'deactivate') {
+              <p class="h4 mb-2">Désactiver ce PS ?</p>
+              <p>Le PS sera marqué comme désactivé. Cette action est réversible.</p>
+            } @else {
+              <p class="h4 mb-2">Supprimer définitivement ce PS ?</p>
+              <p class="confirm-warning">Cette action est <strong>irréversible</strong>. Le PS sera définitivement supprimé de la base de données.</p>
+            }
+            <div class="confirm-actions">
+              <button type="button" class="btn btn--plain btn--secondary" (click)="cancelConfirm()">Annuler</button>
+              <button type="button"
+                      [class]="confirmAction === 'deactivate' ? 'btn btn--plain btn--deactivate' : 'btn btn--plain btn--delete'"
+                      (click)="confirmAndExecute()">Confirmer
+              </button>
+            </div>
+          </div>
+        </div>      }
+    }
 
-      <button type="submit" class="btn btn--plain btn--primary btn--icon-before" aria-label="Chercher"
-              (click)="findPSByIDNat()">
+    @if (searchMode === 'name') {
+      <p class="mb-0 italics">Les deux champs sont facultatifs, renseignez l'un ou l'autre</p>
+      <div [formGroup]="formGroup">
+        <p class="h4 mt-4" [class.is-invalid]="isInvalidInput">Nom</p>
+        <div class="input-group w-50 mb-3">
+          <input class="form-control" formControlName="lastName" type="text"
+                 placeholder="Nom de famille" id="lastName"
+                 aria-label="Nom de famille"/>
+        </div>
+        <p class="h4" [class.is-invalid]="isInvalidInput">Prénom</p>
+        <div class="input-group w-50 mb-3">
+          <input class="form-control" formControlName="firstNames" type="text"
+                 placeholder="Prénom" id="firstNames"
+                 aria-label="Prénom"/>
+        </div>
+      </div>
+      @if (isInvalidInput) {
+        <p class="is-invalid italics">Veuillez renseigner au moins un champ (nom ou prénom)</p>
+      }
+      <button type="submit" class="btn btn--plain btn--primary btn--icon-before mt-2" aria-label="Chercher"
+              (click)="searchByName()">
         <svg class="svg-icon svg-search" aria-hidden="true" focusable="false">
           <use xlink:href="svg-icons/icon-sprite.svg#search"></use>
         </svg>
         Rechercher
       </button>
-    </div>
-    @if (isInvalidInput) {
-      <p id="requiredField" class="is-invalid italics">Ce champ est obligatoire</p>
-    }
-
-    @if (response && !isInvalidInput) {
-      <p class="h4 mt-6">Résultats de la recherche</p>
-      <div class="container d-flex flex-column">
-        <div #jsonEditorContainer id="jsonEditorContainer" class="w-100 mb-lg-2"
-             [ngClass]="{'editor-error-border': toggleAlertCSS() === QueryStatusEnum.KO, 'editor-success-border': toggleAlertCSS() === QueryStatusEnum.OK}"></div>
-        @if (editor) {
-          <button type="button" class="btn btn--plain btn--primary m-auto" aria-label="Enregistrer le JSON modifié"
-                  [attr.aria-disabled]="!canSave()"
-                  [disabled]="!canSave()"
-                  (click)="saveJsonPs()">Enregistrer les modifications
-          </button>
-        }
-      </div>
+      @if (nameResults !== null && nameResults.length > 0) {
+        <p class="h4 mt-6">Résultats de la recherche</p>
+        <div class="search-result-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID National</th>
+                <th>Raisons sociales</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (result of nameResults; track result.nationalId) {
+                <tr>
+                  <td>{{ result.nationalId }}</td>
+                  <td>{{ result.companyNames.join(', ') }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
     }
   </div>
 </div>

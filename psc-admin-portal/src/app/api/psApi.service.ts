@@ -16,7 +16,7 @@
 
 import { Observable, of } from "rxjs";
 import { Status, errorResponseToStatus} from "./status";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
@@ -41,9 +41,10 @@ export class PsApi {
     );
   }
 
-  getPSByIDNat(idNatPS: string): Observable<any> {
+  getPSByIDNat(idNatPS: string, includeDeactivated: boolean = false): Observable<any> {
     var encodedIdNatPS = encodeURIComponent(idNatPS);
-    return this.http.get(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${encodedIdNatPS}`).pipe(
+    const params = includeDeactivated ? `?includeDeactivated=true` : '';
+    return this.http.get(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${encodedIdNatPS}${params}`).pipe(
       map(response => {
         return {
           status: QueryStatusEnum.OK,
@@ -54,6 +55,53 @@ export class PsApi {
       catchError((err: HttpErrorResponse) => {
         if (410 === err.status) {
           return of({status: QueryStatusEnum.KO, message: `Le PS avec l'id ${idNatPS} n'a pas été trouvé.`});
+        } else {
+          return errorResponseToQueryResult<void>(err);
+        }
+      })
+    );
+  }
+
+  searchPsByName(lastName?: string, firstNames?: string): Observable<QueryResult<{nationalId: string, companyNames: string[]}[]>> {
+    let params = new HttpParams();
+    if (lastName) params = params.set('lastName', lastName);
+    if (firstNames) params = params.set('firstNames', firstNames);
+    return this.http.get<{nationalId: string, companyNames: string[]}[]>(
+      `${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/search/name`,
+      { params }
+    ).pipe(
+      map(response => ({
+        status: QueryStatusEnum.OK,
+        message: 'Recherche effectuée avec succès',
+        body: response
+      })),
+      catchError((err: HttpErrorResponse) => errorResponseToQueryResult<{nationalId: string, companyNames: string[]}[]>(err))
+    );
+  }
+
+  deactivatePS(idNatPS: string): Observable<QueryResult<void>> {
+    const encodedId = encodeURIComponent(idNatPS);
+    return this.http.delete<void>(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/${encodedId}`).pipe(
+      map(() => ({ status: QueryStatusEnum.OK, message: 'PS désactivé avec succès' })),
+      catchError((err: HttpErrorResponse) => {
+        if (410 === err.status) {
+          return of({ status: QueryStatusEnum.KO, message: `Le PS avec l'id ${idNatPS} n'a pas été trouvé.` });
+        } else {
+          return errorResponseToQueryResult<void>(err);
+        }
+      })
+    );
+  }
+
+  forceDeletePS(idNatPS: string): Observable<QueryResult<void>> {
+    const encodedId = encodeURIComponent(idNatPS);
+    return this.http.delete<void>(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/force/${encodedId}`).pipe(
+      map(() => ({ status: QueryStatusEnum.OK, message: 'PS supprimé définitivement' })),
+      catchError((err: HttpErrorResponse) => {
+        if (403 === err.status) {
+          return of({ status: QueryStatusEnum.KO, message: 'La suppression définitive est désactivée.' });
+        } else if (410 === err.status) {
+          return of({ status: QueryStatusEnum.KO, message: `Le PS avec l'id ${idNatPS} n'a pas été trouvé.` });
         } else {
           return errorResponseToQueryResult<void>(err);
         }
