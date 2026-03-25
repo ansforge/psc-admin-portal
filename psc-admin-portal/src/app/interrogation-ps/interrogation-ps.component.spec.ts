@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+/// Copyright © 2022-2026 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ describe('InterrogationPsComponent', () => {
   } as unknown as JSON;
 
   beforeEach(async () => {
-    const psApiSpy = jasmine.createSpyObj('PsApi', ['getPSByIDNat', 'updatePS']);
+    const psApiSpy = jasmine.createSpyObj('PsApi', ['getPSByIDNat', 'updatePS', 'searchPsByName']);
 
     await TestBed.configureTestingModule({
       imports: [InterrogationPsComponent, HttpClientTestingModule, ReactiveFormsModule],
@@ -71,7 +71,9 @@ describe('InterrogationPsComponent', () => {
     psApiService = TestBed.inject(PsApi) as jasmine.SpyObj<PsApi>;
     component = fixture.componentInstance;
     component.formGroup = new FormGroup({
-      [component['ID_NAT_PS']]: new FormControl('', Validators.required)
+      [component['ID_NAT_PS']]: new FormControl('', Validators.required),
+      [component['LAST_NAME']]: new FormControl(''),
+      [component['FIRST_NAMES']]: new FormControl('')
     });
     component.jsonEditorContainer = new ElementRef(document.createElement('div'));
     component.response = initialEditorJSON;
@@ -261,5 +263,56 @@ describe('InterrogationPsComponent', () => {
     expect(component.response).not.toEqual(mockEditedJSON);
     expect(component.response).toEqual(initialEditorJSON);
     expect(component.handleAlert).not.toHaveBeenCalled();
+  });
+
+  it('should reset state when search mode changes', () => {
+    component.response = {some: 'data'};
+    component.nameResults = [{nationalId: '811111111111', companyNames: ['Test']}];
+    component.isInvalidInput = true;
+
+    component.onSearchModeChange();
+
+    expect(component.response).toBeNull();
+    expect(component.nameResults).toBeNull();
+    expect(component.isInvalidInput).toBeFalse();
+    expect(component.toggleAlertCSS()).toBe(QueryStatusEnum.PENDING);
+  });
+
+  it('should show invalid input error if both lastName and firstNames are empty on searchByName', () => {
+    psApiService.searchPsByName = jasmine.createSpy('searchPsByName');
+    component.formGroup.get('lastName')!.setValue('');
+    component.formGroup.get('firstNames')!.setValue('');
+
+    component.searchByName();
+
+    expect(component.isInvalidInput).toBeTrue();
+    expect(component.toggleAlertCSS()).toBe(QueryStatusEnum.KO);
+    expect(psApiService.searchPsByName).not.toHaveBeenCalled();
+  });
+
+  it('should call searchPsByName and populate nameResults on success', () => {
+    const mockResults = [{nationalId: '811111111111', companyNames: ['Cabinet Dupont']}];
+    psApiService.searchPsByName = jasmine.createSpy('searchPsByName').and.returnValue(
+      of({status: QueryStatusEnum.OK, data: mockResults})
+    );
+    component.formGroup.get('lastName')!.setValue('DUPONT');
+
+    component.searchByName();
+
+    expect(psApiService.searchPsByName).toHaveBeenCalledWith('DUPONT', undefined);
+    expect(component.nameResults).toEqual(mockResults);
+    expect(component.isInvalidInput).toBeFalse();
+  });
+
+  it('should show KO alert when searchPsByName returns empty array', () => {
+    psApiService.searchPsByName = jasmine.createSpy('searchPsByName').and.returnValue(
+      of({status: QueryStatusEnum.OK, data: []})
+    );
+    spyOn(component, 'handleAlert').and.callThrough();
+    component.formGroup.get('lastName')!.setValue('INCONNU');
+
+    component.searchByName();
+
+    expect(component.handleAlert).toHaveBeenCalledWith(QueryStatusEnum.KO, 'Aucun PS trouvé pour ces critères');
   });
 });

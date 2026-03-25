@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+/// Copyright © 2022-2026 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -182,6 +182,55 @@ describe('PsApi', () => {
 
     const req: TestRequest = httpMock.expectOne(`${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps`);
     expect(req.request.method).toBe('PUT');
+    req.flush(null, mockErrorResponse);
+  });
+
+  it('should return results on successful searchPsByName call', () => {
+    const mockResults = [
+      {nationalId: '811111111111', companyNames: ['Cabinet Dupont']},
+      {nationalId: '822222222222', companyNames: ['Hôpital Nord', 'Clinique Sud']}
+    ];
+    const expectedResponse = {
+      status: QueryStatusEnum.OK,
+      message: 'Recherche effectuée avec succès',
+      data: mockResults
+    };
+
+    service.searchPsByName('DUPONT', 'JEAN').subscribe(response => {
+      expect(response).toEqual(expectedResponse);
+    });
+
+    const req = httpMock.expectOne(r =>
+      r.url === `${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/search/name` &&
+      r.params.get('lastName') === 'DUPONT' &&
+      r.params.get('firstNames') === 'JEAN'
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResults);
+  });
+
+  it('should call searchPsByName with only lastName when firstNames is not provided', () => {
+    service.searchPsByName('DUPONT', undefined).subscribe();
+
+    const req = httpMock.expectOne(r =>
+      r.url === `${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/search/name` &&
+      r.params.get('lastName') === 'DUPONT' &&
+      !r.params.has('firstNames')
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush([]);
+  });
+
+  it('should handle error on searchPsByName', () => {
+    const mockErrorResponse = new HttpErrorResponse({status: 500, statusText: 'Server Error'});
+
+    service.searchPsByName('DUPONT').subscribe(response => {
+      expect(response.status).toBe(QueryStatusEnum.KO);
+    });
+
+    const req = httpMock.expectOne(r =>
+      r.url === `${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/search/name`
+    );
     req.flush(null, mockErrorResponse);
   });
 });

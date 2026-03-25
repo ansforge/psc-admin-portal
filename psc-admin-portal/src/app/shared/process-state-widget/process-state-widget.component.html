@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2022-2024 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
+    Copyright © 2022-2026 Agence du Numérique en Santé (ANS) (https://esante.gouv.fr)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 -->
 <div class="o-stepper">
-    <span class="sr-only">Processus, étape {{processState && processState.length > 0 ? processState?.[0]?.numeroEtape: 0}} sur 6</span>
+    <span class="sr-only">Processus, étape {{processState && processState.length > 0 ? processState[0]?.numeroEtape: 0}} sur 6</span>
     <ol>
       <li
         [class.o-stepper--checked]="shouldStepBeChecked(processStateEnum[1])"
