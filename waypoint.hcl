@@ -42,6 +42,7 @@ app "prosanteconnect/psc-admin-portal" {
     use "docker" {
       build_args         = {"PROSANTECONNECT_PACKAGE_GITHUB_TOKEN" = "${var.github_token}" }
       disable_entrypoint = true
+      no_cache           = true
     }
     # Uncomment below to use a remote docker registry to push your built images.
     registry {
