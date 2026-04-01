@@ -62,7 +62,7 @@ export class InterrogationPsComponent implements OnInit, OnDestroy {
   isInvalidInput: boolean = false;
   queryStatus: QueryStatus | null = null;
   response: any = null;
-  nameResults: {nationalId: string, companyNames: string[]}[] | null = null;
+  nameResults: {nationalId: string, professionCode: string | null, workLocations: {companyName: string | null, companyCedexOffice: string | null}[]}[] | null = null;
 
   canSave: WritableSignal<boolean> = signal(false);
   toggleAlertCSS: WritableSignal<QueryStatusEnum> = signal(QueryStatusEnum.PENDING);

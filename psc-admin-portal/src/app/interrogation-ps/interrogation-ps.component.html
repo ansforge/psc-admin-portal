@@ -147,7 +147,15 @@
               @for (result of nameResults; track result.nationalId) {
                 <tr>
                   <td>{{ result.nationalId }}</td>
-                  <td>{{ result.companyNames.join(', ') }}</td>
+                  <td>
+                    @if (result.professionCode) { <div><strong>Code profession :</strong> {{ result.professionCode }}</div> }
+                    @for (loc of result.workLocations; track $index) {
+                      <div>
+                        @if (loc.companyName) { <span><strong>Raison sociale :</strong> {{ loc.companyName }}</span> }
+                        @if (loc.companyCedexOffice) { <span class="ms-2"><strong>Cedex :</strong> {{ loc.companyCedexOffice }}</span> }
+                      </div>
+                    }
+                  </td>
                 </tr>
               }
             </tbody>

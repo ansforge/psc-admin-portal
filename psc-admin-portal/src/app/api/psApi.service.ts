@@ -62,11 +62,11 @@ export class PsApi {
     );
   }
 
-  searchPsByName(lastName?: string, firstNames?: string): Observable<QueryResult<{nationalId: string, companyNames: string[]}[]>> {
+  searchPsByName(lastName?: string, firstNames?: string): Observable<QueryResult<{nationalId: string, professionCode: string | null, workLocations: {companyName: string | null, companyCedexOffice: string | null}[]}[]>> {
     let params = new HttpParams();
     if (lastName) params = params.set('lastName', lastName);
     if (firstNames) params = params.set('firstNames', firstNames);
-    return this.http.get<{nationalId: string, companyNames: string[]}[]>(
+    return this.http.get<{nationalId: string, professionCode: string | null, workLocations: {companyName: string | null, companyCedexOffice: string | null}[]}[]>(
       `${environment.API_HOSTNAME}portal/service/ps-api/api/v2/ps/search/name`,
       { params }
     ).pipe(
@@ -75,7 +75,7 @@ export class PsApi {
         message: 'Recherche effectuée avec succès',
         body: response
       })),
-      catchError((err: HttpErrorResponse) => errorResponseToQueryResult<{nationalId: string, companyNames: string[]}[]>(err))
+      catchError((err: HttpErrorResponse) => errorResponseToQueryResult<{nationalId: string, professionCode: string | null, workLocations: {companyName: string | null, companyCedexOffice: string | null}[]}[]>(err))
     );
   }
 
