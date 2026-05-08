@@ -14,12 +14,9 @@
 /// limitations under the License.
 ///
 
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {throwError} from 'rxjs';
-import {environment} from '../environments/environment';
 import {HeaderComponent} from './ds/header/header.component';
 import {Toggle} from './api/toggle.service';
 import {Status} from './api/status';
