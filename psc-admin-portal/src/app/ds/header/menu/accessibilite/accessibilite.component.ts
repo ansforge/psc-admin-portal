@@ -16,7 +16,6 @@
 
 import { Component } from '@angular/core';
 import { DsPopup } from '../../../ds-popup.component';
-import { DsService } from '../../../ds.service';
 
 @Component({
   selector: 'app-accessibilite',
