@@ -91,9 +91,9 @@ export class Pscload {
         (statusTable: PscLoadStatus[]) => {
           if(statusTable.length>0){
             const status: PscLoadStatus=statusTable.pop() as PscLoadStatus;
-            const created=status.psToCreateIds?status.psToCreateIds:[];
-            const deleted=status.psToDeleteIds?status.psToDeleteIds:[];
-            const updated=status.psToUpdateIds?status.psToUpdateIds:[];
+            const created=status.psToCreateIds ?? [];
+            const deleted=status.psToDeleteIds ?? [];
+            const updated=status.psToUpdateIds ?? [];
             var diff={created: created, deleted: deleted, updated: updated};
           } else{
             var diff=NO_DIFF;

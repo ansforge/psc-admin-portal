@@ -92,7 +92,7 @@ describe('InterrogationPsComponent', () => {
     idNatPsControl!.setErrors({ required: true });
 
     spyOn(idNatPsControl!.valueChanges, 'pipe').and.callThrough();
-    spyOn(idNatPsControl!, 'setErrors').and.callThrough();
+    spyOn(idNatPsControl, 'setErrors').and.callThrough();
 
     component.ngOnInit();
 

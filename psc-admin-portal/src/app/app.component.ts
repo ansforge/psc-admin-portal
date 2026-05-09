@@ -21,7 +21,6 @@ import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {throwError} from 'rxjs';
 import {environment} from '../environments/environment';
 import {HeaderComponent} from './ds/header/header.component';
-import {Toggle} from './api/toggle.service';
 import {Status} from './api/status';
 import {PsApi} from './api/psApi.service';
 import {Pscload} from './api/pscload.service';
