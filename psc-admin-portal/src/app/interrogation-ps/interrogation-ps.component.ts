@@ -47,7 +47,7 @@ import {QueryResult} from '../api/queryResult.model';
   styleUrl: './interrogation-ps.component.scss'
 })
 export class InterrogationPsComponent implements OnInit, OnDestroy {
-  private ID_NAT_PS: string = 'idNatPS';
+  private readonly ID_NAT_PS: string = 'idNatPS';
   private ERROR_OCCURRED: string = 'Une erreur est survenue';
 
   @ViewChild('jsonEditorContainer', {static: false})
